@@ -1,0 +1,57 @@
+/*
+Theme Name:   Iconic One Child
+Theme URI:    http://localhost
+Description:  Iconic One Child Theme
+Author:       kfwong
+Author URI:   http://www.kfwong.com
+Template:     iconic-one
+Version:      1.0.0
+Tags:         light, dark, two-columns, right-sidebar, responsive-layout, accessibility-ready
+Text Domain:  iconic-one-child
+*/
+         
+/*
+For older themes, and themes that do not use wp_enqueue_style() to enqueue their stylesheet, use the following line where twentyfourteen is the name of the directory where the theme resides:
+*/    
+@import url("../iconic-one/style.css");
+
+     
+/* =Theme customization starts here
+-------------------------------------------------------------- */
+li.current-menu-item {
+	background: none repeat scroll 0% 0% #EE2E22;
+}
+
+#searchsubmit{
+	background: none repeat scroll 0% 0% #EE2E22;
+}
+
+.themonic-nav li:hover {
+	display: inline-block;
+	text-decoration: none;
+	background:#EE2E22;
+}
+
+.entry-header .entry-title a {
+    color: #EE2E22;
+}
+
+.entry-header .entry-title a:hover {
+    text-decoration: underline;
+    color: #EE2E22;
+}
+
+@media screen and (min-width: 768px){
+	.themonic-nav .current-menu-item > a, .themonic-nav .current-menu-ancestor > a, .themonic-nav .current_page_item > a, .themonic-nav .current_page_ancestor > a {
+		background: none repeat scroll 0px 0px #EE2E22;
+	}
+	
+	.themonic-nav ul.nav-menu, .themonic-nav div.nav-menu > ul {
+		border-bottom: 5px solid #EE2E22;
+	}
+
+	.site-content {
+    border-right: none;
+	
+	
+}
