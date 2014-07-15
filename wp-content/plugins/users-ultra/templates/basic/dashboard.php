@@ -62,7 +62,7 @@ $howmany = 5;
               <li><?php echo $xoouserultra->userpanel->get_user_backend_menu('dashboard');?></li>
               
                <?php if(!in_array("account",$modules)){?>  
-               <li><?php echo $xoouserultra->userpanel->get_user_backend_menu('account');?></li>
+               <!--<li><?php echo $xoouserultra->userpanel->get_user_backend_menu('account');?></li>-->
                <?php }?>
                
                 <?php if(!in_array("myorders",$modules)){?>  
@@ -70,7 +70,7 @@ $howmany = 5;
                <?php }?>
                
                  <?php if(!in_array("wootracker",$modules)){?>  
-               <li><?php echo $xoouserultra->userpanel->get_user_backend_menu('wootracker');?></li>
+               <!--<li><?php echo $xoouserultra->userpanel->get_user_backend_menu('wootracker');?></li>-->
                <?php }?>
                
                <li><?php echo $xoouserultra->userpanel->get_user_backend_menu('profile');?></li>             
@@ -86,15 +86,15 @@ $howmany = 5;
                 <?php }?>
                 
                 <?php if(!in_array("posts",$modules)){?>                 
-                <li><?php echo $xoouserultra->userpanel->get_user_backend_menu('posts');?></li>
+                <!--<li><?php echo $xoouserultra->userpanel->get_user_backend_menu('posts');?></li>-->
                 <?php }?>
                 
                 <?php if(!in_array("photos",$modules)){?>                 
-                <li><?php echo $xoouserultra->userpanel->get_user_backend_menu('photos');?></li>           
+                <!--<li><?php echo $xoouserultra->userpanel->get_user_backend_menu('photos');?></li>-->
                 <?php }?>
                 
                 <?php if(!in_array("videos",$modules)){?> 
-               <li><?php echo $xoouserultra->userpanel->get_user_backend_menu('videos');?></li>
+               <!--<li><?php echo $xoouserultra->userpanel->get_user_backend_menu('videos');?></li>-->
                
                
                <?php }?>

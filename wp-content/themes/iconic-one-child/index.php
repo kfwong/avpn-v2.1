@@ -21,11 +21,27 @@ get_header(); ?>
 		<p style="padding-bottom:10px;">We launched our first Member Directory in April 2012 and continue to recruit members (please visit the membership application page, it’s easy to apply).</p>
 		<p style="padding-bottom:10px;">To find out more about AVPN’s events, click here.</p>
 	</div>
-	<iframe width="655" height="369" src="//www.youtube.com/embed/5HPCg9VHp1w?rel=0&autoplay=0&controls=0&showinfo=0&modestbranding=1" frameborder="0" allowfullscreen></iframe>
+	<div class="site-content">
+		<iframe width="640" height="360" src="//www.youtube.com/embed/5HPCg9VHp1w?rel=0&autoplay=0&controls=0&showinfo=0&modestbranding=1" frameborder="0" allowfullscreen></iframe>
+	</div>
+	<div class="site-content" style="width:96%;">
+		<h2 style="font-size:28px;font-weight:normal;color:#EE2E22;margin-bottom:22px;">Featured Investment Showcase</h2>
+		<article style="width: 33%;float:left;line-height:22px;">
+			<img src="http://placehold.it/300x150" style="margin-bottom: 10px;display:block;margin-left:auto;margin-right:auto;"/>
+			<p style="width:300px;display:block;margin-left:auto;margin-right:auto;text-align:justify;"><strong>Turquoise Mountain Trust</strong><br/>Turquoise Mountain is leading the regeneration of Murad Khane – an area in the old town of Kabul – transforming it into a vibrant cultural, educational and economic hub.</p>
+		</article>
+		<article style="width: 33%;float:left;line-height:22px;">
+			<img src="http://placehold.it/300x150" style="margin-bottom: 10px;display:block;margin-left:auto;margin-right:auto;"/>
+			<p style="width:300px;display:block;margin-left:auto;margin-right:auto;text-align:justify;"><strong>Turquoise Mountain Trust</strong><br/>Turquoise Mountain is leading the regeneration of Murad Khane – an area in the old town of Kabul – transforming it into a vibrant cultural, educational and economic hub.</p>
+		</article>
+		<article style="width: 33%;float:left;line-height:22px;">
+			<img src="http://placehold.it/300x150" style="margin-bottom: 10px;display:block;margin-left:auto;margin-right:auto;"/>
+			<p style="width:300px;display:block;margin-left:auto;margin-right:auto;text-align:justify;"><strong>Turquoise Mountain Trust</strong><br/>Turquoise Mountain is leading the regeneration of Murad Khane – an area in the old town of Kabul – transforming it into a vibrant cultural, educational and economic hub.</p>
+		</article>
+	</div>
 	<div id="primary" class="site-content">
 		<div id="content" role="main">
 		<?php if ( have_posts() ) : ?>
-
 			<?php /* Start the Loop */ ?>
 			<?php while ( have_posts() ) : the_post(); ?>
 				<?php get_template_part( 'content', get_post_format() ); ?>

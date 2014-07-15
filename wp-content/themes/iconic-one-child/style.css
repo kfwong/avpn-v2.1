@@ -18,6 +18,19 @@ For older themes, and themes that do not use wp_enqueue_style() to enqueue their
      
 /* =Theme customization starts here
 -------------------------------------------------------------- */
+
+/*plugin specific*/
+/**/
+
+a {
+	color: #EE2E22;
+}
+
+a:hover {
+	color: #EE2E22;
+	text-decoration: underline;
+}
+
 li.current-menu-item {
 	background: none repeat scroll 0% 0% #EE2E22;
 }
@@ -30,6 +43,10 @@ li.current-menu-item {
 	display: inline-block;
 	text-decoration: none;
 	background:#EE2E22;
+}
+
+.entry-header .entry-title {
+    color: #EE2E22;
 }
 
 .entry-header .entry-title a {
