@@ -1,11 +1,16 @@
 .social-widget {
-		position:fixed;
-		z-index:998;
-		width:auto;
-	}
-	.social-widget .sbutton {
-		margin: 0px;
-	}
+    position: fixed;
+    width: 50px;
+    z-index: 99999;
+}
+
+.social-widget .sbutton {
+    float: right;
+    height: 41px;
+    margin: 0;
+    position: relative;
+    width: 50px;
+}
 	.sbutton img{padding:5px;}
 	
 	#tw a{background:none repeat scroll 0 0 #2CA8D2; text-align:center; display:block;  width:45px; height:40px; border-bottom:1px solid rgba(255, 255, 255, 0.1)}
@@ -22,33 +27,33 @@
 #csbwfs-right #fb a {
     position: absolute;
     right: 0;
-    top:20px;
+  
 }
 #csbwfs-right #tw a {
     position: absolute;
     right: 0;
-    top:61px;
+   
 }
 #csbwfs-right #gp a {
     position: absolute;
     right: 0;
-    top:102px;
+
 }
 
 #csbwfs-right #li a {
     position: absolute;
     right: 0;
-    top:143px;
+  
 }
 #csbwfs-right #pin a {
     position: absolute;
     right: 0;
-    top:184px;
+ 
 }
 #csbwfs-right #ml a {
     position: absolute;
     right: 0;
-    top:225px;
+   
 }
 
 #csbwfs-right a#hide {padding-right:33px;}

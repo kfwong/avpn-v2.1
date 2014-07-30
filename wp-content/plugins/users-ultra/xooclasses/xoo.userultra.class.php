@@ -97,7 +97,8 @@ class XooUserUltra
 		
 		add_action( 'admin_notices', array(&$this, 'uultra_display_custom_message'));
 		add_action( 'wp_ajax_create_default_pages_auto', array( $this, 'create_default_pages_auto' ));
-		add_action( 'wp_ajax_hide_rate_message', array( $this, 'hide_rate_message' ));	
+		add_action( 'wp_ajax_hide_rate_message', array( $this, 'hide_rate_message' ));
+		add_action( 'wp_ajax_hide_proversion_message', array( $this, 'hide_proversion_message' ));	
 				 
 				 
 		$this->include_for_validation = array('text','fileupload','textarea','select','radio','checkbox','password');	
@@ -131,6 +132,12 @@ class XooUserUltra
 		
 	}
 	
+	public function hide_proversion_message () 
+	{
+		update_option('xoousersultra_pro_annuncement',1);
+		
+	}
+	
 	public function uultra_display_custom_message () 
 	{
 				
@@ -146,15 +153,37 @@ class XooUserUltra
 		
 		}
 		
-		$rating_uultra = get_option( 'xoousersultra_already_rated_ultra' );	
+		/*$rating_uultra = get_option( 'xoousersultra_already_rated_ultra' );	
 		if($rating_uultra=="" )
 		{
 			$message = __("Thanks for installing Users Ultra. Please help us to keep this plugin free by leaving a 5/5 review on WordPress. It takes only 5 minutes. <a href='http://wordpress.org/plugins/users-ultra/' target='_blank' >CLICK HERE</a> to leave a rating. If you've already left your rating or you don't wish to see this message anymore <a href='#'  id='uultradmin-remove-ratingmessage'>CLICK HERE</a>  ", "xoousers");
 			
 			$this->uultra_fresh_install_message($message);		
 		
-		}	
+		}*/	
 		//
+		
+		//Pro message		
+		$uultra_pro_message  = get_option( 'xoousersultra_pro_annuncement' );
+		
+		if($uultra_pro_message=="" )
+		{
+		
+			$message = __("Users Ultra Pro is Ready!. VIP Support 24/7, Badges & Achievements, Amazing Customizable User Profile, Even more control over your users community and so much more. <a href='?page=userultra&tab=pro'  >CLICK HERE</a> to see why you need to go pro. <a href='#'  id='uultradmin-remove-proversionmessage'>Remove this message</a>", 'xoousers');
+			$this->uultra_fresh_install_message($message);	
+		
+		}
+		
+		
+		//chekc my account link
+		$acc_link = $this->login->get_my_account_direct_link();
+		
+		if($my_account_page=="" )
+		{
+			echo '<div id="uultra-message" class="error"><p><strong>'.__("Users Ultra might be working wrong. We couldn't find the 'My Account' shortcode. Please click on settings tab and make sure that the My Account page has been set correctly. Then click on the 'save' button ","xoousers").'</strong></p></div>';		
+		
+		}
+		
 		
 	}
 	
@@ -163,11 +192,11 @@ class XooUserUltra
 	{
 		if ($errormsg) 
 		{
-			echo '<div id="message" class="error">';
+			echo '<div id="uultra-message" class="error">';
 			
 		}else{
 			
-			echo '<div id="message" class="updated fade">';
+			echo '<div id="uultra-message" class="updated fade">';
 		}
 	
 		echo "<p><strong>$message</strong></p></div>";
@@ -181,7 +210,7 @@ class XooUserUltra
 		
 		
 
-		$thetable = $wpdb->prefix."usersultra_stats_raw";		
+	/*	$thetable = $wpdb->prefix."usersultra_stats_raw";		
 	    $wpdb->query("DROP TABLE IF EXISTS $thetable");	
 		
 		$thetable = $wpdb->prefix."usersultra_stats";		
@@ -233,7 +262,7 @@ class XooUserUltra
 		delete_option( 'xoousersultra_my_account_page' );
 		delete_option( 'xoousersultra_auto_page_creation' );
 		delete_option( 'userultra_options' );
-		delete_option( 'xoousersultra_already_rated_ultra' );
+		delete_option( 'xoousersultra_already_rated_ultra' );*/
 		
 		
 			
@@ -1485,7 +1514,7 @@ class XooUserUltra
 						}
 					
 						     
-				        $display .= '<span>'.$name.'</span></label>';
+				        $display .= '<span>'.$name. ' '.$required_text.'</span></label>';
 				    
 					} else {
 						
@@ -1818,11 +1847,26 @@ class XooUserUltra
 		
 		foreach($this->registration_fields as $key=>$field) 
 		{
+			
+			
 			extract($field);
 			
 			if ( $type == 'usermeta') {
 				
 				$display .= '<div class="xoouserultra-field xoouserultra-edit xoouserultra-edit-show">';
+				
+				if(!isset($required))
+				    $required = 0;
+				
+				$required_class = '';
+				
+				$required_text = '';
+				
+				if($required == 1 && in_array($field, $this->include_for_validation))
+				{
+					$required_class = ' validate[required]';
+					$required_text = '(*)';
+				}
 				
 				/* Show the label */
 				if (isset($this->registration_fields[$key]['name']) && $name) 
@@ -1835,20 +1879,11 @@ class XooUserUltra
 					} else {
 						$display .= '<i class="fa fa-none"></i>';
 					}
-					$display .= '<span>'.$name.'</span></label>';
+					$display .= '<span>'.$name.' '.$required_text.'</span></label>';
 				} else {
 					$display .= '<label class="xoouserultra-field-type">&nbsp;</label>';
 				}
 				
-				if(!isset($required))
-				    $required = 0;
-				
-				$required_class = '';
-				
-				if($required == 1 && in_array($field, $this->include_for_validation))
-				{
-					$required_class = ' validate[required]';
-				}
 				
 				$display .= '<div class="xoouserultra-field-value">';
 					
@@ -1896,9 +1931,9 @@ class XooUserUltra
 					if (isset($this->registration_fields[$key]['can_hide']) && $can_hide == 1) 
 					{
 						
-									$display .= '<div class="xoouserultra-hide-from-public">
+									/*$display .= '<div class="xoouserultra-hide-from-public">
 										<input type="checkbox" name="hide_'.$meta.'" id="hide_'.$meta.'" value="" /> <label for="checkbox1"><span></span>'.__('Hide from Public','xoousers').'</label>
-									</div>';
+									</div>';*/
 
 									
 									
@@ -1963,9 +1998,11 @@ class XooUserUltra
 			    $required = 0;
 			
 			$required_class = '';
+			$required_text = '';
 			if($required == 1 && in_array($field, $this->include_for_validation))
 			{
 			    $required_class = 'validate[required] ';
+				$required_text = '(*)';
 			}
 			
 			
@@ -2004,7 +2041,7 @@ class XooUserUltra
                             $display .= '<i class="fa fa-icon-none"></i>';
                     }
 											
-					$display .= '<span>'.$name.'</span></label>';
+					$display .= '<span>'.$name. ' '.$required_text.'</span></label>';
 					
 					
 				} else {

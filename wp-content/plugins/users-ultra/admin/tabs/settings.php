@@ -20,6 +20,17 @@ $this->create_plugin_setting(
                 __('If checked, User will not see the WP Admin Tool Bar.','xoousers')
         ); 
 		
+
+$this->create_plugin_setting(
+                'checkbox',
+                'uultra_allow_guest_rating',
+                __('Allow Guests to use the rating system','xoousers'),
+                '1',
+                __('If checked, users will be able to leave rates without being logged in','xoousers'),
+                __('If checked, User will not see the WP Admin Tool Bar.','xoousers')
+        ); 
+		
+		
 ?>
 </table>
 
@@ -40,7 +51,7 @@ $this->create_plugin_setting(
                 'membership_display_selected_only',
                 __('Display Only Selected Package','xoousers'),
                 '1',
-                __('If checked, Only the Selected package will be displayed in the payment form','xoousers'),
+                __('If checked, Only the Selected package will be displayed in the payment form. <strong>PLEASE NOTE: </strong>This setting is used only if you are using the pricing tables feature.','xoousers'),
                 __('If checked, Only the Selected package will be displayed in the payment form','xoousers')
         ); 
 $this->create_plugin_setting(
@@ -386,6 +397,17 @@ $this->create_plugin_setting(
   
   <table class="form-table">
 <?php 
+
+
+$this->create_plugin_setting(
+            'select',
+            'xoousersultra_my_account_page',
+            __('Users Ultra My Account','xoousers'),
+            $this->get_all_sytem_pages(),
+            __('Make sure you have the <code>[usersultra_my_account]</code> shortcode on this page.','xoousers'),
+            __('This page is where users will view their account.','xoousers')
+    );
+	
     $this->create_plugin_setting(
             'select',
             'profile_page_id',
@@ -492,7 +514,7 @@ $this->create_plugin_setting(
         'input',
         'social_media_linkedin_api_private',
         __('LinkedIn API Key Private','xoousers'),array(),
-        __('Facebook settings','xoousers'),
+        __('<br><br> VERY IMPORTANT: Set OAuth 1.0 Accept Redirect URL to "?uultralinkedin=1". Example: http://yourdomain.com/?uultralinkedin=1','xoousers'),
         __('','xoousers')
 );  
 

@@ -26,7 +26,7 @@ class XooUserLogin {
 				
 		}
 		
-		if ( isset( $_REQUEST['oauth_verifier'] ) && isset( $_REQUEST['oauth_token'] ) ) 
+		if ( isset( $_REQUEST['oauth_verifier'] ) && isset( $_REQUEST['oauth_token'] ) && !isset($_REQUEST['uultralinkedin']) ) 
 		{
 			/* authorize twitter*/
 			$this->twitter_authorize();
@@ -87,7 +87,7 @@ class XooUserLogin {
 		}
 		
 		//linkedin
-		if (isset($_GET['oauth_token']) && !isset($_REQUEST['oauth_verifier']) ) 
+		if (isset($_GET['oauth_token']) && isset($_REQUEST['uultralinkedin']) ) 
 		{
 						
 			// Setting default to false;
@@ -1442,12 +1442,11 @@ class XooUserLogin {
 		$wp_rewrite = new WP_Rewrite();
 		
 		require_once(ABSPATH . 'wp-includes/link-template.php');		
-		require_once(ABSPATH . 'wp-includes/pluggable.php');
-		
+		require_once(ABSPATH . 'wp-includes/pluggable.php');		
 		
 		$account_page_id = get_option('xoousersultra_my_account_page');
 		$my_account_url = get_permalink($account_page_id);
-		
+				
 		return $my_account_url;
 	
 	}

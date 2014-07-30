@@ -4,15 +4,18 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: social share buttons,custom share buttons,facebook, twitter, google+, share, share links,linkedin, pinterest,floating sidebar,float,floating share buttons,float share buttons
 Requires at least: 2.7
 Tested up to: 3.9.1
-Stable tag: 1.1
+Stable tag: 1.2
 
 Add Social Share Buttons Using Floating Sidebar On Your Site (Facebook,Twitter,Linkedin,Google+,Pinterest,Mail)
 
 == Description ==
 
-"custom-share-buttons-with-floating-sidebar" is the very simple plugin for add to floating social share buttons on your site.Even you can change the share buttons images if you wish!.
+"custom-share-buttons-with-floating-sidebar" is the very simple plugin for add to floating social share buttons on your site.
 
-It's very simple plugin for share your site with your firends on Facebook,Twitter,Linkedin,Pinterest,Google+. 
+Even you can change the share buttons images if you wish!.
+
+Using this plugin you can easly share your website with your firends on Facebook,Twitter,Linkedin,Pinterest,Google+.
+
 There are not added any external JS files in this plugin so it's does not effect on your site speed as well.
 
 Live [demo](http://www.mrwebsolution.in/)
@@ -33,11 +36,16 @@ After active the plugin you have must need to enable this plugin and cheked the 
 
 2.Can i change the custom share buttons images from admin?
 
-Yes,You can changes all social share custom buttons images if you wish, For do that you have only need to define the buttons images path through the plugins settings.
+Yes,admin can changes all social share custom buttons images if you wish, for that you have only need to define the buttons images path from plugins settings page.
 
 3.Is there any demo site where your plugins have been used?
 
 Yes, Please visit on this [site](http://www.mrwebsolution.in/) for check live demo
+
+3.Can i define the top margin for share buttons block?
+
+Yes, admin can define the top margin from plugin settings page
+
 
 
 == Screenshots ==
@@ -59,3 +67,7 @@ Yes, Please visit on this [site](http://www.mrwebsolution.in/) for check live de
  * Added new option for define the margin from TOP
  * Added the show/hide buttons
  * On Mail buttons :by default set current page title as a mail subject-line and page link in mail-body
+
+= 1.2 = 
+ * Fixed button image gap issue for right position
+ * Added new option for set the delay time to publish the share butttons

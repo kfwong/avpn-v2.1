@@ -60,6 +60,7 @@ class XooUserAdmin extends XooUserUltraCommon
 			'gateway' => __('Gateways','userultra'),
 			'donate' => __('Donate','userultra'),
 			'help' => __('Doc','userultra'),
+			'pro' => __('Go Pro! 15% Off','userultra'),
 		);
 		
 		$this->default_tab = 'main';		
@@ -97,8 +98,7 @@ class XooUserAdmin extends XooUserUltraCommon
 			update_option('userultra_options', $this->userultra_default_options );
 		}
 		
-		
-		
+			
 		
 		
 	}
@@ -276,12 +276,26 @@ class XooUserAdmin extends XooUserUltraCommon
 			} else {
 				$current = $this->default_tab;
 			}
+			
+			
+			
 			foreach( $tabs as $tab => $name ) :
+			
+				$custom_badge = "";
+				
+				if($tab=="pro"){
+					
+					$custom_badge = 'uultra-pro-tab-bubble ';
+					
+				}
+			
 				if ( $tab == $current ) :
-					$links[] = "<a class='nav-tab nav-tab-active' href='?page=".$this->slug."&tab=$tab'>$name</a>";
+					$links[] = "<a class='nav-tab nav-tab-active ".$custom_badge."' href='?page=".$this->slug."&tab=$tab'>$name </a>";
 				else :
-					$links[] = "<a class='nav-tab' href='?page=".$this->slug."&tab=$tab'>$name</a>";
+					$links[] = "<a class='nav-tab ".$custom_badge."' href='?page=".$this->slug."&tab=$tab'>$name </a>";
 				endif;
+				
+				
 			endforeach;
 			foreach ( $links as $link )
 				echo $link;
@@ -776,7 +790,13 @@ class XooUserAdmin extends XooUserUltraCommon
 					 // $this->userultra_default_options[$key] = esc_attr($value);
                     }  
 					
-					$this->userultra_set_option($key, $value) ;   
+					$this->userultra_set_option($key, $value) ;
+					//special setting for page
+					if($key=="xoousersultra_my_account_page")
+					{
+						//echo "Page : " . $value;
+						 update_option('xoousersultra_my_account_page',$value);
+					}     
 
             }
         }
@@ -826,7 +846,7 @@ class XooUserAdmin extends XooUserUltraCommon
 		{
 	
 		
-		 $special_with_check = array('hide_admin_bar', 'private_message_system','redirect_backend_profile','redirect_backend_registration','redirect_backend_login', 'social_media_fb_active', 'social_media_linked_active', 'social_media_yahoo', 'social_media_google', 'twitter_connect', 'yammer_connect', 'twitter_autopost', 'mailchimp_active', 'media_allow_photo_uploading', 'membership_display_selected_only');
+		 $special_with_check = array('hide_admin_bar', 'uultra_allow_guest_rating', 'private_message_system','redirect_backend_profile','redirect_backend_registration','redirect_backend_login', 'social_media_fb_active', 'social_media_linked_active', 'social_media_yahoo', 'social_media_google', 'twitter_connect', 'yammer_connect', 'twitter_autopost', 'mailchimp_active', 'media_allow_photo_uploading', 'membership_display_selected_only');
 		 
 		}elseif($tab=="gateway"){
 			
@@ -1048,19 +1068,20 @@ class XooUserAdmin extends XooUserUltraCommon
            
            <h2>USERS ULTRA LITE</h2>
            
-           <div id="icon-users" class="icon32"></div>
-			
-            
             <h2 class="nav-tab-wrapper"><?php $this->admin_tabs(); ?></h2>
             
            
 			<div class="<?php echo $this->slug; ?>-admin-contain">
             
+           
             
+           
             
             <?php echo $this->checkUploadFolder(); ?>
 				
 				<?php $this->include_tab_content(); ?>
+                
+                  
 				
 				<div class="clear"></div>
 				

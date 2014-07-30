@@ -1,10 +1,10 @@
 === Users Ultra ===
 Contributors: UsersUltra, Dot07
 Donate link: http://usersultra.com/donate.html
-Tags: users, password, users community, community, users directory, search, sign up, sign in, login, profiles, subscription, recurring, paypal, publisher, custom, customize, listing, list, drag, drop, widget, post, shortcode, wp avatar, images, lightbox, social, private, messages, user, members, authors, rating, stars, stars, likes, friends, facebook, yahoo, linkedin, google, access-control, user control, access, network, networking, mailchimp, email, membership, packages, csv, import, paid, artist, profile builder, custom fields, front-end users listing, conditional fields, advanced search, users searching box, meta fields, front-end users registration, custom registration page, custom login page, mailing list, users avatar, photo gallery, photo album, restricts content to registered users, premium content, woocommerce, shipping information, sync woocommerce, woocommerce fields, authentication, OAuth, OAuth for google, google plus signup, access token, twitter, login with twitter, registration with twitter, twitter sign up, twitter authentication, google sign up, google sign in, registration with google, linkedin sign up, linkedin authentication, linkedin login, pricing tables, member, yammer, member registration, member access, user tweet, email newsletter subscribers, mailchimp newsletter, wp user avatar
+Tags: users, password, users community, community, users directory, search, sign up, sign in, login, profiles, subscription, recurring, paypal, publisher, custom, customize, listing, list, drag, drop, widget, post,  wp avatar, images, lightbox, social, private, messages, user, members, authors, rating, stars, stars, likes, friends, facebook, yahoo, linkedin, google, access-control, user control, access, network, networking, mailchimp, email, membership, packages, csv, import, paid, artist, profile builder, custom fields, front-end users listing, conditional fields, advanced search, users searching box, meta fields, front-end users registration, custom registration page, custom login page, mailing list, users avatar, photo gallery, photo album, restricts content to registered users, premium content, woocommerce, shipping information, sync woocommerce, authentication, OAuth, OAuth for google, google plus signup, access token, twitter, login with twitter, registration with twitter, twitter sign up, twitter authentication, google sign up, google sign in, registration with google, linkedin sign up, linkedin authentication, linkedin login, pricing tables, member, yammer, member registration, member access, user tweet, email newsletter subscribers, mailchimp newsletter, wp user avatar, badges, achievement, medallions, bbpress
 Requires at least: 3.0.1
 Tested up to: 3.9
-Stable tag: 1.0.96
+Stable tag: 1.2.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -16,11 +16,38 @@ Users Ultra is the ideal tool for creating advanced user communities in few minu
 
 When it comes to ease of use, Users Ultra comes in first.  <strong>Users Communities are incredibly simple to build</strong>. All the modules are customizable, even if you don't know how to code, and they're minimalist enough that a few minor changes make them look unique to you. <strong>Users Ultra handles One-Time and Recurrent Payments</strong>.
 
-<strong>FREE SUPPORT FORUM:</strong><br>
-<a href="http://usersultra.com/support/"><strong>Do you need help?</strong></a> <br>
+<h3><strong>USERS ULTRA PRO - EVEN BETTER :) </strong></h3>
+<ul>
+  <li>Priority Support.</li>
+  <li>New Features Every Week.</li>
+   <li>Medallions and Fulfillments.</li>
+    <li>Membership Packages & Registration Form with Roles. Users can select a role when registering.</li>
+	 <li>bbPress Integration. Users Ultra Pro makes your forum look much more elegant.</li>
+    <li>User Online/Offline Status.</li>
+    <li>Social Connect Buttons. (Facebook, Twitter, Google, Yahoo, LinkedIn)</li>
+	 <li>Multisite Support.</li>
+  <li>Advanced Users Management. Find your users easily. Send activation link, deny/approver users. Upgrade and Downgrade User's Membership and more. </li>
+  <li>Minor Tweaks Support.</li>
+  <li>Front End Publisher With Multiple Images.</li>
+  <li>Elegant Customizable Users Profile</li>
+  <li>Custom Profile Background for every profile.</li>
+ 
+  <li>Users Wall.</li>
+  <li>and so much more ...</li>
+</ul>
+
+<a href="http://usersultra.com/users-pro.html"><strong>CLICK HERE TO FIND OUT MORE ABOUT THE PRO VERSION</strong></a> <br>
+
+<strong>Recent Features added to the Pro Version: (Current Version: 1.1.0)</strong>
 <pre>
-Please visit the Users Ultra Forum. We like to help! :)
+07-24-2014 -- Registration with Roles.  
+07-24-2014 -- Membership Packages with Roles.
+07-23-2014 -- "My Topics" link has been added to the user's profile.
+07-23-2014 -- Users Module has been improved. Find users is easier now.
+07-22-2014 -- bbPress integration.
+07-20-2014 -- We've added lots of new Medallions.
 </pre>
+
 <strong>Online Preview</strong><br>
 <a href="http://usersultra.com/userultra/"><strong>Check all the features </strong></a> <br>
 <a href="http://usersultra.com/userultra/registration/"><strong>Users Registration Form </strong></a> <br>
@@ -28,25 +55,6 @@ Please visit the Users Ultra Forum. We like to help! :)
 <a href="http://usersultra.com/userultra/directory-2/"><strong>Demo Users Directory </strong></a> <br>
 <a href="http://usersultra.com/userultra/registration/"><strong>Registration Form</strong></a> <br>
 <a href="http://usersultra.com/userultra/image-grid-with-lightbox-galleries/"><strong>LightBox Images Gallery</strong></a>
-
-
-<strong>Recent New Features:</strong><br>
-<pre>
-
-06-08-2014 -- Users can check their orders through their dashboard.
-05-31-2014 -- Admin can set how many posts and block category selection.
-05-30-2014 -- Photo Categories, now you can categorize photos.
-05-27-2014 -- New look for the users profile has been implemented.
-05-26-2014 -- Pricing Tables are customizable through the Membership Tab.
-05-23-2014 -- Pricing Tables for your Paid Packages.
-05-22-2014 -- WooCommerce Client Orders Status.
-05-22-2014 -- Yammer Sign in/Sign up Authentication.
-05-21-2014 -- Twitter Sign in/Sign up Authentication with Auto Tweet.
-05-20-2014 -- Users are able to delete their avatars .
-05-19-2014 -- Auto Sync with WooCommerce, Shipping and Billing Address.
-05-19-2014 -- Logout Shortcode with custom redirection.
-05-19-2014 -- Custom Redirection after login.
-</pre>
 
 <h3>Help Keep This Plugin Free</h3>
 
@@ -193,8 +201,6 @@ Customize user registration, activation, deactivation, lostpassword etc emailsa.
   <li>Users  can use a main picture as avatar</li>
 </ul>
 
-<strong>Please note:</strong> This plugin is in Beta
-
 == Installation ==
 
 1. Upload `users-ultra` to the `/wp-content/plugins/` directory
@@ -223,6 +229,10 @@ Yes, http://usersultra.com/doc.html
 
 Yes, http://www.usersultra.com/support/
 
+= Do you offer a PRO version? =
+
+Yes, http://usersultra.com/users-pro.html
+
 == Upgrade Notice ==
 
 = 1.0 =
@@ -230,15 +240,89 @@ Initial release.
 
 == Screenshots ==
 
-1. Powerful Private Messaging System
-2. Advanced Dashboard
-3. Front-End Post Publisher
-4. Profile Fields Customizer
-5. Add New Posts
-6. Drag&Drop Photo Uploading
-7. Dahsboard
+1. Widgetized Users Profile ONLY FOR PRO
+2. Medallions and Fulfillments ONLY FOR PRO
+3. Powerful Private Messaging System
+4. Advanced Dashboard
+5. Front-End Post Publisher
+6. Profile Fields Customizer
+7. Add New Posts
+8. Drag&Drop Photo Uploading
+9. Dahsboard
 
 == Changelog ==
+
+= 1.2.9 (07-27-2014) =
+* Improvements - Please upgrade, we have tweaked the plugin so it will be easier to upgrade from lite to pro.
+ 
+= 1.2.8 (07-27-2014) =
+* Improvements - We have improved the css within the user's dashboard. The side menu was giving some issues with some themes.
+
+= 1.2.7 (07-26-2014) =
+* New Feature - New setting has been added to guests can leave a rate without being logged in.
+
+= 1.2.6 (07-24-2014) =
+* Improvements - We have fixed some translation issues with some texts.
+
+= 1.2.5 (07-22-2014) =
+* Improvements - Minor tweaks to the plugin and we've updated the readme description.
+* Bug Fix      - Issue with message displayed when not selecting user profile options. Array message has been resolved
+
+= 1.2.3 (07-20-2014) =
+* Improvement   - We have added a new setting to the settings page so you can choice your desired "My Account" page.
+* PRO           - Minor CSS tweaks.
+
+= 1.2.2 (07-20-2014) =
+* Improvement   - PLEASE UPDATE ASAP. We have fixed an issue when upgrading from free to pro version. It's very important you will need to upgrade to 1.2.1 version before upgrading from free version to pro.
+
+= 1.2.1 (07-19-2014) =
+* Improvement   - Newsletter and Mailchimp updates.
+
+= 1.2.0 (07-19-2014) =
+* PRO Improvement   - Many budges have been added.
+
+= 1.1.9 (07-18-2014) =
+* Improvement   - WooCommerce sync, Billing and Shipping country sync issue on  2.1 version.
+* PRO   - New Features for the pro, badges achievements, offline/onine status.
+* PRO   - New Feature, capability to place social connect buttons at any place of your blog.
+
+= 1.1.8 (07-18-2014) =
+* Improvement   - Important Security Bug Fix. Please update ASAP.
+
+= 1.1.7 (07-18-2014) =
+* Bug Fix   - When using paid membership there was not a selected package by defaul. now.. the first packages is being checked as default. PLEASE UPDATE ASAP.
+
+= 1.1.6 (07-17-2014) =
+* Tweaks   - Tweaks with required fields feature.
+
+= 1.1.5 (07-17-2014) =
+* Improvement   - We have removed the "hide fro public checkbox from the email address". We will be adding new setting in the admin area that will allow admin to let users make their email public or private.
+
+
+= 1.1.4 (07-16-2014) =
+* Improvement   - Required fields tweaks, now the required fields display a "(*)"
+
+= 1.1.3 (07-16-2014) =
+* PRO   - New Feature - Front end Publisher with Multiple attached pictures.
+
+= 1.1.2 (07-15-2014) =
+* PRO   - Custom CSS style box has been added. Now you can add custom css coding in order to adapt Users Ultra to your theme.
+
+= 1.1.1 (07-15-2014) =
+* Improvements   - Videos and Capability to hide Pro message.
+
+= 1.1.0 (07-15-2014) =
+* Improvements   - CSS tweaks for some themes.
+
+= 1.0.99 (07-15-2014) =
+* PRO   - Admin Dashboard Update.
+
+= 1.0.98 (07-15-2014) =
+* PRO   - Pro version has been released.
+* Bug Fix   - Translation issues has been fixed.
+
+= 1.0.97 (07-14-2014) =
+* Bug Fix   - Issue with LinkedIn API. There was a conflict between the linkedin and twitter api. Now linkedin sign should work well.
 
 = 1.0.96 (06-23-2014) =
 * New Feature   - Users can change their email address through the user's panel.
