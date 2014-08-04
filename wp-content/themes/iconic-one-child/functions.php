@@ -20,6 +20,15 @@ function single_investment_showcase_css( $classes ) {
   return $classes;
 }
 
+## buddypress theme adding full-width class to fill up sidebar space
+add_action( 'body_class', 'buddypress_css');
+function buddypress_css( $classes ) {
+  if ( bp_is_user() ){
+    $classes[] = 'full-width';
+  }
+  return $classes;
+}
+
 function admin_acf_styles()
 {
 
@@ -27,10 +36,11 @@ function admin_acf_styles()
  
     wp_enqueue_script( 'js-select2', 'http://cdnjs.cloudflare.com/ajax/libs/select2/3.5.0/select2.min.js' );
 
-    wp_enqueue_script( 'js-child', dirname( get_bloginfo('stylesheet_url')) . '/js/child.js' );
+    wp_enqueue_script( 'js-child', dirname( get_bloginfo('stylesheet_url')) . '/js/child.js' , array('jquery'));
 
 }
 add_action( 'admin_enqueue_scripts', 'admin_acf_styles' );
+
 
 ?>
 
