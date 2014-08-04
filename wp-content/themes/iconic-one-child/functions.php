@@ -34,13 +34,12 @@ function admin_acf_styles()
 
 	wp_enqueue_style( 'css-select2', 'http://cdnjs.cloudflare.com/ajax/libs/select2/3.5.0/select2.min.css');
  
-    wp_enqueue_script( 'js-select2', 'http://cdnjs.cloudflare.com/ajax/libs/select2/3.5.0/select2.min.js' );
+  wp_enqueue_script( 'js-select2', 'http://cdnjs.cloudflare.com/ajax/libs/select2/3.5.0/select2.min.js' );
 
-    wp_enqueue_script( 'js-child', dirname( get_bloginfo('stylesheet_url')) . '/js/child.js' , array('jquery'));
+  wp_enqueue_script( 'js-child', dirname( get_bloginfo('stylesheet_url')) . '/js/child.js' , array('jquery'));
 
 }
 add_action( 'admin_enqueue_scripts', 'admin_acf_styles' );
-
 
 ?>
 
