@@ -72,3 +72,13 @@ li.current-menu-item {
 	
 	
 }
+
+
+/*ACF css*/
+.acf-form .hndle{
+	display:none;
+}
+
+.acf-checkbox-list, .acf-radio-list {
+	list-style: none !important;
+}
