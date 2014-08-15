@@ -1,5 +1,16 @@
 Changelog for Iconic One WordPress Responsive Theme | Visit http://themonic.com/iconic-one/ for latest version
 
+
+-------------- August 2014 ----------------
+
+
+08/10/14  - Iconic One Version 1.4.3
+
+* Added Read More button after excerpts
+* Code improvements
+* Selective Social icons, Social icons will now hide if URL left empty
+
+
 -------------- May 2014 ----------------
 
 

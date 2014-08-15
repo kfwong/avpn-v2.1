@@ -21,7 +21,7 @@ Template Name: Apply for Memberships
  
 				<?php acf_form(array(
 					'field_groups'	=> array('13468'),
-					'post_id'		=> 'new',
+					'post_id'		=> 'new-organisation',
 					'post_title'	=> false,
 					'submit_value'		=> 'Submit',
 					'updated_message'	=>	'Membership application submitted successfully.'

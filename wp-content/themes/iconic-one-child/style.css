@@ -35,6 +35,12 @@ li.current-menu-item {
 	background: none repeat scroll 0% 0% #EE2E22;
 }
 
+p, td, th {
+  	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	hyphens: none;
+}
+
 #searchsubmit{
 	background: none repeat scroll 0% 0% #EE2E22;
 }

@@ -5,7 +5,7 @@ Plugin URI: http://www.mrwebsolution.in/
 Description: "custom-share-buttons-with-floating-sidebar" is the very simple plugin for add to social share buttons with float sidebar. Even you can change the share buttons images if you wish
 Author: Raghunath
 Author URI: http://raghunathgurjar.wordpress.com
-Version: 1.2
+Version: 1.3
 */
 
 /*  Copyright YEAR  PLUGIN_AUTHOR_NAME  (email : raghunath.0087@gmail.com)
@@ -58,6 +58,18 @@ function csbwf_sidebar_init(){
 	register_setting('csbwf_sidebar_options','csbwfs_top_margin');
 	register_setting('csbwf_sidebar_options','csbwfs_delayTimeBtn');
 	
+	//Options for post/pages
+	register_setting('csbwf_sidebar_options','csbwfs_buttons_active');
+	register_setting('csbwf_sidebar_options','csbwfs_page_hide_home');
+	register_setting('csbwf_sidebar_options','csbwfs_page_hide_post');
+	register_setting('csbwf_sidebar_options','csbwfs_page_hide_page');
+	register_setting('csbwf_sidebar_options','csbwfs_page_fb_image');
+	register_setting('csbwf_sidebar_options','csbwfs_page_tw_image');
+	register_setting('csbwf_sidebar_options','csbwfs_page_li_image');	
+	register_setting('csbwf_sidebar_options','csbwfs_page_mail_image');	
+	register_setting('csbwf_sidebar_options','csbwfs_page_gp_image');	
+	register_setting('csbwf_sidebar_options','csbwfs_page_pin_image');	
+	
 } 
 
 
@@ -81,22 +93,19 @@ function csbwf_sidebar_admin_option_page(){ ?>
 
 	<div style="width: 80%; padding: 10px; margin: 10px;"> 
 
-	<h2>Custom Share Buttons With Floating Sidebar Settings</h2>
+	<h1>Custom Share Buttons With Floating Sidebar Settings</h1>
 	
-	<p style="padding-bottom: 2%;">Please fill all options value.</p>
+	
 
 <!-- Start Options Form -->
 
 	<form action="options.php" method="post" id="csbwf-sidebar-admin-form">
 		<table class="cssfw">
-			<tr>
-				<th><?php echo 'Enable Plugin:';?></th>
-				<td>
-					<input type="checkbox" id="csbwfs_active" name="csbwfs_active" value='1' <?php if(get_option('csbwfs_active')!=''){ echo ' checked="checked"'; }?>/>
-				</td>
-				<td rowspan="17" valign="top" style="padding-left: 20px;border-left:1px solid #ccc;">
+			<tr><th>&nbsp;</th>
+				<td>&nbsp;</td>
+				<td rowspan="24" valign="top" style="padding-left: 20px;border-left:1px solid #ccc;">
 					<h2>Plugin Author:</h2>
-					<div style="font-size: 14px;">
+	<div style="font-size: 14px;">
 	<img src="<?php echo  plugins_url( 'images/raghu.jpg' , __FILE__ );?>" width="100" height="100"><br><a href="http://raghunathgurjar.wordpress.com" target="_blank">Raghunath Gurjar</a><br><br><a href="mailto:raghunath.0087@gmail.com" target="_blank">Contact Me!</a><br><br>Author Blog <a href="http://raghunathgurjar.wordpress.com" target="_blank">http://raghunathgurjar.wordpress.com</a>
 	<br><br><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WN785E5V492L4" target="_blank" style="font-size: 17px; font-weight: bold;">Donate for this plugin</a><br><br>
 	My Other Plugins:<br>
@@ -107,6 +116,10 @@ function csbwf_sidebar_admin_option_page(){ ?>
 	</div></td>
 			</tr>
 			<tr>
+				<td nowrap colspan="2"><h2 style="width: 80%; border-bottom: 1px solid #666; padding-top: 10px; padding-bottom: 10px;font-size:18px;"><strong><?php echo 'Floating Sidebar Settings:';?></strong></h2></td>
+			</tr>
+			<tr><th>Enable: </th><td><input type="checkbox" id="csbwfs_active" name="csbwfs_active" value='1' <?php if(get_option('csbwfs_active')!=''){ echo ' checked="checked"'; }?>/></td></tr>
+			<tr>
 				<th nowrap><?php echo 'Siderbar Position:';?></th>
 				<td>
 				<select id="csbwfs_position" name="csbwfs_position" >
@@ -116,9 +129,7 @@ function csbwf_sidebar_admin_option_page(){ ?>
 				</td>
 			</tr>
 			<tr><th nowrap valign="top"><?php echo 'Delay Time: '; ?></th><td><input type="text" name="csbwfs_delayTimeBtn" id="csbwfs_delayTimeBtn" value="<?php echo get_option('csbwfs_delayTimeBtn')?get_option('csbwfs_delayTimeBtn'):0;?>"  size="40" class="regular-text ltr"><br><i>Publish share buttons after given time(millisecond)</i></td></tr>
-				
-			<tr><td colspan="2">&nbsp;</td></tr>
-			<tr><td colspan="2"><h2 style="width: 80%; border-bottom: 1px solid #666; padding-top: 10px; padding-bottom: 10px;"><strong>Social Share Button Images (Size:36X34)</strong></h2></td></tr>
+			<tr><td colspan="2"><strong><h4>Social Share Button Images (Size:36X34) :</h4></strong></td></tr>
 			<tr>
 				<th><?php echo 'Facebook:';?></th>
 				<td>
@@ -157,11 +168,10 @@ function csbwf_sidebar_admin_option_page(){ ?>
 			<tr>
 				<th><?php echo 'Mail:';?></th>
 				<td>
-			
 				<input type="textbox" id="csbwfs_mail_image" name="csbwfs_mail_image" value="<?php echo get_option('csbwfs_mail_image'); ?>" placeholder="Insert mail button image path" size="40"/>
 				</td>
 			</tr>
-			<tr><td colspan="2"><h2 style="width: 80%; border-bottom: 1px solid #666; padding-top: 10px; padding-bottom: 10px;"><strong>Style(Optional):</strong></h2></td></tr>
+			<tr><td colspan="2"><h4><strong>Style(Optional):</strong></h4></td></tr>
 			
 			<tr>
 				<th><?php echo 'Top Margin:';?></th>
@@ -170,8 +180,62 @@ function csbwf_sidebar_admin_option_page(){ ?>
 				<input type="textbox" id="csbwfs_top_margin" name="csbwfs_top_margin" value="<?php echo get_option('csbwfs_top_margin'); ?>" placeholder="10% OR 10px" size="10"/>
 				</td>
 			</tr>
+			<tr><td colspan="2" border="1"><h2 style="width: 80%; border-bottom: 1px solid #666; padding-top: 10px; padding-bottom: 10px;font-size:18px;"><strong>Social Share Button Settings (Page/Post)</strong></h2></td></tr>
+		    <tr>
+		    <th><?php echo 'Enable:';?></th>
+				<td>
+					<input type="checkbox" id="csbwfs_buttons_active" name="csbwfs_buttons_active" value='1' <?php if(get_option('csbwfs_buttons_active')!=''){ echo ' checked="checked"'; }?>/>
+				</td>
+		    </tr>
 			
-			<tr><td colspan="2"><h2 style="width: 90%; border-bottom: 1px solid #666; padding-top: 10px; padding-bottom: 10px;"><strong>Social Share Button Publish Options</strong></h2></td></tr>
+			<tr><td colspan="2"><strong>Show Share Buttons On :</strong> Home <input type="checkbox" id="csbwfs_page_hide_home" value="yes" name="csbwfs_page_hide_home" <?php if(get_option('csbwfs_page_hide_home')!='yes'){echo '';}else{echo 'checked="checked"';}?>/> Page <input type="checkbox" id="csbwfs_page_hide_page" value="yes" name="csbwfs_page_hide_page" <?php if(get_option('csbwfs_page_hide_page')!='yes'){echo '';}else { echo 'checked="checked"';}?>/> Post <input type="checkbox" id="csbwfs_page_hide_post" value="yes" name="csbwfs_page_hide_post" <?php if(get_option('csbwfs_page_hide_post')!='yes'){echo '';}else{echo 'checked="checked"';}?>/> <br>
+			</td></tr>
+			
+			<tr><td colspan="2"><strong><h4>Social Share Button Images (Size:31X30) :</h4></strong></td></tr>
+			<tr>
+				<th><?php echo 'Facebook:';?></th>
+				<td>
+			
+				<input type="textbox" id="csbwfs_page_fb_image" name="csbwfs_page_fb_image" value="<?php echo get_option('csbwfs_page_fb_image'); ?>" placeholder="Insert facebook button image path" size="40"/>
+				</td>
+			</tr>
+			<tr>
+				<th><?php echo 'Twitter:';?></th>
+				<td>
+			
+				<input type="textbox" id="csbwfs_page_tw_image" name="csbwfs_page_tw_image" value="<?php echo get_option('csbwfs_page_tw_image'); ?>" placeholder="Insert twitter button image path" size="40"/>
+				</td>
+			</tr>
+			<tr>
+				<th><?php echo 'Linkdin:';?></th>
+				<td>
+			
+				<input type="textbox" id="csbwfs_page_li_image" name="csbwfs_page_li_image" value="<?php echo get_option('csbwfs_page_li_image'); ?>" placeholder="Insert linkdin button image path" size="40"/>
+				</td>
+			</tr>
+			<tr>
+				<th><?php echo 'Pintrest:';?></th>
+				<td>
+			
+				<input type="textbox" id="csbwfs_page_pin_image" name="csbwfs_page_pin_image" value="<?php echo get_option('csbwfs_page_pin_image'); ?>" placeholder="Insert pinterest button image path" size="40"/>
+				</td>
+			</tr>
+			<tr>
+				<th><?php echo 'Google:';?></th>
+				<td>
+			
+				<input type="textbox" id="csbwfs_page_gp_image" name="csbwfs_page_gp_image" value="<?php echo get_option('csbwfs_page_gp_image'); ?>" placeholder="Insert google button image path" size="40"/>
+				</td>
+			</tr>
+			<tr>
+				<th><?php echo 'Mail:';?></th>
+				<td>
+				<input type="textbox" id="csbwfs_page_mail_image" name="csbwfs_page_mail_image" value="<?php echo get_option('csbwfs_page_mail_image'); ?>" placeholder="Insert mail button image path" size="40"/>
+				</td>
+			</tr>
+			
+			
+			<tr><td colspan="2" border="1"><h2 style="width: 80%; border-bottom: 1px solid #666; padding-top: 10px; padding-bottom: 10px;"><strong>Social Share Button Publish Options</strong></h2></td></tr>
 			<tr>
 				<th valign="top"><?php echo 'Publish Buttons:';?></th>
 				<td valign="top"><input type="checkbox" id="publish1" value="yes" name="csbwfs_fpublishBtn" <?php if(get_option('csbwfs_fpublishBtn')=='yes'){echo 'checked="checked"';}?>/> <b>Facebook Button</b><br>
@@ -218,6 +282,7 @@ if( function_exists('register_uninstall_hook') )
 function csbwf_sidebar_uninstall(){
 		
 	delete_option('csbwfs_active');
+	delete_option('csbbuttons_active');
 	delete_option('csbwfs_position');
 	delete_option('csbwfs_fb_image');
 	delete_option('csbwfs_tw_image');
@@ -233,6 +298,15 @@ function csbwf_sidebar_uninstall(){
 	delete_option('csbwfs_mpublishBtn');	
 	delete_option('csbwfs_mailMessage');
 	delete_option('csbwfs_top_margin');
+	delete_option('csbwfs_page_hide_home');
+	delete_option('csbwfs_page_hide_post');
+	delete_option('csbwfs_page_hide_page');
+	delete_option('csbwfs_page_fb_image');
+	delete_option('csbwfs_page_tw_image');
+	delete_option('csbwfs_page_li_image');	
+	delete_option('csbwfs_page_mail_image');	
+	delete_option('csbwfs_page_gp_image');	
+	delete_option('csbwfs_page_pin_image');	
 	
 } 
 ?>

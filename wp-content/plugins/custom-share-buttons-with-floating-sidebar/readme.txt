@@ -3,8 +3,8 @@ Contributors:india-web-developer
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WN785E5V492L4
 Tags: social share buttons,custom share buttons,facebook, twitter, google+, share, share links,linkedin, pinterest,floating sidebar,float,floating share buttons,float share buttons
 Requires at least: 2.7
-Tested up to: 3.9.1
-Stable tag: 1.2
+Tested up to: 3.9.2
+Stable tag: 1.3
 
 Add Social Share Buttons Using Floating Sidebar On Your Site (Facebook,Twitter,Linkedin,Google+,Pinterest,Mail)
 
@@ -46,6 +46,13 @@ Yes, Please visit on this [site](http://www.mrwebsolution.in/) for check live de
 
 Yes, admin can define the top margin from plugin settings page
 
+4.Can we add the social share buttons on every post/pages?
+
+Yes,you have only need to enable the "Social Share Button" from admin by plugin settings
+
+5.Can we add at a time only the "Floating Sidebar" OR "Social Share Buttons"? 
+
+Yes,For do it you have need to enable at a time only one from both "Floating Sidebar" and "Social Share Buttons"
 
 
 == Screenshots ==
@@ -56,11 +63,16 @@ Yes, admin can define the top margin from plugin settings page
 
 3. screenshot-3.png
 
+3. screenshot-4.png
 
 == Changelog == 
 
-= 1.0 = 
- * First stable release 
+= 1.3 = 
+ * Added an options for add the social share buttons on bottom of the content on every post/pages
+
+= 1.2 = 
+ * Fixed button image gap issue for right position
+ * Added new option for set the delay time to publish the share butttons
 
 = 1.1 = 
  * Fixed the right float sidebar issue
@@ -68,6 +80,5 @@ Yes, admin can define the top margin from plugin settings page
  * Added the show/hide buttons
  * On Mail buttons :by default set current page title as a mail subject-line and page link in mail-body
 
-= 1.2 = 
- * Fixed button image gap issue for right position
- * Added new option for set the delay time to publish the share butttons
+= 1.0 = 
+ * First stable release

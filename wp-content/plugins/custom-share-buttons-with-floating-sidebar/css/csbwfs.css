@@ -1,3 +1,6 @@
+/* Custom share Buttons With Floating Sidebar (C)
+ * Author: Raghunath gurjar
+ * */
 .social-widget {
     position: fixed;
     width: 50px;
@@ -55,9 +58,5 @@
     right: 0;
    
 }
-
 #csbwfs-right a#hide {padding-right:33px;}
-
-
-
-
+#csbwfs-right a#show {float:right;}

@@ -55,6 +55,12 @@ add_action( 'after_setup_theme', 'themonic_setup' );
  */
  require_once( get_template_directory() . '/inc/themonic-customizer.php' );
  
+ /* Adding Read More button after excerpts */
+   function io_excerpt_more($more) {
+   global $post;
+   return '… <span class="read-more"><a href="'. get_permalink($post->ID) . '">' . __( 'Read More', 'themonic' ) . ' &raquo;</a></span>';
+   }
+  add_filter('excerpt_more', 'io_excerpt_more'); 
 /*
  * Enqueueing scripts and styles for front-end of the Themonic Framework.
  * @since Iconic One 1.0
