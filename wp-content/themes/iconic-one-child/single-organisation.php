@@ -26,12 +26,10 @@ get_header(); ?>
 						}else{
 
 						?>
-						<div style="width:65%; float:left;">
-							<p style="padding-right:20px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quis tempor diam, sed rutrum ante. Morbi vitae iaculis orci, at mollis sapien. Vestibulum ut ante sit amet neque vulputate consequat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nunc non est in ipsum ullamcorper ultricies. Maecenas varius urna vel arcu varius, sit amet aliquam nisi congue. Suspendisse et mauris nec quam cursus interdum sit amet sed libero. Nunc pretium quam euismod tortor blandit auctor. Integer non quam dui. </p>
-							<h2 style="color:#EE2E22;padding-right:20px;">Additional Information</h2>
-							<p style="padding-right:20px;">Aenean et consectetur mauris, sed malesuada sapien. Sed hendrerit tellus urna, sit amet aliquam turpis auctor et. Sed eu justo sit amet ante vehicula ultricies ut vitae nunc. Sed pharetra aliquam bibendum. Integer id egestas arcu. Curabitur non dapibus ligula. Sed id nunc tristique, sollicitudin sem ut, consequat nisi. Nullam in semper felis, a dictum massa. </p>
+						<div style="width:60%; float:left;">
+							<?php echo empty(get_field('provide_a_short_overview_of_your_organisation'))? "No information available." : get_field('provide_a_short_overview_of_your_organisation'); ?>
 						</div>
-						<div style="width:35%; float:left;">
+						<div style="width:35%; float:right;">
 							<table>
 								<tr>
 									<td colspan="2" style="border:none;">
@@ -71,6 +69,10 @@ get_header(); ?>
 								<tr>
 									<th>Types of Services Provided</th>
 									<td><?php the_field('what_types_of_services_do_you_provide'); ?></td>
+								</tr>
+								<tr>
+									<th>Website URL</th>
+									<td><a href="<?php the_field('website_url'); ?>"><?php the_field('website_url'); ?></a></td>
 								</tr>
 							</table>
 						</div>

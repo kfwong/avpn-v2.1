@@ -28,7 +28,7 @@ Template Name: Investment Showcase
 			            </tr>
 			        </thead>
 			        <tbody>			        
-						<?php $loop = new WP_Query( array( 'post_type' => 'investment-showcase', 'posts_per_page' => 10 ) ); ?>
+						<?php $loop = new WP_Query( array( 'post_type' => 'investment-showcase', 'posts_per_page' => 10, 'post_status' => 'publish' ) ); ?>
 
 						<?php while ( $loop->have_posts() ) : $loop->the_post(); ?>
 

@@ -29,6 +29,16 @@ function buddypress_css( $classes ) {
   return $classes;
 }
 
+## single post full width
+add_action( 'body_class', 'single_post_css');
+function single_post_css( $classes ) {
+  global $post;
+  if ( is_single() ){
+    $classes[] = 'full-width';
+  }
+  return $classes;
+}
+
 ## turn multi-select fields into select2 style
 add_action( 'admin_enqueue_scripts', 'admin_acf_styles' );
 add_action( 'wp_enqueue_scripts', 'admin_acf_styles' );

@@ -96,28 +96,39 @@ function apply_for_memberships_submit( $post_id ) {
   if(!username_exists( $email_address )) {
 
     // Generate the password and create the user
+    // NOTE: this is for the sake of registering user using bp_core_signup_user function, the password will be regenerated again during activate_membership. (the password need to be forward to user upon activation)
+    // TODO: is there any other way to only generate once? 
     $password = wp_generate_password( 12, false );
     $user_id = bp_core_signup_user( $email_address, $password, $email_address );
-
-    // Set the nickname
-    wp_update_user(
-      array(
-        'ID'          =>    $user_id,
-        'nickname'    =>    $email_address
-      )
-    );
-
-    // Set the role
-    $user = new WP_User( $user_id );
-    $user->set_role( 'membership_profile_moderator' );
-
-    // Email the user
-    wp_mail( $email_address, 'Welcome!', 'Your Password: ' . $password );
 
   } // end if
 
   // return the new ID
   return $post_id;
+}
+
+// post-action after admin activate pending membership
+add_action('bp_core_activated_user','activate_membership');
+function activate_membership($user_id){
+
+  $email_address = get_user_by('id', $user_id)->user_email;
+
+  // Set the nickname & default role
+  wp_update_user(
+    array(
+      'ID'          =>    $user_id,
+      'nickname'    =>    $email_address,
+      'role'        =>    'membership_profile_moderator'
+    )
+  );
+
+  // Regenerate random user password
+  $password = wp_generate_password( 12, false );
+  wp_set_password($password, $user_id);
+
+  // Email the user & password
+  wp_mail( $email_address, 'Welcome!', 'Your Password: ' . $password );
+
 }
 
 // acf/update_value/key={$field_key} - filter for a specific field based on it's name
@@ -208,12 +219,12 @@ function disable_activation_email() {
 }
 
 // overwrite bp default resend_activation_email behaviour in login form
-add_action('init','disable_resend_activation_email');
-function disable_resend_activation_email() {
+add_action('init','avpn_core_signup_disable_inactive');
+function avpn_core_signup_disable_inactive() {
   remove_filter('authenticate', 'bp_core_signup_disable_inactive',30);
-  add_filter('authenticate', 'bp_core_signup_disable_inactive_overwritten',30, 3);
+  add_filter('authenticate', 'bp_core_signup_disable_inactive_override',30, 3);
 }
-function bp_core_signup_disable_inactive_overwritten( $user = null, $username = '', $password ='' ) {
+function bp_core_signup_disable_inactive_override( $user = null, $username = '', $password ='' ) {
   // login form not used
   if ( empty( $username ) && empty( $password ) ) {
     return $user;
@@ -261,5 +272,116 @@ function bp_core_signup_disable_inactive_overwritten( $user = null, $username = 
 
   return new WP_Error( 'bp_account_not_activated', __( '<strong>ERROR</strong>: Your account has not been activated. Please wait while our site administrator review your registration.', 'buddypress' ) . $resend_string );
 }
+
+add_action( 'widgets_init', 'avpn_core_widgets_init' );
+function avpn_core_widgets_init() {
+  register_sidebar( array(
+    'name' => 'Featured',
+    'id' => 'featured',
+    'description' => 'Featured content with flexslider.',
+    'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+    'after_widget' => '</aside>',
+    'before_title' => '<p class="widget-title">',
+    'after_title' => '</p>',
+  ) );
+
+  register_sidebar( array(
+    'name' => 'Featured Sidebar',
+    'id' => 'featured-sidebar',
+    'description' => 'Featured sidebar displaying on the homepage.',
+    'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+    'after_widget' => '</aside>',
+    'before_title' => '<p class="widget-title">',
+    'after_title' => '</p>',
+  ) );
+}
+
+add_action( 'wp_enqueue_scripts', 'avpn_core_enqueue_script_style' );
+function avpn_core_enqueue_script_style()
+{
+
+  wp_enqueue_style( 'css-flexslider', plugins_url( '/lib/flexslider/flexslider.css' , __FILE__ ));
+
+  wp_enqueue_script( 'js-flexslider', plugins_url( '/lib/flexslider/jquery.flexslider-min.js' , __FILE__ ) , array('jquery'));
+  wp_enqueue_script( 'js-ammap-main', plugins_url( '/lib/ammap/ammap.js' , __FILE__ ) , array('jquery'));
+  wp_enqueue_script( 'js-ammap-worldlow', plugins_url( '/lib/ammap/maps/js/worldLow.js' , __FILE__ ) , array('jquery'));
+
+
+}
+
+// Creating the widget 
+class avpn_core_featured_flexslider extends WP_Widget {
+
+  function __construct() {
+    parent::__construct(
+    // Base ID of your widget
+    'featured-flexslider', 
+
+    // Widget name will appear in UI
+    'Featured Flexlider', 
+
+    // Widget description
+    array( 'description' => 'Featured content display with flexslider.', ) 
+    );
+  }
+
+  // Creating widget front-end
+  // This is where the action happens
+  public function widget( $args, $instance ) {
+    $title = apply_filters( 'widget_title', $instance['title'] );
+    // before and after widget arguments are defined by themes
+    echo $args['before_widget'];
+    if ( ! empty( $title ) )
+    echo $args['before_title'] . $title . $args['after_title'];
+
+    // This is where you run the code and display the output
+    ?>
+    <div class="flexslider" style="margin-bottom:10px;">
+      <ul class="slides">
+        <li>
+          <iframe width="640" height="360" src="//www.youtube.com/embed/5HPCg9VHp1w?rel=0&autoplay=0&controls=0&showinfo=0&modestbranding=1" frameborder="0" allowfullscreen></iframe>
+        </li>
+        <?php $loop = new WP_Query( array( 'post_type' => 'investment-showcase', 'posts_per_page' => 5, 'post_status' => 'publish') ); ?>
+        <?php while ( $loop->have_posts() ) : $loop->the_post(); ?>
+          <li>
+            <?php $image = get_field('featured_image');?>
+            <a href="<?php the_permalink() ?>"><img src="<?php echo $image['url']; ?>" alt="<?php echo $image['alt']; ?>" /></a>
+            <p class="flex-caption">
+              <strong style="font-size:20px;"><?php the_title(); ?> (<?php echo get_field('organisation_name')->post_title; ?>)</strong>
+              <br/>
+              <span><?php the_field('social_sector'); ?></span>
+            </p>
+          </li>     
+        <?php endwhile; ?>
+      </ul>
+    </div>
+    <?php
+    echo $args['after_widget'];
+  }
+    
+  // Widget Backend 
+  public function form( $instance ) {
+    // Widget admin form
+    ?>
+    <p>
+      Nothing to change here yet.
+    </p>
+    <?php 
+  }
+  
+  // Updating widget replacing old instances with new
+  public function update( $new_instance, $old_instance ) {
+    $instance = array();
+    $instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+    return $instance;
+  }
+} // Class wpb_widget ends here
+
+// Register and load the widget
+function wpb_load_widget() {
+  register_widget( 'avpn_core_featured_flexslider' );
+}
+add_action( 'widgets_init', 'wpb_load_widget' );
+
 
 ?>

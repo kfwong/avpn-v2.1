@@ -22,22 +22,6 @@
 				<a href="<?php the_permalink(); ?>" title="<?php echo esc_attr( sprintf( __( 'Permalink to %s', 'themonic' ), the_title_attribute( 'echo=0' ) ) ); ?>" rel="bookmark"><?php the_title(); ?></a>
 			</h2>
 			<?php endif; // is_single() ?>
-					<?php if ( is_single() ) : //for date on single page ?>	
-	<div class="below-title-meta">
-		<div class="adt">
-		<?php _e('By','themonic'); ?>
-        <span class="author">
-         <?php echo the_author_posts_link(); ?>
-        </span>
-         <span class="meta-sep">|</span> 
-         <?php echo get_the_date(); ?> 
-         </div>
-		 <div class="adt-comment">
-		 <a class="link-comments" href="<?php  comments_link(); ?>"><?php comments_number(__('0 Comment','themonic'),__('1 Comment'),__('% Comments')); ?></a> 
-         </div>       
-     </div><!-- below title meta end -->
-			
-			<?php endif; // display meta-date on single page() ?>
 			
 			</header><!-- .entry-header -->
 

@@ -17,7 +17,7 @@ Template Name: Apply for Memberships
 			</header>
 
 			<div class="entry-content">
-
+				<div id="chartdiv"></div>
 				<table class="pretty-datatable">
 					<thead>
 			            <tr>
