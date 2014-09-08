@@ -18,6 +18,11 @@ Template Name: Apply for Memberships
 			</header>
 
 			<div class="entry-content">
+				<?php while ( have_posts() ) : the_post(); ?>
+
+				<?php the_content(); ?>
+
+				<?php endwhile; // end of the loop. ?>
  
 				<?php acf_form(array(
 					'field_groups'	=> array('13468'),

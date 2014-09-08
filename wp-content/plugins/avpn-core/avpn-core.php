@@ -201,10 +201,17 @@ add_filter('acf/load_field/name=membership_start_date', 'apply_for_memberships_h
 add_filter('acf/load_field/name=founder_member', 'apply_for_memberships_hide_field'); 
 add_filter('acf/load_field/name=supporting_member', 'apply_for_memberships_hide_field'); 
 add_filter('acf/load_field/name=partner_network', 'apply_for_memberships_hide_field'); 
-//add_filter('acf/load_field/name=profile_moderators', 'apply_for_memberships_hide_field'); 
+add_filter('acf/load_field/name=membership_profile_moderators', 'apply_for_memberships_hide_field');
+add_filter('acf/load_field/name=featured_image', 'apply_for_memberships_hide_field');
 function apply_for_memberships_hide_field ( $field  )
 { 
-  return false;
+  //if it's currently at backend acf form, return the field
+  if(is_admin()){
+    return $field;
+  }else{
+    // if not, hide/do not generate the field
+    return false;  
+  }  
 }
 
 // disable buddypress sending activation email
