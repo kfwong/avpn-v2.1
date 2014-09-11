@@ -26,6 +26,46 @@ if(isset($pluginOptionsVal['csbwfs_active']) && $pluginOptionsVal['csbwfs_active
 add_action('wp_footer','get_csbwf_sidebar_content');
 add_action( 'wp_enqueue_scripts', 'csbwf_sidebar_scripts' );
 add_action('wp_footer','csbwf_sidebar_load_inline_js');
+add_action('wp_footer','csbwfs_cookie');
+}
+
+function csbwfs_cookie()
+{
+	echo $cookieVal='<script>csbwfsCheckCookie();function csbwfsSetCookie(cname,cvalue,exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires=" + d.toGMTString();
+    document.cookie = cname+"="+cvalue+"; "+expires;
+}
+
+function csbwfsGetCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(\';\');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==\' \') c = c.substring(1);
+        if (c.indexOf(name) != -1) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+function csbwfsCheckCookie() {
+    var button_status=csbwfsGetCookie("csbwfs_show_hide_status");
+    if (button_status != "") {
+        
+    } else {
+      // user = prompt("Please enter your name:","");
+     //  if (user != "" && user != null) {
+        csbwfsSetCookie("csbwfs_show_hide_status", "active",1);
+      // }
+    }
+}
+
+</script>';
+
+
 }
 
 if(isset($pluginOptionsVal['csbwfs_buttons_active']) && $pluginOptionsVal['csbwfs_buttons_active']==1){
@@ -117,13 +157,26 @@ function csbwf_sidebar_load_inline_js()
     jQuery("div#social-inner").show(500);
      jQuery("div.show").hide(500);
     jQuery("div.hide").show(500);
+    csbwfsSetCookie("csbwfs_show_hide_status","active","1");
   });
   
   jQuery("div.hide a").click(function(){
      jQuery("div.show").show(500);
       jQuery("div.hide").hide(500);
      jQuery("div#social-inner").hide(500);
+     csbwfsSetCookie("csbwfs_show_hide_status","in_active","1");
   });';
+  
+   $jscnt.='var button_status=csbwfsGetCookie("csbwfs_show_hide_status");
+    if (button_status =="in_active") {
+      jQuery("div.show").show();
+      jQuery("div.hide").hide();
+     jQuery("div#social-inner").hide();
+    } else {
+      jQuery("div#social-inner").show();
+     jQuery("div.show").hide();
+    jQuery("div.hide").show();
+    }';
   
 $jscnt.='});</script>';
 	
@@ -211,33 +264,68 @@ if($pluginOptionsVal['csbwfs_position']=='right'){
     $showImg='show.png';
 	$hideImg='hide.png';
 	}
+	
+ 
+   
+/* Get All buttons background color */
+
+//get facebook button image background color 
+if($pluginOptionsVal['csbwfs_fb_bg']!=''){ $fImgbg=' style="background:'.$pluginOptionsVal['csbwfs_fb_bg'].';"';} 
+   else{$fImgbg='';}   
+//get twitter button image  background color 
+if($pluginOptionsVal['csbwfs_tw_bg']!=''){ $tImgbg=' style="background:'.$pluginOptionsVal['csbwfs_tw_bg'].';"';} 
+   else{$tImgbg='';}   
+//get linkdin button image background color 
+if($pluginOptionsVal['csbwfs_li_bg']!=''){ $lImgbg=' style="background:'.$pluginOptionsVal['csbwfs_li_bg'].';"';} 
+   else{$lImgbg='';}   
+//get mail button image  background color 
+if($pluginOptionsVal['csbwfs_mail_bg']!=''){ $mImgbg=' style="background:'.$pluginOptionsVal['csbwfs_mail_bg'].';"';} 
+   else{$mImgbg='';}   
+//get google plus button image  background color 
+if($pluginOptionsVal['csbwfs_gp_bg']!=''){ $gImgbg=' style="background:'.$pluginOptionsVal['csbwfs_gp_bg'].';"';} 
+   else{$gImgbg='';}  
+//get pinterest button image   background color 
+if($pluginOptionsVal['csbwfs_pin_bg']!=''){ $pImgbg=' style="background:'.$pluginOptionsVal['csbwfs_pin_bg'].';"';} 
+   else{$pImgbg='';}   
+
+/** Message */ 
+
+if($pluginOptionsVal['csbwfs_show_btn']!=''){ $showbtn=$pluginOptionsVal['csbwfs_show_btn'];} 
+   else{$showbtn='Show Buttons';}   
+//get mail button image  background color 
+if($pluginOptionsVal['csbwfs_hide_btn']!=''){ $hidebtn=$pluginOptionsVal['csbwfs_hide_btn'];} 
+   else{$hidebtn='Hide Buttons';}   
+//get mail button image  background color 
+if($pluginOptionsVal['csbwfs_share_msg']!=''){ $sharemsg=$pluginOptionsVal['csbwfs_share_msg'];} 
+   else{$sharemsg='Share This With Your Friends';}   
+
+   
 ?>
 <div id="delaydiv">
-<div class='social-widget' <?php echo $idName;?> title="Share This With Your Friends" <?php echo $style;?> >
+<div class='social-widget' <?php echo $idName;?> title="<?php echo $sharemsg; ?>" <?php echo $style;?> >
 
-<div class="show"><a href="javascript:" alt="Email" id="show"><img src="<?php echo plugins_url('custom-share-buttons-with-floating-sidebar/images/'.$showImg);?>" title="Show Buttons"></a></div>
+<div class="show"><a href="javascript:" alt="<?php echo $showbtn;?>" id="show"><img src="<?php echo plugins_url('custom-share-buttons-with-floating-sidebar/images/'.$showImg);?>" title="<?php echo $showbtn;?>"></a></div>
 
 <div id="social-inner">
-	<?php if(get_csbwf_sidebar_options('csbwfs_fpublishBtn')!=''):?>
+	<?php if($pluginOptionsVal['csbwfs_fpublishBtn']!=''):?>
 	<!-- Facebook -->
 	<div class="sbutton">
 		<div id="fb">
 			<a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $shareurl;?>" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"
-   target="_blank" alt="Share on Facebook"> <img src="<?php echo $fImg;?>"></a></div>
+   target="_blank" alt="Share on Facebook" <?php echo $fImgbg;?>> <img src="<?php echo $fImg;?>"></a></div>
 	</div>
     <?php endif;?>
     <?php if($pluginOptionsVal['csbwfs_tpublishBtn']!=''):?>
 	<!-- Twitter -->
 	<div class="sbutton">
-	<div id="tw"><a href="javascript:" onclick="window.open('https://twitter.com/?status=<?php echo $ShareTitle;?>&nbsp;&nbsp;<?php echo $shareurl;?>', '_blank', 'width=800,height=300')" alt="Twitter"><img src="<?php echo $tImg;?>"></a></div>
+	<div id="tw"><a href="javascript:" onclick="window.open('https://twitter.com/?status=<?php echo $ShareTitle;?>&nbsp;&nbsp;<?php echo $shareurl;?>','_blank','width=800,height=300')" alt="Twitter" <?php echo $tImgbg;?>><img src="<?php echo $tImg;?>"></a></div>
 	</div>
 	 <?php endif;?>
 	<?php if($pluginOptionsVal['csbwfs_gpublishBtn']!=''):?>
 	<!-- Google plus -->
 	<div class="sbutton">
 
-	<div id="gp"><a href="https://plus.google.com/share?url=<?php echo $shareurl;?>" onclick="javascript:window.open(this.href,
-  '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" alt="Google Plus">    
+	<div id="gp"><a href="https://plus.google.com/share?url=<?php echo $shareurl;?>" onclick="javascript:window.open(this.href,'','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" alt="Google Plus" <?php echo $gImgbg;?> >    
   <img src="<?php echo $gImg;?>"></a></div>
 	</div>
 	 <?php endif;?>
@@ -246,8 +334,7 @@ if($pluginOptionsVal['csbwfs_position']=='right'){
 	<div class="sbutton">
 
 	<div id="li">
-		<a href="https://www.linkedin.com/cws/share?url=<?php echo $shareurl;?>" onclick="javascript:window.open(this.href,
-  '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" alt="Google Plus">
+		<a href="https://www.linkedin.com/cws/share?url=<?php echo $shareurl;?>" onclick="javascript:window.open(this.href,'','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" alt="Google Plus" <?php echo $lImgbg;?>>
   <img src="<?php echo $lImg;?>"></a></div>
 	</div>
 	 <?php endif;?>
@@ -255,18 +342,18 @@ if($pluginOptionsVal['csbwfs_position']=='right'){
 	<!-- Pinterest -->
 	<div class="sbutton">
 
-	<div id="pin"><a onclick="window.open('http://pinterest.com/pin/create/button/?url=<?php echo $shareurl;?>&amp;media=http://myrevsource.pbodev.info/Projects/newrevsite/img/logo.png&amp;description=<?php echo $ShareTitle;?> :<?php echo $shareurl;?>','pinIt','toolbar=0,status=0,width=620,height=500');" href="javascript:void(0);" style="width: 45px;"><img src="<?php echo $pImg;?>"></a></div>
+	<div id="pin"><a onclick="window.open('http://pinterest.com/pin/create/button/?url=<?php echo $shareurl;?>&amp;media=http://www.mrwebsolution.in/wp-content/themes/mrweb/images/logo.png&amp;description=<?php echo $ShareTitle;?> :<?php echo $shareurl;?>','pinIt','toolbar=0,status=0,width=620,height=500');" href="javascript:void(0);" <?php echo $pImgbg;?>><img src="<?php echo $pImg;?>"></a></div>
 	</div>
 	 <?php endif;?>
    <?php if($pluginOptionsVal['csbwfs_mpublishBtn']!=''):?>
 	<!-- Mail-->
 	<div class="sbutton">
-    <div id="ml"><a href="mailto:<?php echo $mailMsg;?>" alt="Email"><img src="<?php echo $mImg;?>"></a></div>
+    <div id="ml"><a href="mailto:<?php echo $mailMsg;?>" alt="Email" <?php echo $mImgbg;?>><img src="<?php echo $mImg;?>"></a></div>
 	</div>
 	 <?php endif;?>
 </div>
 
-<div class="hide"><a href="javascript:" alt="Email" id="hide"><img src="<?php echo plugins_url('custom-share-buttons-with-floating-sidebar/images/'.$hideImg);?>" title="Hide Buttons"></a></div>
+<div class="hide"><a href="javascript:" alt="<?php echo $hidebtn;?>" id="hide"><img src="<?php echo plugins_url('custom-share-buttons-with-floating-sidebar/images/'.$hideImg);?>" title="<?php echo $hidebtn;?>"></a></div>
 
 </div>
 </div>
@@ -321,7 +408,8 @@ if($pluginOptionsVal['csbwfs_gp_image']!=''){ $gImg=$pluginOptionsVal['csbwfs_gp
 //get pinterest button image   
 if($pluginOptionsVal['csbwfs_pin_image']!=''){ $pImg=$pluginOptionsVal['csbwfs_pin_image'];} 
    else{$pImg=plugins_url('images/pinit-p.png',__FILE__);}   
-//get email message
+
+//get email message 
 if(is_page() || is_single() || is_category() || is_archive()){
 	
 		if($pluginOptionsVal['csbwfs_mailMessage']!=''){ $mailMsg=$pluginOptionsVal['csbwfs_mailMessage'];} else{
@@ -333,7 +421,7 @@ if(is_page() || is_single() || is_category() || is_archive()){
 	 
 $shareButtonContent='<div id="socialButtonOnPage"><div class="sharethis-arrow"><img src="'.plugins_url('images/sharethis.png',__FILE__).'"></div>';
 /* Facebook*/
-if(get_csbwf_sidebar_options('csbwfs_fpublishBtn')!=''):
+if($pluginOptionsVal['csbwfs_fpublishBtn']!=''):
 	$shareButtonContent.='<div class="sbutton-post"><div id="fb-p"><a href="https://www.facebook.com/sharer/sharer.php?u='.$shareurl.'" onclick="javascript:window.open(this.href, \'\', \'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600\');return false;"
    target="_blank" alt="Share on Facebook"> <img src="'.$fImg.'"></a></div></div>';
 endif;

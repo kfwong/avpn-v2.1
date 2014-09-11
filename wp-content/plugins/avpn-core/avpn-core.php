@@ -385,10 +385,171 @@ class avpn_core_featured_flexslider extends WP_Widget {
 } // Class wpb_widget ends here
 
 // Register and load the widget
+add_action( 'widgets_init', 'wpb_load_widget' );
 function wpb_load_widget() {
   register_widget( 'avpn_core_featured_flexslider' );
 }
-add_action( 'widgets_init', 'wpb_load_widget' );
 
+// Adding extra settings mmenu to membership applications
+add_action('admin_menu', 'avpn_core_membership_application_notification');
+function avpn_core_membership_application_notification(){
+  add_users_page( 'Notification Settings', 'Notification Settings', 'manage_options', 'avpn-core-membership-application-notification', 'avpn_core_membership_application_notification_settings_page'); 
+}
+ 
+function avpn_core_membership_application_notification_settings_page(){
+?>
+  <div class="wrap">
+    <h2>Notification Settings</h2>
+    <?php settings_errors(); ?>
+    <?php
+      // for toggle between the tabs, which to display or hidden
+      if( isset( $_GET[ 'tab' ] ) ) {
+         $active_tab = $_GET[ 'tab' ];
+      }
+    ?>
+    <h2 class="nav-tab-wrapper">
+        <a href="?page=avpn-core-membership-application-notification&tab=avpn-core-membership-application-notification-admin-options" class="nav-tab <?php echo $active_tab == 'avpn-core-membership-application-notification-admin-options' ? 'nav-tab-active' : ''; ?>">Membership Admin Email Options</a>
+        <a href="?page=avpn-core-membership-application-notification&tab=a" class="nav-tab <?php echo $active_tab == 'a' ? 'nav-tab-active' : ''; ?>">a</a>
+        <a href="?page=avpn-core-membership-application-notification&tab=b" class="nav-tab <?php echo $active_tab == 'b' ? 'nav-tab-active' : ''; ?>">b</a>
+    </h2>
+    <form method="post" action="options.php">
+      <?php
+        if( $active_tab == 'avpn-core-membership-application-notification-admin-options' ) {
+          settings_fields( 'avpn-core-membership-application-notification' );
+          do_settings_sections( 'avpn-core-membership-application-notification' );
+          submit_button(); 
+        }else{
+          //do nothing yet
+        }
+      ?>
+    </form>
+  </div>
+<?php
+}
+
+// Wordpress settings API
+add_action('admin_init', 'avpn_core_membership_application_notification_settings');
+function avpn_core_membership_application_notification_settings() {
+ 
+    // First, we register a section. This is necessary since all future options must belong to one.
+    add_settings_section(
+        'avpn-core-membership-application-notification-admin-options',         // ID used to identify this section and with which to register options
+        '',                                                       // Title to be displayed on the administration page
+        'avpn_core_membership_application_notification_admin_options_callback',                                                                    // Callback used to render the description of the section
+        'avpn-core-membership-application-notification'                        // Page on which to add this section of options
+    );
+
+    add_settings_field(
+        'avpn-core-membership-application-notification-admin-options-to',            // ID used to identify the field throughout the theme
+        'To',                                                                        // The label to the left of the option interface element
+        'avpn_core_membership_application_notification_admin_options_to_callback',   // The name of the function responsible for rendering the option interface
+        'avpn-core-membership-application-notification',                             // The page on which this option will be displayed
+        'avpn-core-membership-application-notification-admin-options',               // The name of the section to which this field belongs
+        array(null)                                                                  // The array of arguments to pass to the callback. In this case, just a description.
+    );
+    register_setting(
+        'avpn-core-membership-application-notification',
+        'avpn-core-membership-application-notification-admin-options-to'
+    );
+
+    add_settings_field(
+        'avpn-core-membership-application-notification-admin-options-from',            // ID used to identify the field throughout the theme
+        'From',                                                                        // The label to the left of the option interface element
+        'avpn_core_membership_application_notification_admin_options_from_callback',   // The name of the function responsible for rendering the option interface
+        'avpn-core-membership-application-notification',                             // The page on which this option will be displayed
+        'avpn-core-membership-application-notification-admin-options',               // The name of the section to which this field belongs
+        array(null)                                                                  // The array of arguments to pass to the callback. In this case, just a description.
+    );
+    register_setting(
+        'avpn-core-membership-application-notification',
+        'avpn-core-membership-application-notification-admin-options-from'
+    );
+
+    add_settings_field(
+        'avpn-core-membership-application-notification-admin-options-cc',            // ID used to identify the field throughout the theme
+        'CC',                                                                        // The label to the left of the option interface element
+        'avpn_core_membership_application_notification_admin_options_cc_callback',   // The name of the function responsible for rendering the option interface
+        'avpn-core-membership-application-notification',                             // The page on which this option will be displayed
+        'avpn-core-membership-application-notification-admin-options',               // The name of the section to which this field belongs
+        array(null)                                                                  // The array of arguments to pass to the callback. In this case, just a description.
+    );
+    register_setting(
+        'avpn-core-membership-application-notification',
+        'avpn-core-membership-application-notification-admin-options-cc'
+    );
+
+    add_settings_field(
+        'avpn-core-membership-application-notification-admin-options-bcc',            // ID used to identify the field throughout the theme
+        'BCC',                                                                        // The label to the left of the option interface element
+        'avpn_core_membership_application_notification_admin_options_bcc_callback',   // The name of the function responsible for rendering the option interface
+        'avpn-core-membership-application-notification',                             // The page on which this option will be displayed
+        'avpn-core-membership-application-notification-admin-options',               // The name of the section to which this field belongs
+        array(null)                                                                  // The array of arguments to pass to the callback. In this case, just a description.
+    );
+    register_setting(
+        'avpn-core-membership-application-notification',
+        'avpn-core-membership-application-notification-admin-options-bcc'
+    );
+
+    add_settings_field(
+        'avpn-core-membership-application-notification-admin-options-sbj',            // ID used to identify the field throughout the theme
+        'Subject',                                                                        // The label to the left of the option interface element
+        'avpn_core_membership_application_notification_admin_options_sbj_callback',   // The name of the function responsible for rendering the option interface
+        'avpn-core-membership-application-notification',                             // The page on which this option will be displayed
+        'avpn-core-membership-application-notification-admin-options',               // The name of the section to which this field belongs
+        array(null)                                                                  // The array of arguments to pass to the callback. In this case, just a description.
+    );
+    register_setting(
+        'avpn-core-membership-application-notification',
+        'avpn-core-membership-application-notification-admin-options-sbj'
+    );
+
+    add_settings_field(
+        'avpn-core-membership-application-notification-admin-options-msg',            // ID used to identify the field throughout the theme
+        'Message',                                                                        // The label to the left of the option interface element
+        'avpn_core_membership_application_notification_admin_options_msg_callback',   // The name of the function responsible for rendering the option interface
+        'avpn-core-membership-application-notification',                             // The page on which this option will be displayed
+        'avpn-core-membership-application-notification-admin-options',               // The name of the section to which this field belongs
+        array(null)                                                                  // The array of arguments to pass to the callback. In this case, just a description.
+    );
+    register_setting(
+        'avpn-core-membership-application-notification',
+        'avpn-core-membership-application-notification-admin-options-msg'
+    );
+}
+function avpn_core_membership_application_notification_admin_options_callback($args){
+?>
+    <p>Configure notification email to be sent out when a membership application is submitted.</p>
+<?php
+}
+function avpn_core_membership_application_notification_admin_options_to_callback($args){
+?>
+    <input type="text" id="avpn-core-membership-application-notification-admin-options-to" name="avpn-core-membership-application-notification-admin-options-to" value="<?php echo get_option('avpn-core-membership-application-notification-admin-options-to'); ?>" style="width:100%;"/>
+<?php
+}
+function avpn_core_membership_application_notification_admin_options_from_callback($args){
+?>
+    <input type="text" id="avpn-core-membership-application-notification-admin-options-from" name="avpn-core-membership-application-notification-admin-options-from" value="<?php echo get_option('avpn-core-membership-application-notification-admin-options-from'); ?>" style="width:100%;"/>
+<?php
+}
+function avpn_core_membership_application_notification_admin_options_cc_callback($args){
+?>
+    <input type="text" id="avpn-core-membership-application-notification-admin-options-cc" name="avpn-core-membership-application-notification-admin-options-cc" value="<?php echo get_option('avpn-core-membership-application-notification-admin-options-cc'); ?>" style="width:100%;"/>
+<?php
+}
+function avpn_core_membership_application_notification_admin_options_bcc_callback($args){
+?>
+    <input type="text" id="avpn-core-membership-application-notification-admin-options-bcc" name="avpn-core-membership-application-notification-admin-options-bcc" value="<?php echo get_option('avpn-core-membership-application-notification-admin-options-bcc'); ?>" style="width:100%;"/>
+<?php
+}
+function avpn_core_membership_application_notification_admin_options_sbj_callback($args){
+?>
+    <input type="text" id="avpn-core-membership-application-notification-admin-options-sbj" name="avpn-core-membership-application-notification-admin-options-sbj" value="<?php echo get_option('avpn-core-membership-application-notification-admin-options-sbj'); ?>" style="width:100%;"/>
+<?php
+}
+function avpn_core_membership_application_notification_admin_options_msg_callback($args){
+    wp_editor(get_option('avpn-core-membership-application-notification-admin-options-msg'), 'avpn-core-membership-application-notification-admin-options-msg', array('media_buttons' => false));
+
+}
 
 ?>
