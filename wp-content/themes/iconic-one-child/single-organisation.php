@@ -27,7 +27,8 @@ get_header(); ?>
 
 						?>
 						<div style="width:60%; float:left;">
-							<?php echo empty(get_field('provide_a_short_overview_of_your_organisation'))? "No information available." : get_field('provide_a_short_overview_of_your_organisation'); ?>
+							<?php $short_overview = get_field('provide_a_short_overview_of_your_organisation'); // damn the empty() function works only on variables prior to php5.5 ?>
+							<?php echo empty($short_overview)? "No information available." : $short_overview; ?>
 						</div>
 						<div style="width:35%; float:right;">
 							<table>

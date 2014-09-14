@@ -26,11 +26,14 @@ get_header(); ?>
 						?>
 						<div style="width:60%; float:left;">
 							<h2 style="font-weight:bold;padding-right:20px;">The Situation</h2>
-							<?php echo empty(get_field('the_situation'))? "No information available." : get_field('the_situation'); ?>
+							<?php $the_situation = get_field('the_situation'); ?>
+							<?php echo empty($the_situation)? "No information available." : get_field('the_situation'); ?>
 							<h2 style="font-weight:bold;padding-right:20px;">The Intervention</h2>
-							<?php echo empty(get_field('the_intervention'))? "No information available." : get_field('the_intervention'); ?>
+							<?php $the_intervention = get_field('the_intervention'); ?>
+							<?php echo empty($the_intervention)? "No information available." : get_field('the_intervention'); ?>
 							<h2 style="font-weight:bold;padding-right:20px;">The Impact</h2>
-							<?php echo empty(get_field('the_impact'))? "No information available." : get_field('the_impact'); ?>
+							<?php $the_impact = get_field('the_impact'); ?>
+							<?php echo empty($the_impact)? "No information available." : get_field('the_impact'); ?>
 						</div>
 						<div style="width:35%; float:right;">
 							<table>
