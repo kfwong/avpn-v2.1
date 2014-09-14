@@ -21,7 +21,7 @@ get_header(); ?>
 					<div class="entry-content">
 						<?php
 
-						if((get_field('profile_moderators')[0]["ID"] == get_current_user_id() || current_user_can('administrator')) && $_GET['action'] == 'edit'){
+						if(is_coauthor_for_post(get_current_user_id(), get_the_ID()) && $_GET['action'] == 'edit'){
 							acf_form();
 						}else{
 
@@ -78,11 +78,19 @@ get_header(); ?>
 						</div>
 					</div>
 					<footer class="entry-meta">
-						<?php if(get_field('profile_moderators')[0]["ID"] == get_current_user_id()){ ?>
-							<span class="edit-link"><a class="post-edit-link" href="<?php echo get_permalink() . '?action=edit'; ?>">Edit</a></span>
-						<?php }else if(current_user_can('administrator')){ ?>
-							<?php edit_post_link( __( 'Edit', 'themonic' ), '<span class="edit-link">', '</span>' ); ?>
-						<?php } ?>
+						<?php 
+
+						if(is_coauthor_for_post(get_current_user_id(), get_the_ID())){
+							if(current_user_can('administrator')){ 
+								edit_post_link( __( 'Edit', 'themonic' ), '<span class="edit-link">', '</span>' );
+							}else{
+							?>
+								<span class="edit-link"><a class="post-edit-link" href="<?php echo get_permalink() . '?action=edit'; ?>">Edit</a></span>
+							<?php
+							}
+						}
+						
+						?>
 					</footer>
 				</article><!-- #post -->
 				<nav class="nav-single">

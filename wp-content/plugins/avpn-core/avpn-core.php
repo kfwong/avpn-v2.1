@@ -101,6 +101,16 @@ function apply_for_memberships_submit( $post_id ) {
     $password = wp_generate_password( 12, false );
     $user_id = bp_core_signup_user( $email_address, $password, $email_address );
 
+    $headers[] = 
+
+    // Send email notification base on the sign up notification settings
+    wp_mail(
+      get_option('avpn-core-membership-application-notification-admin-options-to'),
+      get_option('avpn-core-membership-application-notification-admin-options-sbj'),
+      get_option('avpn-core-membership-application-notification-admin-options-msg'),
+      'From: "' . get_option('avpn-core-membership-application-notification-admin-options-from') . '" <' . get_option('avpn-core-membership-application-notification-admin-options-from') . '>' . '\r\n' . 'Cc: ' . get_option('avpn-core-membership-application-notification-admin-options-cc') . '\r\n' . 'Bcc: ' . get_option('avpn-core-membership-application-notification-admin-options-bcc') . '\r\n'
+    );
+
   } // end if
 
   // return the new ID
@@ -129,6 +139,14 @@ function activate_membership($user_id){
   // Email the user & password
   wp_mail( $email_address, 'Welcome!', 'Your Password: ' . $password );
 
+}
+
+// Redefine user notification function, disable built in wp notification
+if ( !function_exists('wp_new_user_notification') ) {
+
+  function wp_new_user_notification( $user_id, $plaintext_pass = '' ) {
+    return false;
+  }
 }
 
 // acf/update_value/key={$field_key} - filter for a specific field based on it's name
@@ -195,23 +213,41 @@ function investment_showcase_update ( $value, $post_id, $field  )
 }
 
 // hide admin only fields
+/*
 add_filter('acf/load_field/name=avpn_internal_notes', 'apply_for_memberships_hide_field');
 add_filter('acf/load_field/name=annual_fee', 'apply_for_memberships_hide_field'); 
 add_filter('acf/load_field/name=membership_start_date', 'apply_for_memberships_hide_field'); 
 add_filter('acf/load_field/name=founder_member', 'apply_for_memberships_hide_field'); 
 add_filter('acf/load_field/name=supporting_member', 'apply_for_memberships_hide_field'); 
 add_filter('acf/load_field/name=partner_network', 'apply_for_memberships_hide_field'); 
-add_filter('acf/load_field/name=membership_profile_moderators', 'apply_for_memberships_hide_field');
+*/
+add_filter('acf/load_field/name=featured_image', 'submit_investment_showcase_hide_field');
 add_filter('acf/load_field/name=featured_image', 'apply_for_memberships_hide_field');
+function submit_investment_showcase_hide_field ( $field  )
+{ 
+  if( is_page( 'Submit New Investment Showcase' )){
+    return false;
+  }else{
+    return $field;
+  }
+}
 function apply_for_memberships_hide_field ( $field  )
 { 
   //if it's currently at backend acf form, return the field
-  if(is_admin()){
-    return $field;
+  // TODO: PROBABLY not working properly, returning false without proper condition causes both/either frontend and backend unable to display the field
+  if( is_page( 'Apply for Memberships' )){
+    return false;
   }else{
-    // if not, hide/do not generate the field
-    return false;  
-  }  
+    return $field;
+  }
+  // Unused code (wrong logic...for future reference only)
+  /*else if(is_admin()){
+    // is administrator and has access to backend edit
+    return $field;
+  }else if(is_coauthor_for_post(get_current_user_id(), get_the_ID()) && $_GET['action']=='edit'){
+    // is coauthor and has access to frontend edit
+    return $field;
+  }else if()*/
 }
 
 // disable buddypress sending activation email
@@ -408,13 +444,13 @@ function avpn_core_membership_application_notification_settings_page(){
       }
     ?>
     <h2 class="nav-tab-wrapper">
-        <a href="?page=avpn-core-membership-application-notification&tab=avpn-core-membership-application-notification-admin-options" class="nav-tab <?php echo $active_tab == 'avpn-core-membership-application-notification-admin-options' ? 'nav-tab-active' : ''; ?>">Membership Admin Email Options</a>
+        <a href="?page=avpn-core-membership-application-notification&tab=avpn-core-membership-application-notification-admin-options" class="nav-tab <?php echo $active_tab == 'avpn-core-membership-application-notification-admin-options' || !isset($active_tab) ? 'nav-tab-active' : ''; ?>">Membership Admin Email Options</a>
         <a href="?page=avpn-core-membership-application-notification&tab=a" class="nav-tab <?php echo $active_tab == 'a' ? 'nav-tab-active' : ''; ?>">a</a>
         <a href="?page=avpn-core-membership-application-notification&tab=b" class="nav-tab <?php echo $active_tab == 'b' ? 'nav-tab-active' : ''; ?>">b</a>
     </h2>
     <form method="post" action="options.php">
       <?php
-        if( $active_tab == 'avpn-core-membership-application-notification-admin-options' ) {
+        if( $active_tab == 'avpn-core-membership-application-notification-admin-options' || !isset($active_tab)) {
           settings_fields( 'avpn-core-membership-application-notification' );
           do_settings_sections( 'avpn-core-membership-application-notification' );
           submit_button(); 
@@ -550,6 +586,41 @@ function avpn_core_membership_application_notification_admin_options_sbj_callbac
 function avpn_core_membership_application_notification_admin_options_msg_callback($args){
     wp_editor(get_option('avpn-core-membership-application-notification-admin-options-msg'), 'avpn-core-membership-application-notification-admin-options-msg', array('media_buttons' => false));
 
+}
+
+// Redirect default buddypress registration page to custom defined template
+add_action('wp','avpn_core_redirect_to_apply_for_memberships');
+function avpn_core_redirect_to_apply_for_memberships() {
+  global $bp;
+  
+  if ( bp_is_register_page()) {
+    wp_redirect( home_url('/memberships/apply-for-memberships/'));
+    exit();
+  }
+}
+
+// Activation is not used, disabled buddypress user activation & the related pages
+add_action('wp','avpn_core_redirect_to_home');
+function avpn_core_redirect_to_home() {
+  global $bp;
+  
+  if ( bp_is_activation_page()) {
+    wp_redirect( home_url());
+    exit();
+  }
+}
+
+// Restrict access to media library, view only own post's media or uploaded to that particular post. (Except administrator role)
+add_action('pre_get_posts','avpn_core_restrict_media_library');
+function avpn_core_restrict_media_library( $wp_query_obj ) {
+    global $current_user, $pagenow;
+    if( !is_a( $current_user, 'WP_User') )
+    return;
+    if( 'admin-ajax.php' != $pagenow || $_REQUEST['action'] != 'query-attachments' )
+    return;
+    if( !current_user_can('manage_media_library') )
+    $wp_query_obj->set('author', $current_user->ID );
+    return;
 }
 
 ?>
