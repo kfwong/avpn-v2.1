@@ -14,7 +14,7 @@ throughout use. Removing old revisions and database optimizations is one of the
 best things you can do to your Wordpress blog to keep it running as fast as it
 can.
 Author: Galerio & Urda, BestWebLayout
-Version: 1.4
+Version: 1.5
 Author URI: http://www.1e2.it/
 License: GPLv3 or later
 */
@@ -92,22 +92,21 @@ if ( ! function_exists( 'bdr_page' ) ) {
 
 		$bdr_plugin_info = get_plugin_data( __FILE__ );
 		$bdr_version = $bdr_plugin_info['Version'];
-		$bdr_posts = count( 
-			$wpdb->get_results( 
-				"SELECT ID 
-				FROM ($wpdb->posts) 
+		$bdr_posts = count(
+			$wpdb->get_results(
+				"SELECT ID
+				FROM ($wpdb->posts)
 				WHERE `post_type` = 'post'"
-			) 
+			)
 		); ?>
 		<div class="wrap">
 			<h2><?php _e( 'Better Delete Revision Manager', 'bdr' ); ?> <font size=1><?php echo $bdr_version; ?></font></h2>
-      <b>IMPORTANT:<br /> DO NOT USE IT IF YOU ARE USING NEXTGEN GALLERY PLUGIN: there is a bug that prevents the galleries already posted to be viewed</b>
 			<div class="bdr_widget">
 				<p><?php _e( 'You have', 'bdr' ); ?> <span><?php echo $bdr_posts; ?></span> <?php _e( 'posts', 'bdr' ); ?>.</p>
 				<p><?php _e( 'Since you started using Better Delete Revision', 'bdr' ); ?>, <span id="bdr_revs_no"><?php echo $bdr_rev_no; ?></span> <?php _e( 'redundant post revisions have been removed!', 'bdr' ); ?></p>
 			</div><!-- .widget -->
 			<?php if ( isset( $_POST['bdr_get_rev'] ) && check_admin_referer( plugin_basename( __FILE__ ) ) ) {
-				$bdr_results = $wpdb->get_results( 
+				$bdr_results = $wpdb->get_results(
 					"SELECT `ID`,`post_date`,`post_title`,`post_modified`
 					FROM ($wpdb->posts)
 					WHERE `post_type` = 'revision'
@@ -150,14 +149,21 @@ if ( ! function_exists( 'bdr_page' ) ) {
 					</div>
 				<?php }
 			} elseif ( isset( $_POST['bdr_del_act'] ) && check_admin_referer( plugin_basename( __FILE__ ) ) ) {
-				$bdr_revisions = $wpdb->get_results( 
+				$bdr_ngg_fix = bdr_get_ngg_fix();
+				$bdr_revisions = $wpdb->get_results(
 					"SELECT `ID` AS revision_id
 					FROM ($wpdb->posts)
 					WHERE `post_type` = 'revision'
 					ORDER BY `ID` DESC"
 				);
+				if ( is_array( $bdr_ngg_fix ) ) {
+					remove_action( $bdr_ngg_fix['tag'], array( $bdr_ngg_fix['class'], $bdr_ngg_fix['method'] ), $bdr_ngg_fix['priority'] );
+				}
 				foreach ( $bdr_revisions as $bdr_revision ) {
 					wp_delete_post_revision( $bdr_revision->revision_id );
+				}
+				if ( is_array( $bdr_ngg_fix ) ) {
+					add_action( $bdr_ngg_fix['tag'], array( $bdr_ngg_fix['class'], $bdr_ngg_fix['method'] ), $bdr_ngg_fix['priority'] );
 				}
 				$bdr_del_no = $_POST['bdr_rev_no'];
 				$bdr_rev_new = $bdr_rev_no + $bdr_del_no;
@@ -206,7 +212,7 @@ if ( ! function_exists( 'bdr_page' ) ) {
 								<?php foreach ( $bdr_result as $j => $o ) { ?>
 									<tr>
 										<?php foreach ( $o as $k => $v ) {
-											$bdr_tr_class = $j%2 == 1 ? 'active alt' : 'inactive';            
+											$bdr_tr_class = $j%2 == 1 ? 'active alt' : 'inactive';
 											if ( $k == 'Msg_type' ) {
 												continue;
 											}
@@ -236,7 +242,7 @@ if ( ! function_exists( 'bdr_page' ) ) {
 							<tfoot>
 								<tr>
 									<th colspan="3">
-										<?php printf( 
+										<?php printf(
 											__( 'If all statuses are %s, then your database does not need any optimization! If any are %s, then click on the following button to optimize your Wordpress database.', 'bdr' ),
 											sprintf( '<font color="green">%s</font>', __( 'OK', 'bdr' ) ),
 											sprintf( '<font color="red">%s</font>', __( 'red', 'bdr' ) )
@@ -252,7 +258,7 @@ if ( ! function_exists( 'bdr_page' ) ) {
 							<input name="submit" type="submit" class="button-primary" value="<?php _e( 'Optimize Wordpress Database', 'bdr' ); ?>" />
 						</form>
 						<?php break;
-				}	
+				}
 			} else { ?>
 				<form class="bdr_form" method="post" action="options-general.php?page=better-delete-revision.php">
 					<?php wp_nonce_field( plugin_basename( __FILE__ ) ); ?>
@@ -265,18 +271,52 @@ if ( ! function_exists( 'bdr_page' ) ) {
 					<?php _e( 'Post Revisions are a feature introduced in Wordpress 2.6. Whenever you or Wordpress saves a post or a page, a revision is automatically created and stored in your Wordpress database. Each additional revision will slowly increase the size of your database. If you save a post or page multiple times, your number of revisions will greatly increase overtime. For example, if you have 100 posts and each post has 10 revisions you could be storing up to 1,000 copies of older data!', 'bdr' ); ?>
 				</p>
 				<br />
-				<p>				
+				<p>
 					<?php _e( 'The Better Delete Revision plugin is your #1 choice to quickly and easily removing revision from your Wordpress database. Try it out today to see what a lighter and smaller Wordpress database can do for you!', 'bdr' ); ?>
 				</p>
 				<br />
 				<p>
 					<?php _e( 'Thank you for using this plugin! I hope you enjoy it!', 'bdr' ); ?>
 				</p>
-				<br />	
+				<br />
 				<p><?php _e( 'Author:', 'bdr' ); ?> <a href="http://www.1e2.it" target="_blank">http://www.1e2.it</a></p>
 			</div>
 		</div><!-- .wrap -->
 	<?php }
+}
+
+/*
+* Fix for plugin NextGEN Gallery.
+*/
+if ( ! function_exists( 'bdr_get_ngg_fix' ) ) {
+	function bdr_get_ngg_fix() {
+		global $wp_filter;
+		if ( ! function_exists( 'get_plugins' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+		$bdr_is_ngg_active = is_plugin_active( 'nextgen-gallery/nggallery.php' );
+		$bdr_class = 'M_Attach_To_Post';
+		if ( $bdr_is_ngg_active && class_exists( $bdr_class ) ) {
+			$bdr_tag = 'after_delete_post';
+			$bdr_method = 'cleanup_displayed_galleries';
+			$bdr_filters = $wp_filter[ $bdr_tag ];
+			if ( ! empty( $bdr_filters ) ) {
+				foreach ( $bdr_filters as $bdr_priority => $bdr_filter ) {
+					foreach ( $bdr_filter as $bdr_identifier => $bdr_function ) {
+						if ( is_array( $bdr_function) AND is_a( $bdr_function['function'][0], $bdr_class ) AND $bdr_method === $bdr_function['function'][1] ) {
+							return array(
+								'tag'      => $bdr_tag,
+								'class'    => $bdr_function['function'][0],
+								'method'   => $bdr_method,
+								'priority' => $bdr_priority
+							);
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
 }
 
 /*

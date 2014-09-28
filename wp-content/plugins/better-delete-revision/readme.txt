@@ -3,20 +3,21 @@ Contributors: galerio, Urda, bestweblayout
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=K72TR62V5ZDU8
 Tags: better delete revision, revision, delete, remove, removal, revision removal, delete revision, disable revision, no revision, revision manager, manage revision, remove revision, post revision, page revision, optimize database, database optimization, optimize, fast, light, faster, lighter, speed up, improve site performance, redundant revisions, perform optimization, delete revision from database, remove old database content, reduce database size
 Requires at least: 2.7
-Tested up to: 3.9.1
-Stable tag: 1.4
+Tested up to: 4.0
+Stable tag: 1.5
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Remove and delete old revision of posts, pages and related meta content completely then optimize Database: reduce size and optimization to speed up!
 
-== Description ==
+== Description == 
 
-= DO NOT USE IT IF YOU ARE USING NEXTGEN GALLERY PLUGIN: there is a bug that prevents the galleries already posted to be viewed =
 Better Delete Revision not only deletes redundant revisions of posts from your Wordpress Database, it also deletes other database content related to each revision such meta information, tags, relationships, and more.
 Better Delete Revision is based on the old "Delete Revision" plugin but it is compatible with the latest version of Wordpress (3.x) with improved features.
 = Your current published, scheduled, and draft posts are never touched by this plugin! =
 This plugin can also perform optimizations on your Wordpress database. With optimization and old revision removal this plugin will keep your database lighter and smaller throughout use. Removing old revisions and database optimizations is one of the best things you can do to your Wordpress blog to keep it running as fast as it can.
+
+Please pay ATTENTION, if you use the NextGEN Gallery plugin, some problems may occur when deleting revisions of posts or pages that contain the shortcode of the NextGEN Gallery plugin. So if you also use the NextGEN Gallery plugin we recommend you to make a backup before using the Better Delete Revision.
 
 Wordpress MU or customs installation (like some pre-made installation of some Hosting Providers) are not yet supported. Wordpress MU support is in our TODO list.
 
@@ -66,6 +67,9 @@ No. The revision posts is redundancy, is not the same that the normal posts. For
 
 == Changelog ==
 
+= V1.5 - 17.09.2014 =
+* Update : We've added a fix for compatibility with the plugin NextGen Gallery.
+
 = V1.4 - 18.07.2014 =
 * Update : We updated function of plugin for deleting revisions.
 
@@ -87,6 +91,9 @@ No. The revision posts is redundancy, is not the same that the normal posts. For
 * New : Just completed test on Wordpress 3.0.1
 
 == Upgrade Notice ==
+
+= V1.5 =
+We've added a fix for compatibility with the plugin NextGen Gallery.
 
 = V1.4 =
 We updated function of plugin for deleting revisions.
