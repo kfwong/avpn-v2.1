@@ -1,5 +1,7 @@
 <?php
 
+error_reporting(E_ERROR | E_PARSE);
+
 ## single-organisation.php adding full-width class to fill up sidebar space
 add_action( 'body_class', 'single_organisation_css');
 function single_organisation_css( $classes ) {
@@ -70,7 +72,9 @@ function get_organisation_map_data(){
   while ($query->have_posts()){
     $query->the_post();
     
-    foreach (get_field('which_are_the_main_countries_that_your_company_operate_in') as $country_in_operation) {
+    $countries_in_operation = get_field('which_are_the_main_countries_that_your_company_operate_in');
+
+    foreach ( $countries_in_operation as $country_in_operation) {
       foreach($geoData as $geoDatum){
         if(substr($country_in_operation, -3, 2) == $geoDatum->title){
           $geoDatum->value +=1;

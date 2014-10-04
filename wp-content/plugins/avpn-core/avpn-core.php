@@ -14,8 +14,17 @@ Author URI: mailto:kfwong@zoho.com
 add_action( 'body_class', 'investment_showcase_full_width');
 function investment_showcase_full_width( $classes ) {
   global $post;
-  if ( is_page('Investment Showcase') ){
+  if ( is_page('Investment Showcase')){
   	$classes[] = 'full-width';
+  }
+  return $classes;
+}
+
+add_action( 'body_class', 'bp_members_component_full_width');
+function bp_members_component_full_width( $classes ){
+  global $post;
+  if ( bp_current_component('members')){
+    $classes[] = 'full-width';
   }
   return $classes;
 }
@@ -112,7 +121,7 @@ function apply_for_memberships_submit( $post_id ) {
     // merge two arrays into one
     $headers = array_merge($Ccs, $Bccs); 
 
-    $orgnisation_url = home_url('/?post_type=organisation&p=' . $post_id);
+    $organisation_url = home_url('/?post_type=organisation&p=' . $post_id);
     $organisation_name = $_POST['fields']['field_53e005437ca34'];
 
     // Send admin email notification base on the sign up notification settings
@@ -796,7 +805,7 @@ function avpn_core_membership_user_notification_options_message_callback($args){
 }
 function avpn_core_membership_user_notification_options_approval_callback($args){
 ?>
-    <p><strong>User</strong> email notification for the outcome of the application. (Send upon entry being accepted/rejected.)</p>
+    <p><strong>User</strong> email notification for the outcome of the application. (Send upon user account is activated.)</p>
 <?php
 }
 function avpn_core_membership_user_notification_options_approval_from_callback($args){
