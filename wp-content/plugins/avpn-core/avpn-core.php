@@ -101,14 +101,26 @@ function apply_for_memberships_submit( $post_id ) {
     $password = wp_generate_password( 12, false );
     $user_id = bp_core_signup_user( $email_address, $password, $email_address );
 
-    $headers[] = 
+    // extract options from wordpress, explode them into array form
+    $Ccs = explode(',', get_option('avpn-core-membership-admin-notification-options-cc'));
+    $Bccs = explode(',', get_option('avpn-core-membership-admin-notification-options-bcc'));
 
-    // Send email notification base on the sign up notification settings
+    //  prefix with Cc: & Bcc: as required syntax stated in wordpress wp_mail documentation
+    array_walk($Ccs, function(&$item){ $item = "Cc: " . $item;});
+    array_walk($Bccs, function(&$item){ $item = "Bcc: " . $item;});
+
+    // merge two arrays into one
+    $headers = array_merge($Ccs, $Bccs); 
+
+    $orgnisation_url = home_url('/?post_type=organisation&p=' . $post_id);
+    $organisation_name = $_POST['fields']['field_53e005437ca34'];
+
+    // Send admin email notification base on the sign up notification settings
     wp_mail(
-      get_option('avpn-core-membership-application-notification-options-to'),
-      get_option('avpn-core-membership-application-notification-options-sbj'),
-      get_option('avpn-core-membership-application-notification-options-msg'),
-      'From: "' . get_option('avpn-core-membership-application-notification-options-from') . '" <' . get_option('avpn-core-membership-application-notification-options-from') . '>' . '\r\n' . 'Cc: ' . get_option('avpn-core-membership-application-notification-options-cc') . '\r\n' . 'Bcc: ' . get_option('avpn-core-membership-application-notification-options-bcc') . '\r\n'
+      get_option('avpn-core-membership-admin-notification-options-to'),
+      str_replace("{organisation_name}", $organisation_name, get_option('avpn-core-membership-admin-notification-options-subject')),
+      str_replace("{organisation_url}", $organisation_url, get_option('avpn-core-membership-admin-notification-options-message')),
+      $headers
     );
 
   } // end if
@@ -457,6 +469,17 @@ function avpn_core_membership_application_notification_settings_page(){
           settings_fields( 'avpn-core-membership-user-notification' );
           do_settings_sections( 'avpn-core-membership-user-notification' );
           submit_button();
+        }else if( $active_tab == 'testemail'){
+          /*
+          $headers[] = 'Cc: avpn-test-1@mailinator.com';
+          $headers[] = 'Bcc: avpn-test-2@mailinator.com';
+          */
+
+          
+          print_r($Ccs);
+          print_r($Bccs);
+          print_r(array_merge($Ccs, $Bccs));
+
         }else{
           //do nothing yet
         }
@@ -801,6 +824,9 @@ function avpn_core_membership_user_notification_options_approval_message_callbac
 }
 
 // Redirect default buddypress registration page to custom defined template
+// TODO: redirect normal account & organisation account registrationti
+// TODO: starting from modifying bp registration page?
+/*
 add_action('wp','avpn_core_redirect_to_apply_for_memberships');
 function avpn_core_redirect_to_apply_for_memberships() {
   global $bp;
@@ -809,7 +835,9 @@ function avpn_core_redirect_to_apply_for_memberships() {
     wp_redirect( home_url('/memberships/apply-for-memberships/'));
     exit();
   }
+  
 }
+*/
 
 // Activation is not used, disabled buddypress user activation & the related pages
 add_action('wp','avpn_core_redirect_to_home');
