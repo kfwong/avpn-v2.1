@@ -2,6 +2,7 @@ jQuery(document).ready(function($) {
 	$(".field_type-select select").select2({"width": "100%"});
 	$(".field_type-user select").select2({"width": "100%"});
 	$(".field_type-post_object select").select2({"width": "100%"});
+	$(".field_type_select_custom_post_type select").select2({"width": "90%"});
 
 	$('.pretty-datatable').dataTable();
 

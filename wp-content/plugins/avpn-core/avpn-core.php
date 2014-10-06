@@ -119,18 +119,44 @@ function apply_for_memberships_submit( $post_id ) {
     array_walk($Bccs, function(&$item){ $item = "Bcc: " . $item;});
 
     // merge two arrays into one
-    $headers = array_merge($Ccs, $Bccs); 
+    $admin_headers = array_merge($Ccs, $Bccs); 
 
+    // variable placeholders
     $organisation_url = home_url('/?post_type=organisation&p=' . $post_id);
     $organisation_name = $_POST['fields']['field_53e005437ca34'];
+    $organisation_membership_admin_contact_first_name = $_POST['fields']['field_53dfe627365ca'];
+    $organisation_membership_admin_contact_last_name = $_POST['fields']['field_53dfe662365cb'];
+    $organisation_membership_admin_contact_email = $_POST['fields']['field_53dfe693365cc'];
+
+    // admin notification fields
+    $admin_to = get_option('avpn-core-membership-admin-notification-options-to');
+    $admin_subject = str_replace("{organisation_name}", $organisation_name, get_option('avpn-core-membership-admin-notification-options-subject'));
+    $admin_message = str_replace("{organisation_url}", $organisation_url, get_option('avpn-core-membership-admin-notification-options-message'));
+
+    // user notification fields
+    $user_to = $email_address;
+    $user_subject = get_option('avpn-core-membership-user-notification-options-subject');
+    $user_message = get_option('avpn-core-membership-user-notification-options-message');
+    $user_message = str_replace("{organisation_membership_admin_contact_first_name}", $organisation_membership_admin_contact_first_name, $user_message);
+    $user_message = str_replace("{organisation_membership_admin_contact_last_name}", $organisation_membership_admin_contact_last_name, $user_message);
+    $user_message = str_replace("{organisation_name}", $organisation_name, $user_message);
+    $user_message = str_replace("{organisation_url}", $organisation_url, $user_message);
 
     // Send admin email notification base on the sign up notification settings
     wp_mail(
-      get_option('avpn-core-membership-admin-notification-options-to'),
-      str_replace("{organisation_name}", $organisation_name, get_option('avpn-core-membership-admin-notification-options-subject')),
-      str_replace("{organisation_url}", $organisation_url, get_option('avpn-core-membership-admin-notification-options-message')),
-      $headers
+      $admin_to,
+      $admin_subject,
+      $admin_message,
+      $admin_headers
     );
+
+    // Send user email notification
+    wp_mail(
+      $user_to,
+      $user_subject,
+      $user_message,
+      $user_headers
+    );    
 
   } // end if
 
@@ -141,24 +167,38 @@ function apply_for_memberships_submit( $post_id ) {
 // post-action after admin activate pending membership
 add_action('bp_core_activated_user','activate_membership');
 function activate_membership($user_id){
-
   $email_address = get_user_by('id', $user_id)->user_email;
 
-  // Set the nickname & default role
-  wp_update_user(
-    array(
-      'ID'          =>    $user_id,
-      'nickname'    =>    $email_address,
-      'role'        =>    'membership_profile_moderator'
-    )
-  );
+  $loop = new WP_Query( array( 'post_type' => 'organisation') );
+  while ( $loop->have_posts() ){
+    $loop->the_post();
 
-  // Regenerate random user password
-  $password = wp_generate_password( 12, false );
-  wp_set_password($password, $user_id);
+    if($email_address == get_field('membership_admin_contact_email') ){
+      // is one of the organisation moderator account
 
-  // Email the user & password
-  wp_mail( $email_address, 'Welcome!', 'Your Password: ' . $password );
+      // Set the nickname & default role
+      wp_update_user(
+        array(
+          'ID'          =>    $user_id,
+          'nickname'    =>    $email_address,
+          'role'        =>    'membership_profile_moderator'
+        )
+      );
+
+      // Regenerate random user password
+      $password = wp_generate_password( 12, false );
+      wp_set_password($password, $user_id);
+
+      // Email the user & password
+      wp_mail( $email_address, 'Welcome Admin!', 'Your Password: ' . $password );
+
+      // early return if found
+      return;
+    }
+  }
+
+  // is a regular account, since early return is not executing 
+  wp_mail( $email_address, 'Welcome Regular user!', 'Your Password: ' . $password );
 
 }
 
