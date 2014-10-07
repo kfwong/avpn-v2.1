@@ -82,6 +82,11 @@ p, td, th {
 	border-bottom: none;
 }
 
+/* to disable events for individual group page*/
+#forums-groups-li{
+	display:none;
+}
+
 @media screen and (min-width: 768px){
 	.themonic-nav .current-menu-item > a, .themonic-nav .current-menu-ancestor > a, .themonic-nav .current_page_item > a, .themonic-nav .current_page_ancestor > a {
 		background: none repeat scroll 0px 0px #EE2E22;

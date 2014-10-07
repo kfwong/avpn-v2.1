@@ -862,14 +862,23 @@ function avpn_core_redirect_to_home() {
 // Restrict access to media library, view only own post's media or uploaded to that particular post. (Except administrator role)
 add_action('pre_get_posts','avpn_core_restrict_media_library');
 function avpn_core_restrict_media_library( $wp_query_obj ) {
-    global $current_user, $pagenow;
-    if( !is_a( $current_user, 'WP_User') )
-    return;
-    if( 'admin-ajax.php' != $pagenow || $_REQUEST['action'] != 'query-attachments' )
-    return;
-    if( !current_user_can('manage_media_library') )
-    $wp_query_obj->set('author', $current_user->ID );
-    return;
+  global $current_user, $pagenow;
+  if( !is_a( $current_user, 'WP_User') )
+  return;
+  if( 'admin-ajax.php' != $pagenow || $_REQUEST['action'] != 'query-attachments' )
+  return;
+  if( !current_user_can('manage_media_library') )
+  $wp_query_obj->set('author', $current_user->ID );
+  return;
 }
+
+function bp_remove_nav_item() {
+    global $bp;
+
+    bp_core_remove_nav_item( 'events' );
+    bp_core_remove_subnav_item('groups', 'group-events');
+    // NOTE: disable for individual group pages events at CSS #forums-groups-li
+}
+add_action( 'bp_setup_nav', 'bp_remove_nav_item' ,999);
 
 ?>
