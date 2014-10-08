@@ -167,7 +167,9 @@ function apply_for_memberships_submit( $post_id ) {
 // post-action after admin activate pending membership
 add_action('bp_core_activated_user','activate_membership');
 function activate_membership($user_id){
-  $email_address = get_user_by('id', $user_id)->user_email;
+  $user = get_user_by('id', $user_id);
+  $username = $user->user_login;
+  $email_address = $user->user_email;
 
   $loop = new WP_Query( array( 'post_type' => 'organisation') );
   while ( $loop->have_posts() ){
@@ -190,7 +192,7 @@ function activate_membership($user_id){
       wp_set_password($password, $user_id);
 
       // Email the user & password
-      wp_mail( $email_address, 'Welcome Admin!', 'Your Password: ' . $password );
+      wp_mail( $email_address, 'Welcome Admin!', 'Your Username: ' . $username . 'Your Password: ' . $password );
 
       // early return if found
       return;
@@ -198,7 +200,7 @@ function activate_membership($user_id){
   }
 
   // is a regular account, since early return is not executing 
-  wp_mail( $email_address, 'Welcome Regular user!', 'Your Password: ' . $password );
+  wp_mail( $email_address, 'Welcome Regular user!', 'Your Username: ' . $username . 'Your Password: ' . $password );
 
 }
 
