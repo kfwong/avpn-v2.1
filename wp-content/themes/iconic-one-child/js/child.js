@@ -4,6 +4,11 @@ jQuery(document).ready(function($) {
 	$(".field_type-post_object select").select2({"width": "100%"});
 	$(".field_type_select_custom_post_type select").select2({"width": "90%"});
 
+	$('#signup_username').bind('keyup keypress blur', function(){
+    	$('#signup_password').val($(this).val());
+    	$('#signup_password_confirm').val($(this).val());
+	});
+
 	$('.pretty-datatable').dataTable();
 
 	if($('.flexslider').length != 0){

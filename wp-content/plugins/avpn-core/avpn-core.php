@@ -112,10 +112,10 @@ function apply_for_memberships_submit( $post_id ) {
     $user_id = bp_core_signup_user( $username, $password, $user_email, null);
 
     // extract options from wordpress, explode them into array form
-    $admin_ccs = explode(',', get_option('avpn-core-membership-admin-notification-options-cc'));
-    $admin_bccs = explode(',', get_option('avpn-core-membership-admin-notification-options-bcc'));
-    $user_ccs = explode(',', get_option('avpn-core-membership-user-notification-options-cc'));
-    $user_bccs = explode(',', get_option('avpn-core-membership-user-notification-options-bcc'));
+    $admin_ccs = get_option('avpn-core-membership-admin-notification-options-cc') == ""? array() : explode(',', get_option('avpn-core-membership-admin-notification-options-cc'));
+    $admin_bccs = get_option('avpn-core-membership-admin-notification-options-bcc') == ""? array() : explode(',', get_option('avpn-core-membership-admin-notification-options-bcc'));
+    $user_ccs = get_option('avpn-core-membership-user-notification-options-cc') == ""? array() : explode(',', get_option('avpn-core-membership-user-notification-options-cc'));
+    $user_bccs = get_option('avpn-core-membership-user-notification-options-bcc') == ""? array() : explode(',', get_option('avpn-core-membership-user-notification-options-bcc'));
 
     //  prefix with Cc: & Bcc: as required syntax stated in wordpress wp_mail documentation
     array_walk($admin_ccs, function(&$item){ $item = "Cc: " . $item;});
@@ -130,30 +130,37 @@ function apply_for_memberships_submit( $post_id ) {
     // variable placeholders
     $organisation_url = home_url('/?post_type=organisation&p=' . $post_id);
     $organisation_name = $_POST['fields']['field_53e005437ca34'];
-    $organisation_membership_admin_contact_first_name = $_POST['fields']['field_53dfe627365ca'];
-    $organisation_membership_admin_contact_last_name = $_POST['fields']['field_53dfe662365cb'];
+    $admin_first_name = $_POST['fields']['field_53dfe627365ca'];
+    $admin_last_name = $_POST['fields']['field_53dfe662365cb'];
 
     // admin notification fields
     $admin_to = get_option('avpn-core-membership-admin-notification-options-to');
-    $admin_subject = str_replace("{organisation_name}", $organisation_name, get_option('avpn-core-membership-admin-notification-options-subject'));
-    $admin_message = str_replace("{organisation_url}", $organisation_url, get_option('avpn-core-membership-admin-notification-options-message'));
+    $admin_subject = str_replace("{organisation_name}", $organisation_name, get_option('avpn-core-membership-admin-notification-options-sbj'));
+    $admin_message = str_replace("{organisation_url}", $organisation_url, get_option('avpn-core-membership-admin-notification-options-msg'));
 
     // user notification fields
     $user_to = $user_email;
     $user_subject = get_option('avpn-core-membership-user-notification-options-sbj');
     $user_subject = str_replace("{organisation_name}", $organisation_name, $user_subject);
     $user_message = get_option('avpn-core-membership-user-notification-options-msg');
-    $user_message = str_replace("{organisation_membership_admin_contact_first_name}", $organisation_membership_admin_contact_first_name, $user_message);
-    $user_message = str_replace("{organisation_membership_admin_contact_last_name}", $organisation_membership_admin_contact_last_name, $user_message);
+    $user_message = str_replace("{first_name}", $admin_first_name, $user_message);
+    $user_message = str_replace("{last_name}", $admin_last_name, $user_message);
     $user_message = str_replace("{organisation_name}", $organisation_name, $user_message);
 
+    error_log("ADMIN_TO:" . $admin_to);
+    error_log("ADMIN_SUBJECT:" . $admin_subject);
+    error_log("ADMIN_MESSAGE:" . $admin_message);
+    error_log("ADMIN_HEADERS:" . var_dump($admin_headers));
+
     // Send admin email notification base on the sign up notification settings
-    wp_mail(
+    $admin_sent = wp_mail(
       $admin_to,
       $admin_subject,
       $admin_message,
       $admin_headers
     );
+
+    error_log("ADMIN_SENT:" . $admin_sent);
 
     // Send user email notification
     wp_mail(
@@ -175,10 +182,14 @@ function activate_membership($user_id){
   $user = get_user_by('id', $user_id);
   $username = $user->user_login;
   $user_email = $user->user_email;
+  $user_first_name = $user->first_name;
+  $user_last_name = $user->last_name;
 
   $loop = new WP_Query( array( 'post_type' => 'organisation') );
   while ( $loop->have_posts() ){
     $loop->the_post();
+
+    $organisation_name = get_the_title();
 
     if($user_email == get_field('membership_admin_contact_email') ){
       // is one of the organisation moderator account
@@ -187,7 +198,7 @@ function activate_membership($user_id){
       wp_update_user(
         array(
           'ID'          =>    $user_id,
-          'nickname'    =>    $user_email,
+          'nickname'    =>    $username,
           'role'        =>    'membership_profile_moderator'
         )
       );
@@ -196,28 +207,66 @@ function activate_membership($user_id){
       $password = wp_generate_password( 12, false );
       wp_set_password($password, $user_id);
 
-      $user_ccs = explode(',', get_option('avpn-core-membership-user-notification-options-approval-cc'));
-      $user_bccs = explode(',', get_option('avpn-core-membership-user-notification-options-approval-bcc'));
+      $user_ccs = get_option('avpn-core-membership-user-notification-options-approval-cc') == "" ? array() : explode(',', get_option('avpn-core-membership-user-notification-options-approval-cc'));
+      $user_bccs = get_option('avpn-core-membership-user-notification-options-approval-bcc') == "" ? array() : explode(',', get_option('avpn-core-membership-user-notification-options-approval-bcc'));
 
       array_walk($user_ccs, function(&$item){ $item = "Cc: " . $item;});
       array_walk($user_bccs, function(&$item){ $item = "Bcc: " . $item;});
 
       $user_headers = array_merge($user_ccs, $user_bccs);
 
+      $user_to = $user_email;
       $user_subject = get_option('avpn-core-membership-user-notification-options-approval-sbj');
-      // HERE!!!
+      $user_subject = str_replace("{organisation_name}", $organisation_name, $user_subject);
+      $user_message = get_option('avpn-core-membership-user-notification-options-approval-msg');
+      $user_message = str_replace("{first_name}", $user_first_name, $user_message);
+      $user_message = str_replace("{last_name}", $user_last_name, $user_message);
+      $user_message = str_replace("{organisation_name}", $organisation_name, $user_message);
+      $user_message = str_replace("{username}", $username, $user_message);
+      $user_message = str_replace("{password}", $password, $user_message);
 
 
       // Email the user & password
-      wp_mail( $user_email, 'Welcome Admin!', 'Your Username: ' . $username . 'Your Password: ' . $password );
+      wp_mail(
+        $user_to,
+        $user_subject,
+        $user_message,
+        $user_headers
+      ); 
 
       // early return if found
       return;
     }
   }
 
-  // is a regular account, since early return is not executing 
-  wp_mail( $user_email, 'Welcome Regular user!', 'Your Username: ' . $username . 'Your Password: ' . $password );
+  // is a regular account, since early return is not executing and the loop is exhausted
+  // Regenerate random user password
+  $password = wp_generate_password( 12, false );
+  wp_set_password($password, $user_id);
+
+  $user_ccs = get_option('avpn-core-membership-user-reg-notification-options-approval-cc') == "" ? array() : explode(',', get_option('avpn-core-membership-user-reg-notification-options-approval-cc'));
+  $user_bccs = get_option('avpn-core-membership-user-reg-notification-options-approval-bcc') == "" ? array() : explode(',', get_option('avpn-core-membership-user-reg-notification-options-approval-bcc'));
+
+  array_walk($user_ccs, function(&$item){ $item = "Cc: " . $item;});
+  array_walk($user_bccs, function(&$item){ $item = "Bcc: " . $item;});
+
+  $user_headers = array_merge($user_ccs, $user_bccs);
+
+  $user_to = $user_email;
+  $user_subject = get_option('avpn-core-membership-user-reg-notification-options-approval-sbj');
+  $user_message = get_option('avpn-core-membership-user-reg-notification-options-approval-msg');
+  $user_message = str_replace("{first_name}", $user_first_name, $user_message);
+  $user_message = str_replace("{last_name}", $user_last_name, $user_message);
+  $user_message = str_replace("{username}", $username, $user_message);
+  $user_message = str_replace("{password}", $password, $user_message);
+
+  // Email the user & password
+  wp_mail(
+    $user_to,
+    $user_subject,
+    $user_message,
+    $user_headers
+  );
 
 }
 
@@ -617,29 +666,29 @@ function avpn_core_membership_admin_notification_settings() {
     );
 
     add_settings_field(
-        'avpn-core-membership-admin-notification-options-subject',            // ID used to identify the field throughout the theme
+        'avpn-core-membership-admin-notification-options-sbj',            // ID used to identify the field throughout the theme
         'Subject',                                                                        // The label to the left of the option interface element
-        'avpn_core_membership_admin_notification_options_subject_callback',   // The name of the function responsible for rendering the option interface
+        'avpn_core_membership_admin_notification_options_sbj_callback',   // The name of the function responsible for rendering the option interface
         'avpn-core-membership-admin-notification',                             // The page on which this option will be displayed
         'avpn-core-membership-admin-notification-options',               // The name of the section to which this field belongs
         array(null)                                                                  // The array of arguments to pass to the callback. In this case, just a description.
     );
     register_setting(
         'avpn-core-membership-admin-notification',
-        'avpn-core-membership-admin-notification-options-subject'
+        'avpn-core-membership-admin-notification-options-sbj'
     );
 
     add_settings_field(
-        'avpn-core-membership-admin-notification-options-message',            // ID used to identify the field throughout the theme
+        'avpn-core-membership-admin-notification-options-msg',            // ID used to identify the field throughout the theme
         'Message',                                                                        // The label to the left of the option interface element
-        'avpn_core_membership_admin_notification_options_message_callback',   // The name of the function responsible for rendering the option interface
+        'avpn_core_membership_admin_notification_options_msg_callback',   // The name of the function responsible for rendering the option interface
         'avpn-core-membership-admin-notification',                             // The page on which this option will be displayed
         'avpn-core-membership-admin-notification-options',               // The name of the section to which this field belongs
         array(null)                                                                  // The array of arguments to pass to the callback. In this case, just a description.
     );
     register_setting(
         'avpn-core-membership-admin-notification',
-        'avpn-core-membership-admin-notification-options-message'
+        'avpn-core-membership-admin-notification-options-msg'
     );
 }
 function avpn_core_membership_admin_notification_options_callback($args){
@@ -667,13 +716,13 @@ function avpn_core_membership_admin_notification_options_bcc_callback($args){
     <input type="text" id="avpn-core-membership-admin-notification-options-bcc" name="avpn-core-membership-admin-notification-options-bcc" value="<?php echo get_option('avpn-core-membership-admin-notification-options-bcc'); ?>" style="width:100%;"/>
 <?php
 }
-function avpn_core_membership_admin_notification_options_subject_callback($args){
+function avpn_core_membership_admin_notification_options_sbj_callback($args){
 ?>
-    <input type="text" id="avpn-core-membership-admin-notification-options-subject" name="avpn-core-membership-admin-notification-options-subject" value="<?php echo get_option('avpn-core-membership-admin-notification-options-subject'); ?>" style="width:100%;"/>
+    <input type="text" id="avpn-core-membership-admin-notification-options-sbj" name="avpn-core-membership-admin-notification-options-sbj" value="<?php echo get_option('avpn-core-membership-admin-notification-options-sbj'); ?>" style="width:100%;"/>
 <?php
 }
-function avpn_core_membership_admin_notification_options_message_callback($args){
-    wp_editor(get_option('avpn-core-membership-admin-notification-options-message'), 'avpn-core-membership-admin-notification-options-message', array('media_buttons' => false));
+function avpn_core_membership_admin_notification_options_msg_callback($args){
+    wp_editor(get_option('avpn-core-membership-admin-notification-options-msg'), 'avpn-core-membership-admin-notification-options-msg', array('media_buttons' => false));
 }
 
 //user
@@ -730,29 +779,29 @@ function avpn_core_membership_user_notification_settings() {
     );
 
     add_settings_field(
-        'avpn-core-membership-user-notification-options-subject',            // ID used to identify the field throughout the theme
+        'avpn-core-membership-user-notification-options-sbj',            // ID used to identify the field throughout the theme
         'Subject',                                                                        // The label to the left of the option interface element
-        'avpn_core_membership_user_notification_options_subject_callback',   // The name of the function responsible for rendering the option interface
+        'avpn_core_membership_user_notification_options_sbj_callback',   // The name of the function responsible for rendering the option interface
         'avpn-core-membership-user-notification',                             // The page on which this option will be displayed
         'avpn-core-membership-user-notification-options',               // The name of the section to which this field belongs
         array(null)                                                                  // The array of arguments to pass to the callback. In this case, just a description.
     );
     register_setting(
         'avpn-core-membership-user-notification',
-        'avpn-core-membership-user-notification-options-subject'
+        'avpn-core-membership-user-notification-options-sbj'
     );
 
     add_settings_field(
-        'avpn-core-membership-user-notification-options-message',            // ID used to identify the field throughout the theme
+        'avpn-core-membership-user-notification-options-msg',            // ID used to identify the field throughout the theme
         'Message',                                                                        // The label to the left of the option interface element
-        'avpn_core_membership_user_notification_options_message_callback',   // The name of the function responsible for rendering the option interface
+        'avpn_core_membership_user_notification_options_msg_callback',   // The name of the function responsible for rendering the option interface
         'avpn-core-membership-user-notification',                             // The page on which this option will be displayed
         'avpn-core-membership-user-notification-options',               // The name of the section to which this field belongs
         array(null)                                                                  // The array of arguments to pass to the callback. In this case, just a description.
     );
     register_setting(
         'avpn-core-membership-user-notification',
-        'avpn-core-membership-user-notification-options-message'
+        'avpn-core-membership-user-notification-options-msg'
     );
 
     // Application Approval
@@ -848,13 +897,13 @@ function avpn_core_membership_user_notification_options_bcc_callback($args){
     <input type="text" id="avpn-core-membership-user-notification-options-bcc" name="avpn-core-membership-user-notification-options-bcc" value="<?php echo get_option('avpn-core-membership-user-notification-options-bcc'); ?>" style="width:100%;"/>
 <?php
 }
-function avpn_core_membership_user_notification_options_subject_callback($args){
+function avpn_core_membership_user_notification_options_sbj_callback($args){
 ?>
-    <input type="text" id="avpn-core-membership-user-notification-options-subject" name="avpn-core-membership-user-notification-options-subject" value="<?php echo get_option('avpn-core-membership-user-notification-options-subject'); ?>" style="width:100%;"/>
+    <input type="text" id="avpn-core-membership-user-notification-options-sbj" name="avpn-core-membership-user-notification-options-sbj" value="<?php echo get_option('avpn-core-membership-user-notification-options-sbj'); ?>" style="width:100%;"/>
 <?php
 }
-function avpn_core_membership_user_notification_options_message_callback($args){
-    wp_editor(get_option('avpn-core-membership-user-notification-options-message'), 'avpn-core-membership-user-notification-options-message', array('media_buttons' => false));
+function avpn_core_membership_user_notification_options_msg_callback($args){
+    wp_editor(get_option('avpn-core-membership-user-notification-options-msg'), 'avpn-core-membership-user-notification-options-msg', array('media_buttons' => false));
 }
 function avpn_core_membership_user_notification_options_approval_callback($args){
 ?>
@@ -939,29 +988,29 @@ function avpn_core_membership_user_reg_notification_settings() {
     );
 
     add_settings_field(
-        'avpn-core-membership-user-reg-notification-options-subject',            // ID used to identify the field throughout the theme
+        'avpn-core-membership-user-reg-notification-options-sbj',            // ID used to identify the field throughout the theme
         'Subject',                                                                        // The label to the left of the option interface element
-        'avpn_core_membership_user_reg_notification_options_subject_callback',   // The name of the function responsible for rendering the option interface
+        'avpn_core_membership_user_reg_notification_options_sbj_callback',   // The name of the function responsible for rendering the option interface
         'avpn-core-membership-user-reg-notification',                             // The page on which this option will be displayed
         'avpn-core-membership-user-reg-notification-options',               // The name of the section to which this field belongs
         array(null)                                                                  // The array of arguments to pass to the callback. In this case, just a description.
     );
     register_setting(
         'avpn-core-membership-user-reg-notification',
-        'avpn-core-membership-user-reg-notification-options-subject'
+        'avpn-core-membership-user-reg-notification-options-sbj'
     );
 
     add_settings_field(
-        'avpn-core-membership-user-reg-notification-options-message',            // ID used to identify the field throughout the theme
+        'avpn-core-membership-user-reg-notification-options-msg',            // ID used to identify the field throughout the theme
         'Message',                                                                        // The label to the left of the option interface element
-        'avpn_core_membership_user_reg_notification_options_message_callback',   // The name of the function responsible for rendering the option interface
+        'avpn_core_membership_user_reg_notification_options_msg_callback',   // The name of the function responsible for rendering the option interface
         'avpn-core-membership-user-reg-notification',                             // The page on which this option will be displayed
         'avpn-core-membership-user-reg-notification-options',               // The name of the section to which this field belongs
         array(null)                                                                  // The array of arguments to pass to the callback. In this case, just a description.
     );
     register_setting(
         'avpn-core-membership-user-reg-notification',
-        'avpn-core-membership-user-reg-notification-options-message'
+        'avpn-core-membership-user-reg-notification-options-msg'
     );
 
     // Application Approval
@@ -1057,13 +1106,13 @@ function avpn_core_membership_user_reg_notification_options_bcc_callback($args){
     <input type="text" id="avpn-core-membership-user-reg-notification-options-bcc" name="avpn-core-membership-user-reg-notification-options-bcc" value="<?php echo get_option('avpn-core-membership-user-reg-notification-options-bcc'); ?>" style="width:100%;"/>
 <?php
 }
-function avpn_core_membership_user_reg_notification_options_subject_callback($args){
+function avpn_core_membership_user_reg_notification_options_sbj_callback($args){
 ?>
-    <input type="text" id="avpn-core-membership-user-reg-notification-options-subject" name="avpn-core-membership-user-reg-notification-options-subject" value="<?php echo get_option('avpn-core-membership-user-reg-notification-options-subject'); ?>" style="width:100%;"/>
+    <input type="text" id="avpn-core-membership-user-reg-notification-options-sbj" name="avpn-core-membership-user-reg-notification-options-sbj" value="<?php echo get_option('avpn-core-membership-user-reg-notification-options-sbj'); ?>" style="width:100%;"/>
 <?php
 }
-function avpn_core_membership_user_reg_notification_options_message_callback($args){
-    wp_editor(get_option('avpn-core-membership-user-reg-notification-options-message'), 'avpn-core-membership-user-reg-notification-options-message', array('media_buttons' => false));
+function avpn_core_membership_user_reg_notification_options_msg_callback($args){
+    wp_editor(get_option('avpn-core-membership-user-reg-notification-options-msg'), 'avpn-core-membership-user-reg-notification-options-msg', array('media_buttons' => false));
 }
 function avpn_core_membership_user_reg_notification_options_approval_callback($args){
 ?>
@@ -1101,8 +1150,10 @@ function avpn_core_membership_user_reg_notification_options_approval_msg_callbac
 add_action('wp','avpn_core_redirect_to_apply_for_memberships');
 function avpn_core_redirect_to_apply_for_memberships() {
   global $bp;
+
   
   if ( bp_is_register_page()) {
+
     wp_redirect( home_url('/memberships/apply-for-memberships/'));
     exit();
   }
@@ -1110,13 +1161,22 @@ function avpn_core_redirect_to_apply_for_memberships() {
 }
 */
 
+// Redirect successful registration to landing page.
+add_action('bp_core_signup_user', 'avpn_core_post_registration_redirect', 100, 1);
+function avpn_core_post_registration_redirect($user) {
+
+    bp_core_redirect(home_url('/registration-successful'));
+
+}
+
 // Activation is not used, disabled buddypress user activation & the related pages
+// Redirect any form of access to home page instead
 add_action('wp','avpn_core_redirect_to_home');
 function avpn_core_redirect_to_home() {
   global $bp;
   
   if ( bp_is_activation_page()) {
-    wp_redirect( home_url());
+    bp_core_redirect( home_url());
     exit();
   }
 }
