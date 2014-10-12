@@ -147,20 +147,13 @@ function apply_for_memberships_submit( $post_id ) {
     $user_message = str_replace("{last_name}", $admin_last_name, $user_message);
     $user_message = str_replace("{organisation_name}", $organisation_name, $user_message);
 
-    error_log("ADMIN_TO:" . $admin_to);
-    error_log("ADMIN_SUBJECT:" . $admin_subject);
-    error_log("ADMIN_MESSAGE:" . $admin_message);
-    error_log("ADMIN_HEADERS:" . var_dump($admin_headers));
-
     // Send admin email notification base on the sign up notification settings
-    $admin_sent = wp_mail(
+    wp_mail(
       $admin_to,
       $admin_subject,
       $admin_message,
       $admin_headers
     );
-
-    error_log("ADMIN_SENT:" . $admin_sent);
 
     // Send user email notification
     wp_mail(
@@ -1164,6 +1157,24 @@ function avpn_core_redirect_to_apply_for_memberships() {
 // Redirect successful registration to landing page.
 add_action('bp_core_signup_user', 'avpn_core_post_registration_redirect', 100, 1);
 function avpn_core_post_registration_redirect($user) {
+    $account_type = $_POST['signup_account_type'];
+
+    if($account_type == "regular"){
+      // if the application is from regular account, send admin notification email
+      $admin_ccs = get_option('avpn-core-membership-admin-notification-options-cc') == ""? array() : explode(',', get_option('avpn-core-membership-admin-notification-options-cc'));
+      $admin_bccs = get_option('avpn-core-membership-admin-notification-options-bcc') == ""? array() : explode(',', get_option('avpn-core-membership-admin-notification-options-bcc'));
+
+      array_walk($admin_ccs, function(&$item){ $item = "Cc: " . $item;});
+      array_walk($admin_bccs, function(&$item){ $item = "Bcc: " . $item;});
+
+      $admin_headers = array_merge($admin_ccs, $admin_bccs);
+
+      $admin_to = get_option('avpn-core-membership-admin-notification-options-to');
+      $admin_subject = str_replace("{organisation_name}", $organisation_name, get_option('avpn-core-membership-admin-notification-options-sbj'));
+      $admin_message = str_replace("{organisation_url}", $organisation_url, get_option('avpn-core-membership-admin-notification-options-msg'));
+      //HERE
+
+    }
 
     bp_core_redirect(home_url('/registration-successful'));
 

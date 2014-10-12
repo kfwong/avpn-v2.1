@@ -28,6 +28,7 @@
 				<?php /***** Basic Account Details ******/ ?>
 
 				<h4><?php _e( 'Account Details', 'buddypress' ); ?></h4>
+				<input type="hidden" name="signup_account_type" id="signup_account_type" value="regular" />
 
 				<label for="signup_username"><?php _e( 'Username', 'buddypress' ); ?> <?php _e( '(required)', 'buddypress' ); ?></label>
 				<?php do_action( 'bp_signup_username_errors' ); ?>
