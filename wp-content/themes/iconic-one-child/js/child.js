@@ -5,8 +5,8 @@ jQuery(document).ready(function($) {
 	$(".field_type_select_custom_post_type select").select2({"width": "90%"});
 
 	$('#signup_username').bind('keyup keypress blur', function(){
-    	$('#signup_password').val($(this).val());
-    	$('#signup_password_confirm').val($(this).val());
+    	$('#signup_password').val("generated_password");
+    	$('#signup_password_confirm').val("generated_password");
 	});
 
 	$('.pretty-datatable').dataTable();
