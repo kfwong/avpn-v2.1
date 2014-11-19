@@ -843,6 +843,7 @@ function avpn_core_restrict_media_library( $wp_query_obj ) {
   return;
 }
 
+add_action( 'bp_setup_nav', 'bp_remove_nav_item' ,999);
 function bp_remove_nav_item() {
     global $bp;
 
@@ -850,6 +851,67 @@ function bp_remove_nav_item() {
     bp_core_remove_subnav_item('groups', 'group-events');
     // NOTE: disable for individual group pages events at CSS #forums-groups-li
 }
-add_action( 'bp_setup_nav', 'bp_remove_nav_item' ,999);
+
+add_action( 'really_simple_csv_importer_save_meta', 'avpn_core_rscism_filter', 10, 3);
+function avpn_core_rscism_filter($meta, $post, $is_update) {
+  /*$meta_array = array();
+
+  foreach($meta as $key => $value){
+    if($key == 'which_are_the_main_countries_that_your_company_operate_in'){
+      $meta_array['field_53c336259c1ac'] = serialize(preg_split("/,+/", $value));
+    }else if($key == 'my_organisation_is_registered_as'){
+      $meta_array['field_53c3322a88013'] = serialize(preg_split("/,+/", $value));
+    }else if($key == 'country'){
+      $meta_array['field_53dfe525fed8a'] = serialize(preg_split("/,+/", $value));
+    }else if($key == 'billing_address_country'){
+      $meta_array['field_53dfe827365d5'] = serialize(preg_split("/,+/", $value));
+    }else if($key == 'avpn_membership_type'){
+      $meta_array['field_53c334af9c1a8'] = serialize(preg_split("/,+/", $value));
+    }else if($key == 'my_organisaions_relevent_activity_is'){
+      $meta_array['field_53c335439c1a9'] = serialize(preg_split("/,+/", $value));
+    }else if($key == 'which_are_the_main_countries_that_your_company_operate_in'){
+      $meta_array['field_53c336259c1ac'] = serialize(preg_split("/,+/", $value));
+    }else if($key == 'which_social_sectors_do_you_support'){
+      $meta_array['field_53c3368f9c1ad'] = serialize(preg_split("/,+/", $value));
+    }else if($key == 'what_is_the_average_amount_per_investee_that_you_fund'){
+      $meta_array['field_53c336c29c1ae'] = serialize(preg_split("/,+/", $value));
+    }else if($key == 'what_is_your_annual_funding_target'){
+      $meta_array['field_53c3373b9c1af'] = serialize(preg_split("/,+/", $value));
+    }else if($key == 'how_many_transactions_do_you_target_per_year'){
+      $meta_array['field_53dfefe2760cf'] = serialize(preg_split("/,+/", $value));
+    }else if($key == 'what_main_types_of_financing_do_you_offer'){
+      $meta_array['field_53c337799c1b0'] = serialize(preg_split("/,+/", $value));
+    }else if($key == 'what_types_of_services_do_you_provide'){
+      $meta_array['field_53c337ae9c1b1'] = serialize(preg_split("/,+/", $value));
+    }else if($key == 'what_is_your_preferred_type_of_target_organisations'){
+      $meta_array['field_53c338b375df3'] = serialize(preg_split("/,+/", $value));
+    }else if($key == 'what_is_the_preferred_stage_of_development_of_target_organisations'){
+      $meta_array['field_53c338f375df4'] = serialize(preg_split("/,+/", $value));
+    }else if($key == 'how_would_you_rate_your_hands-on_involvement_with_investees'){
+      $meta_array['field_53c3393475df5'] = serialize(preg_split("/,+/", $value)); 
+    }else{
+      $meta_array[$key] = $value;
+    }
+  }*/
+
+  if(isset($meta['field_53c336259c1ac'])) $meta['field_53c336259c1ac'] = preg_split("/,+/", $meta['field_53c336259c1ac']);
+  if(isset($meta['field_53c3322a88013'])) $meta['field_53c3322a88013'] = preg_split("/,+/", $meta['field_53c3322a88013']);
+  if(isset($meta['field_53dfe525fed8a'])) $meta['field_53dfe525fed8a'] = preg_split("/,+/", $meta['field_53dfe525fed8a']);
+  if(isset($meta['field_53dfe827365d5'])) $meta['field_53dfe827365d5'] = preg_split("/,+/", $meta['field_53dfe827365d5']);
+  if(isset($meta['field_53c334af9c1a8'])) $meta['field_53c334af9c1a8'] = preg_split("/,+/", $meta['field_53c334af9c1a8']);
+  if(isset($meta['field_53c335439c1a9'])) $meta['field_53c335439c1a9'] = preg_split("/,+/", $meta['field_53c335439c1a9']);
+  if(isset($meta['field_53c3368f9c1ad'])) $meta['field_53c3368f9c1ad'] = preg_split("/,+/", $meta['field_53c3368f9c1ad']);
+  if(isset($meta['field_53c336c29c1ae'])) $meta['field_53c336c29c1ae'] = preg_split("/,+/", $meta['field_53c336c29c1ae']);
+  if(isset($meta['field_53c3373b9c1af'])) $meta['field_53c3373b9c1af'] = preg_split("/,+/", $meta['field_53c3373b9c1af']);
+  if(isset($meta['field_53dfefe2760cf'])) $meta['field_53dfefe2760cf'] = preg_split("/,+/", $meta['field_53dfefe2760cf']);
+  if(isset($meta['field_53c337799c1b0'])) $meta['field_53c337799c1b0'] = preg_split("/,+/", $meta['field_53c337799c1b0']);
+  if(isset($meta['field_53c337ae9c1b1'])) $meta['field_53c337ae9c1b1'] = preg_split("/,+/", $meta['field_53c337ae9c1b1']);
+  if(isset($meta['field_53c338b375df3'])) $meta['field_53c338b375df3'] = preg_split("/,+/", $meta['field_53c338b375df3']);
+  if(isset($meta['field_53c338f375df4'])) $meta['field_53c338f375df4'] = preg_split("/,+/", $meta['field_53c338f375df4']);
+  if(isset($meta['field_53c3393475df5'])) $meta['field_53c3393475df5'] = preg_split("/,+/", $meta['field_53c3393475df5']);
+
+
+  return $meta;
+}
 
 ?>

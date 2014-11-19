@@ -68,7 +68,7 @@ function get_organisation_map_data(){
   $geoData = json_decode($geoJson);
 
   $data = array();
-  $query = new WP_Query(array('post_type' => 'organisation'));
+  $query = new WP_Query(array('post_type' => 'organisation', 'posts_per_page' => -1));
   while ($query->have_posts()){
     $query->the_post();
     
