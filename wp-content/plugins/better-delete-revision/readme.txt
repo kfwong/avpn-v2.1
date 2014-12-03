@@ -1,10 +1,10 @@
 === Better Delete Revision ===
-Contributors: galerio, Urda, bestweblayout
+Contributors: galerio, Urda
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=K72TR62V5ZDU8
 Tags: better delete revision, revision, delete, remove, removal, revision removal, delete revision, disable revision, no revision, revision manager, manage revision, remove revision, post revision, page revision, optimize database, database optimization, optimize, fast, light, faster, lighter, speed up, improve site performance, redundant revisions, perform optimization, delete revision from database, remove old database content, reduce database size
 Requires at least: 2.7
-Tested up to: 4.0
-Stable tag: 1.5
+Tested up to: 4.0.1
+Stable tag: 1.6.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -17,7 +17,7 @@ Better Delete Revision is based on the old "Delete Revision" plugin but it is co
 = Your current published, scheduled, and draft posts are never touched by this plugin! =
 This plugin can also perform optimizations on your Wordpress database. With optimization and old revision removal this plugin will keep your database lighter and smaller throughout use. Removing old revisions and database optimizations is one of the best things you can do to your Wordpress blog to keep it running as fast as it can.
 
-Please pay ATTENTION, if you use the NextGEN Gallery plugin, some problems may occur when deleting revisions of posts or pages that contain the shortcode of the NextGEN Gallery plugin. So if you also use the NextGEN Gallery plugin we recommend you to make a backup before using the Better Delete Revision.
+Please pay ATTENTION, even if we added a fix that solve the problem, if you use the NextGEN Gallery plugin, some problems may occur when deleting revisions of posts or pages that contain the shortcode of the NextGEN Gallery plugin. So if you also use the NextGEN Gallery plugin we recommend you to make a backup before using the Better Delete Revision.
 
 Wordpress MU or customs installation (like some pre-made installation of some Hosting Providers) are not yet supported. Wordpress MU support is in our TODO list.
 
@@ -67,6 +67,13 @@ No. The revision posts is redundancy, is not the same that the normal posts. For
 
 == Changelog ==
 
+= V1.6.1 - 22.11.2014 =
+* Removed : Unnecessary and unwanted menu
+
+= V1.6 - 21.11.2014 =
+* Update : We updated all functionality for Wordpress 4.0.1.
+* NEW    : We added a menu page.
+
 = V1.5 - 17.09.2014 =
 * Update : We've added a fix for compatibility with the plugin NextGen Gallery.
 
@@ -91,6 +98,9 @@ No. The revision posts is redundancy, is not the same that the normal posts. For
 * New : Just completed test on Wordpress 3.0.1
 
 == Upgrade Notice ==
+
+= V1.6 =
+We updated all functionality for Wordpress 4.0.1. We added a menu page.
 
 = V1.5 =
 We've added a fix for compatibility with the plugin NextGen Gallery.

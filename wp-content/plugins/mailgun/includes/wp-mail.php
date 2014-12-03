@@ -209,7 +209,7 @@ function wp_mail( $to, $subject, $message, $headers = '', $attachments = array()
 			foreach($value as $key => $value){
 				$payload .= '--' . $boundary;
 		        $payload .= "\r\n";
-		        $payload .= 'Content-Disposition: form-data; name="' . $parent_key . '[' . $key . ']"' . "\r\n\r\n";
+		        $payload .= 'Content-Disposition: form-data; name="' . $parent_key . "\"\r\n\r\n";
 		        $payload .= $value;
 		        $payload .= "\r\n";
 			}

@@ -1,6 +1,8 @@
 /* Custom share Buttons With Floating Sidebar (C)
  * Author: Raghunath gurjar
  * */
+.sbutton img {opacity:0.7;}
+.sbutton img:hover{opacity:1;}
 .social-widget {
     position: fixed;
     width: 50px;
@@ -8,11 +10,13 @@
 }
 
 .social-widget .sbutton {
-    float: right;
-    height: 41px;
-    margin: 0;
-    position: relative;
-    width: 50px;
+background: none;
+float: right;
+height: 41px;
+margin: 0;
+padding: 0;
+position: relative;
+width: 50px;
 }
 	.sbutton img{padding:5px;}
 	
@@ -27,6 +31,12 @@
 	#li a{background:none repeat scroll 0 0 #007BB6; text-align:center; display:block;  width:45px; height:40px; border-bottom:1px solid rgba(255, 255, 255, 0.1); outline:none;}
 	
 	#pin a{background:none repeat scroll 0 0 #ca2027; text-align:center; display:block;  width:45px; height:40px; border-bottom:1px solid rgba(255, 255, 255, 0.1); outline:none;}
+	#yt a{background:none repeat scroll 0 0 #ffffff; text-align:center; display:block;  width:45px; height:40px; border-bottom:1px solid rgba(255, 255, 255, 0.1); outline:none;}
+	#re a{background:none repeat scroll 0 0 #FF1A00; text-align:center; display:block;  width:45px; height:40px; border-bottom:1px solid rgba(255, 255, 255, 0.1); outline:none;}
+	#st a{background:none repeat scroll 0 0 #EB4924; text-align:center; display:block;  width:45px; height:40px; border-bottom:1px solid rgba(255, 255, 255, 0.1); outline:none;}
+
+
+
 #csbwfs-right #fb a {
     position: absolute;
     right: 0;
@@ -58,5 +68,44 @@
     right: 0;
    
 }
+#csbwfs-right #yt a {
+    position: absolute;
+    right: 0;
+   
+}
+#csbwfs-right #re a {
+    position: absolute;
+    right: 0;
+   
+}
+#csbwfs-right #st a {
+    position: absolute;
+    right: 0;
+   
+}
 #csbwfs-right a#hide {padding-right:33px;}
 #csbwfs-right a#show {float:right;}
+
+/* Share buttons CSS */
+/* Custom Share Buttons Style*/ 
+#socialButtonOnPage {width:100%;display:inline-block;float:left; }
+#socialButtonOnPage .sbutton-post img {width:31px; height:30px;opacity:0.7; border-radius:3px 3px 3px 3px;box-shadow:0 1px 4px rgba(0, 0, 0, 0.2);}
+#socialButtonOnPage .sbutton-post img:hover{opacity:1;}
+#socialButtonOnPage .sharethis-arrow span:hover{cursor:pointer;}
+
+#socialButtonOnPage .sharethis-arrow span{  color: #FFFFFF;
+    display: inline-block;
+    font-size: 16px;
+    font-style: italic;
+    font-weight: bold;}
+
+/* Left Position */
+.leftSocialButtonOnPage .sbutton-post {float:left; padding:5px 1px;}
+.leftSocialButtonOnPage .sharethis-arrow{float:left;padding:5px 10px 5px 1px;background:url("../images/sharethis-l.png") no-repeat scroll 0 0 #ffffff;height: 29px;padding: 0 10px 0 0;margin-top:5px;width: 120px; }
+.leftSocialButtonOnPage .sharethis-arrow span{ padding-left: 12px;}
+
+/* Right Position */
+.rightSocialButtonOnPage .sbutton-post {float:right; padding:5px 1px;}
+.rightSocialButtonOnPage .sharethis-arrow{float:right;padding:5px 1px 5px 10px;background:url("../images/sharethis-r.png") no-repeat scroll 0 0 #ffffff;height: 29px;padding: 0 0 0 10px;margin-top:5px;width: 120px; margin-left:5px;}
+.rightSocialButtonOnPage .sharethis-arrow span{padding-left: 12px;}
+

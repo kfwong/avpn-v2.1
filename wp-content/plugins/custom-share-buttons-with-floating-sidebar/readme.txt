@@ -3,10 +3,10 @@ Contributors:india-web-developer
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WN785E5V492L4
 Tags: social share buttons,custom share buttons,facebook, twitter, google+, share, share links,linkedin, pinterest,floating sidebar,float,floating share buttons,float share buttons
 Requires at least: 2.7
-Tested up to: 4.0
-Stable tag: 1.4
+Tested up to: 4.0.1
+Stable tag: 1.6
 
-Add Social Share Buttons Using Floating Sidebar On Your Site (Facebook,Twitter,Linkedin,Google+,Pinterest,Mail)
+Add Social Share Buttons Using Floating Sidebar On Your Site (Facebook,Twitter,Linkedin,Google+,Pinterest,Youtube,Mail)
 
 == Description ==
 
@@ -14,11 +14,11 @@ Add Social Share Buttons Using Floating Sidebar On Your Site (Facebook,Twitter,L
 
 Even you can change the share buttons images if you wish!.
 
-Using this plugin you can easly share your website with your firends on Facebook,Twitter,Linkedin,Pinterest,Google+.
+Using this plugin you can easily share your website with your friends on Facebook,Twitter,Linkedin,Pinterest,Google+.
 
 There are not added any external JS files in this plugin so it's does not effect on your site speed as well.
 
-Live [demo](http://www.mrwebsolution.in/)
+Live [demo](http://www.gurukulalwar.com/)
 
 = Features =
 
@@ -28,13 +28,14 @@ Live [demo](http://www.mrwebsolution.in/)
  * Share Buttons for every post/page
  * Show/Hide options for any buttons
  * Options for edit to message ("Show Buttons","Hide Buttons"...etc)
- * Options for set the position of floating sidebar (Left/Right)
+ * Options for set the position of Floating Sidebar (Left/Right)
+ * Options for set the position of Social Buttons (Left/Right)
  * Options for manage the style of the plugin
 
 
 == Installation ==
 
-Step 1. Upload "custom-share-buttons-with-floating-sidebar" folder to the `/wp-content/plugins/` directory
+Step 1.Dowanload the plugin and upload "custom-share-buttons-with-floating-sidebar" plugins file to plugin (`/wp-content/plugins/`) directory
 
 Step 2. Activate the plugin through the Plugins menu in WordPress
 
@@ -74,9 +75,26 @@ Yes,You have need to enable at a time only one from both "Floating Sidebar" and 
 
 3. screenshot-3.png
 
-3. screenshot-4.png
+4. screenshot-4.png
+
+5. screenshot-5.png
 
 == Changelog == 
+
+= 1.6 = 
+ * Added new option for disable floating sidebar for mobile site
+ * Added two new Stumbleupon and Reddit buttons
+ * Added options for define Pinterest Share images
+ * Fixed show/hide button issue
+
+
+= 1.5 = 
+ * Make plugin settings page more stylish
+ * Added a new option for remove show/hide buttions
+ * Added an option for change position of social share buttons
+ * Make "Share This!" button text editable
+ * Add Youtube button
+ * Change image opacity on hover
 
 = 1.4 = 
  * Added an options for define the background color of custom social share buttons

@@ -13,8 +13,8 @@ revision removal this plugin will keep your database lighter and smaller
 throughout use. Removing old revisions and database optimizations is one of the
 best things you can do to your Wordpress blog to keep it running as fast as it
 can.
-Author: Galerio & Urda, BestWebLayout
-Version: 1.5
+Author: Galerio & Urda
+Version: 1.6.1
 Author URI: http://www.1e2.it/
 License: GPLv3 or later
 */
