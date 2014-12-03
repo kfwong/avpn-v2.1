@@ -909,6 +909,8 @@ function avpn_core_rscism_filter($meta, $post, $is_update) {
   if(isset($meta['field_53c338b375df3'])) $meta['field_53c338b375df3'] = preg_split("/,+/", $meta['field_53c338b375df3']);
   if(isset($meta['field_53c338f375df4'])) $meta['field_53c338f375df4'] = preg_split("/,+/", $meta['field_53c338f375df4']);
   if(isset($meta['field_53c3393475df5'])) $meta['field_53c3393475df5'] = preg_split("/,+/", $meta['field_53c3393475df5']);
+  if(isset($meta['field_53c32a2c0c0bc'])) $meta['field_53c32a2c0c0bc'] = preg_split("/,+/", $meta['field_53c32a2c0c0bc']);
+  if(isset($meta['field_53c32f3d9675e'])) $meta['field_53c32f3d9675e'] = preg_split("/,+/", $meta['field_53c32f3d9675e']);
 
 
   return $meta;

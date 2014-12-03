@@ -119,3 +119,8 @@ p, td, th {
 .relationship_left .relationship_list, .widefat{
 	margin: 0px !important;
 }
+
+/* polylang */
+.lang-item{
+	display: inline;
+}

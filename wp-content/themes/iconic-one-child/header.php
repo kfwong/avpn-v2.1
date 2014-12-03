@@ -41,6 +41,10 @@
 		</div>
 		<div class="alignright full-width" style="padding: 17px; margin: 10px 0px;">
 			<div class="alignright" style="margin-top:10px;">
+				<ul><?php pll_the_languages(array('show_flags'=>1,'show_names'=>1)); ?></ul>
+			</div>
+			<div style="clear:both"></div>
+			<div class="alignright" style="margin-top:10px;">
 				<?php get_search_form(); ?>
 			</div>
 			<div style="clear:both"></div>
