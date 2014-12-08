@@ -124,3 +124,8 @@ p, td, th {
 .lang-item{
 	display: inline;
 }
+
+/* flexslider */
+.flex-caption{
+	max-width: 600px;
+}

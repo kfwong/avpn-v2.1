@@ -57,7 +57,7 @@ add_action( 'template_include', 'apply_for_memberships_template');
 function apply_for_memberships_template($template) {
   $plugindir = dirname( __FILE__ );
 
-  if ( is_page( 'Apply for Memberships' )) {
+  if ( is_page( 'Apply for Membership' )) {
 
     $template = $plugindir . '/templates/apply-for-memberships.php';
   }
