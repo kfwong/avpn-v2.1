@@ -41,6 +41,15 @@ function single_post_css( $classes ) {
   return $classes;
 }
 
+## single page full width
+add_action( 'body_class', 'single_page_css');
+function single_page_css( $classes ) {
+  if ( is_page() ){
+    $classes[] = 'full-width';
+  }
+  return $classes;
+}
+
 ## turn multi-select fields into select2 style
 add_action( 'admin_enqueue_scripts', 'admin_acf_styles' );
 add_action( 'wp_enqueue_scripts', 'admin_acf_styles' );
