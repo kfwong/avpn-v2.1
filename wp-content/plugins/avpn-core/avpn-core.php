@@ -103,6 +103,9 @@ function apply_for_memberships_submit( $post_id ) {
   // create membership admin contact account
   $username = $_POST['fields']['field_54354ddab7bfa'];
   $user_email = $_POST['fields']['field_53dfe693365cc'];
+  $organisation_name = $_POST['fields']['field_54354ddab7bfa'];
+  $organisation_url = get_permalink($post_id);
+ 
   if(!username_exists( $username )) {
 
     // Generate the password and create the user
@@ -815,7 +818,7 @@ function avpn_core_post_registration_redirect( $user_id, $user_login, $user_pass
     );
   }
 
-  bp_core_redirect(home_url('/registration-successful'));
+  //bp_core_redirect(home_url('/registration-successful'));
 }
 
 // Activation is not used, disabled buddypress user activation & the related pages

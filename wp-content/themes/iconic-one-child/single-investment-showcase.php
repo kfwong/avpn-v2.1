@@ -60,6 +60,25 @@ get_header(); ?>
 									<th>Sector</th>
 									<td><?php the_field('social_sector'); ?></td>
 								</tr>
+								<tr id="investment-showcase-funders">
+									<th>Funders</th>
+									<td>
+									<?php
+										$post_object = get_field('organisation_name');
+
+										if( $post_object ): 
+
+											// override $post
+											$post = $post_object;
+											setup_postdata( $post ); 
+									?>
+									<a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( array(32,32) ); ?>&nbsp;<?php the_field('organisation_name'); ?></a>
+									<?php
+											wp_reset_postdata(); // IMPORTANT 
+										endif;
+									?>
+									</td>
+								</tr>
 							</table>
 						</div>
 					</div>

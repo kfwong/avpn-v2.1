@@ -2,14 +2,18 @@ jQuery(document).ready(function($) {
 	$(".field_type-select select").select2({"width": "100%"});
 	$(".field_type-user select").select2({"width": "100%"});
 	$(".field_type-post_object select").select2({"width": "100%"});
-	$(".field_type_select_custom_post_type select").select2({"width": "90%"});
+
+	$("#field_3").prepend("<option value=''></option>").val('');
+	$(".field_type_select_custom_post_type select").select2({"width": "90%", "placeholder":"Select an organisation", "allowClear": true});
 
 	$('#signup_username').bind('keyup keypress blur', function(){
     	$('#signup_password').val("generated_password");
     	$('#signup_password_confirm').val("generated_password");
 	});
 
-	$('.pretty-datatable').dataTable();
+	$('.pretty-datatable').dataTable({
+		"order": [[ 1, "asc" ]]		
+	});
 
 	if($('.flexslider').length != 0){
 		$('.flexslider').flexslider({
@@ -43,15 +47,27 @@ jQuery(document).ready(function($) {
 						color:"#EE2E22"
 					},
 					zoomControl:{buttonFillColor:"#EE2E22"},
-					areasSettings:{unlistedAreasColor:"#AAAAAA"},
+					areasSettings:{
+						unlistedAreasColor:"#AAAAAA",
+						selectable: false,
+					},
 					dataProvider: {
 						map: "worldLow",
 						zoomLevel:1.94531,
 						zoomLatitude:4.51775,
 						zoomLongitude:78.502813,
-						images: JSON.parse(data)
+						images: JSON.parse(data),
+						areas: {
+							mouseEnabled: false
+						}
 					}
-			});
+				});
+				
+				map.addListener("clickMapObject", function(event){
+					$('#DataTables_Table_0_filter label input[type=search]')
+					    .val(event.mapObject.title)
+					    .trigger($.Event("keyup", { keyCode: 13 }));
+				});
 			/*
 			// For debugging purpose, to figure out desired zoom and position of the map
 			// uncomment this block of code and press SHIFT while clicking anywhere on map
@@ -61,7 +77,7 @@ jQuery(document).ready(function($) {
 			  alert('zoomLevel:'+event.zoomLevel+'\nzoomLatitude:'+event.zoomLatitude+'\nzoomLongitude:'+event.zoomLongitude);
 			});
 			*/
-		}
+			}
 		}
 	);
 });

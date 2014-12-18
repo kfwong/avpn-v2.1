@@ -50,6 +50,15 @@ function single_page_css( $classes ) {
   return $classes;
 }
 
+## category page full width
+add_action( 'body_class', 'category_css');
+function category_css( $classes ){
+  if ( is_category()){
+    $classes[] = 'full-width';
+  }
+  return $classes;
+}
+
 ## turn multi-select fields into select2 style
 add_action( 'admin_enqueue_scripts', 'admin_acf_styles' );
 add_action( 'wp_enqueue_scripts', 'admin_acf_styles' );

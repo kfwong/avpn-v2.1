@@ -25,11 +25,13 @@ Template Name: Investment Showcase
 				<table class="pretty-datatable">
 					<thead>
 			            <tr>
+					<th>Showcase Image</th>
 			                <th>Showcase Name</th>
 			                <th>Organisation Type</th>
 			                <th>Stage of Development</th>
 			                <th>Country</th>
 			                <th>Sector</th>
+					<th>Funders</th>
 			            </tr>
 			        </thead>
 			        <tbody>			        
@@ -38,11 +40,30 @@ Template Name: Investment Showcase
 						<?php while ( $loop->have_posts() ) : $loop->the_post(); ?>
 
 							<tr>
-								<td><?php the_title( '<a href="' . get_permalink() . '" title="' . the_title_attribute( 'echo=0' ) . '" rel="bookmark">', '</a>' ); ?></td>
+								<td class="valignmiddle"><?php the_post_thumbnail( array(64,64) ); ?>
+								<td>
+								<?php the_title( '<a href="' . get_permalink() . '" title="' . the_title_attribute( 'echo=0' ) . '" rel="bookmark">', '</a>' ); ?>
+								</td>
 								<td><?php the_field('type_of_organisation'); ?></td>
-								<td><?php the_field('stage_of_developmen'); ?></td>
+								<td><?php the_field('stage_of_development'); ?></td>
 								<td><?php the_field('country'); ?></td>
 								<td><?php the_field('social_sector'); ?></td>
+								<td class="valignmiddle">
+									<?php
+										$post_object = get_field('organisation_name');
+
+										if( $post_object ): 
+
+											// override $post
+											$post = $post_object;
+											setup_postdata( $post ); 
+									?>
+									<a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( array(32,32) ); ?>&nbsp;<?php the_field('organisation_name'); ?></a>
+									<?php
+											wp_reset_postdata(); // IMPORTANT 
+										endif;
+									?>
+								</td>
 							</tr>
 					
 						<?php endwhile; ?>
