@@ -800,7 +800,7 @@ function avpn_core_membership_user_reg_notification_options_approval_msg_callbac
     wp_editor(get_option('avpn-core-membership-user-reg-notification-options-approval-msg'), 'avpn-core-membership-user-reg-notification-options-approval-msg', array('media_buttons' => false));
 }
 
-// Redirect successful registration to landing page.
+// Send an notification email to regular account.
 add_action('bp_core_signup_user', 'avpn_core_post_registration_redirect', 100, 5);
 function avpn_core_post_registration_redirect( $user_id, $user_login, $user_password, $user_email, $usermeta) {
   $account_type = $_POST['signup_account_type'];

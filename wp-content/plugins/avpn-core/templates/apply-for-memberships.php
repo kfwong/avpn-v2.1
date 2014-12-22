@@ -29,7 +29,8 @@ Template Name: Apply for Memberships
 					'post_id'		=> 'new-organisation',
 					'post_title'	=> false,
 					'submit_value'		=> 'Submit',
-					'updated_message'	=>	'Membership application submitted successfully.'
+					'updated_message'	=>	'Membership application submitted successfully.',
+					'return'	=>	home_url('/registration-successful')
 				)); ?>
 
 			</div><!-- .entry-content -->

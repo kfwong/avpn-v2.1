@@ -170,7 +170,7 @@ class PLL_Settings {
 						PLL_Admin::download_mo($_POST['locale']);
 					}
 
-					else {
+					elseif ('en_US' != $_POST['locale']) {
 						// attempts to install the language pack
 						require_once(ABSPATH . 'wp-admin/includes/translation-install.php');
 						if (!wp_download_language_pack($_POST['locale']))
@@ -263,7 +263,7 @@ class PLL_Settings {
 					foreach ($_POST['domains'] as $key => $domain) {
 						$this->options['domains'][$key] = esc_url_raw(trim($domain));
 					}
-					$this->options['domains'][$this->options['default_lang']] = get_option('home');
+					$this->options['domains'][$this->options['default_lang']] = $this->links_model->home;
 				}
 
 				foreach (array('browser', 'hide_default', 'redirect_lang', 'media_support') as $key)
