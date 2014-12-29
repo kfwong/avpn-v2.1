@@ -118,4 +118,3 @@ function get_organisation_map_data(){
 }
 
 ?>
-

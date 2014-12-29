@@ -80,15 +80,14 @@ get_header(); ?>
 					</div>
 					<footer class="entry-meta">
 						<?php 
-
-						if(is_coauthor_for_post(get_current_user_id(), get_the_ID())){
-							if(current_user_can('administrator')){ 
-								edit_post_link( __( 'Edit', 'themonic' ), '<span class="edit-link">', '</span>' );
-							}else{
-							?>
-								<span class="edit-link"><a class="post-edit-link" href="<?php echo get_permalink() . '?action=edit'; ?>">Edit</a></span>
-							<?php
-							}
+						if(current_user_can('administrator')){ 
+							edit_post_link( __( 'Edit', 'themonic' ), '<span class="edit-link">', '</span>' );
+						}else if(is_coauthor_for_post(get_current_user_id(), get_the_ID())){
+							
+						?>
+							<span class="edit-link"><a class="post-edit-link" href="<?php echo get_permalink() . '?action=edit'; ?>">Edit</a></span>
+						<?php
+						
 						}
 						
 						?>
