@@ -44,6 +44,21 @@
 			<?php wp_link_pages( array( 'before' => '<div class="page-links">' . __( 'Pages:', 'themonic' ), 'after' => '</div>' ) ); ?>
 		</div><!-- .entry-content -->
 		<?php endif; ?>
+		
+			<?php
+			$post_terms_display = "No tags found.";
+			$post_terms = wp_get_object_terms( $post->ID,  array('geography', 'publishing-organisations', 'topics', 'practice-areas') );
+			if ( ! empty( $post_terms ) ) {
+				if ( ! is_wp_error( $post_terms ) ) {
+					$post_terms_display = "";
+					foreach( $post_terms as $term ) {
+						$post_terms_display .= '<a href="' . esc_url(get_term_link($term)) .'">' . $term->name . '</a>, ';
+					}
+					$post_terms_display = rtrim($post_terms_display, ", ");
+					echo 'Tags: ' . $post_terms_display . '<br/><br/><br/>';
+				}
+			}
+			?>
 
 		<footer class="entry-meta">
 		<!--<span><?php _e('Category:','themonic'); ?> <?php the_category(' '); ?></span> <span><?php the_tags(); ?></span> -->
