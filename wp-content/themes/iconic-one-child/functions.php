@@ -22,6 +22,16 @@ function single_investment_showcase_css( $classes ) {
   return $classes;
 }
 
+## single-newsletter.php adding *NO* full-width class
+add_action( 'body_class', 'single_newsletter_css');
+function single_newsletter_css( $classes ) {
+  global $post;
+  if ( is_singular('newslette') ){
+    $classes[] = 'full-width';
+  }
+  return $classes;
+}
+
 ## buddypress theme adding full-width class to fill up sidebar space
 add_action( 'body_class', 'buddypress_css');
 function buddypress_css( $classes ) {
@@ -35,7 +45,7 @@ function buddypress_css( $classes ) {
 add_action( 'body_class', 'single_post_css');
 function single_post_css( $classes ) {
   global $post;
-  if ( is_single() ){
+  if ( is_singular('post') ){
     $classes[] = 'full-width';
   }
   return $classes;
@@ -68,6 +78,10 @@ function admin_acf_styles()
 	wp_enqueue_style( 'css-select2', 'http://cdnjs.cloudflare.com/ajax/libs/select2/3.5.0/select2.min.css');
  
   wp_enqueue_script( 'js-select2', 'http://cdnjs.cloudflare.com/ajax/libs/select2/3.5.0/select2.min.js' );
+
+  //wp_enqueue_script( 'js-dropit', dirname( get_bloginfo('stylesheet_url')) . '/lib/Dropit/dropit.js' , array('jquery'));
+
+  //wp_enqueue_style( 'css-dropit', dirname( get_bloginfo('stylesheet_url')) . '/lib/Dropit/dropit.css');
 
   wp_enqueue_script( 'js-datatables', 'http://cdn.jsdelivr.net/jquery.datatables/1.10.1/js/jquery.dataTables.min.js' );
 
@@ -116,5 +130,24 @@ function get_organisation_map_data(){
 
   exit();
 }
+
+if(!function_exists('get_post_top_ancestor_id')){
+/**
+ * Gets the id of the topmost ancestor of the current page. Returns the current
+ * page's id if there is no parent.
+ * 
+ * @uses object $post
+ * @return int 
+ */
+function get_post_top_ancestor_id(){
+    global $post;
+    
+    if($post->post_parent){
+        $ancestors = array_reverse(get_post_ancestors($post->ID));
+        return $ancestors[0];
+    }
+    
+    return $post->ID;
+}}
 
 ?>

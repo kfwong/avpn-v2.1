@@ -96,6 +96,35 @@ p, td, th {
 	margin:10px;
 }
 
+.widget-area-right {
+    float: left;
+    margin: 64px 24px 24px 12px;
+    padding: 0px 2% 0px 0px;
+    width: 10%;
+    overflow: hidden;
+    word-wrap: break-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    hyphens: auto;
+}
+
+.widget-area-left{
+    padding: 64px 12px 24px 24px;
+    width: 10%;
+    overflow: hidden;
+    word-wrap: break-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    hyphens: auto;
+    border-left:5px solid #F3F3F3;
+    border-right:5px solid #F3F3F3;
+    display:inline-block;
+}
+
+.avpn-red{
+	color: #EE2E22;
+}
+
 @media screen and (min-width: 768px){
 	.themonic-nav .current-menu-item > a, .themonic-nav .current-menu-ancestor > a, .themonic-nav .current_page_item > a, .themonic-nav .current_page_ancestor > a {
 		background: none repeat scroll 0px 0px #EE2E22;
@@ -106,8 +135,8 @@ p, td, th {
 	}
 
 	.site-content {
-    border-right: none;
-	
+    	border-right: none;
+    }	
 	
 }
 
@@ -133,4 +162,39 @@ p, td, th {
 /* flexslider */
 .flex-caption{
 	max-width: 600px;
+}
+
+/* dropit */
+.dropit-menu ul { display: none; } /* Hide before plugin loads */
+
+.dropit-menu ul.dropit-submenu {
+    border-left: 5px solid #EE2E22;
+    background-color: #f3f3f3;;
+    margin: 10px 0px 0px 0px;
+}          
+.dropit-menu ul.dropit-submenu a {
+    display: block;
+    font-size: 14px;
+    line-height: 25px;
+    color: #6a6a6a;
+    padding: 0 18px;
+    margin:0px;
+    padding:10px;
+}
+.dropit-menu ul.dropit-submenu a:hover{
+	text-decoration: none;
+	background-color: #EE2E22;
+	color: #fff;
+}
+
+.dropit-title:hover{
+	color:#fff;
+	text-decoration: none;
+}
+
+.dropit-title{
+	background-color: #EE2E22;
+	color: #fff;
+	padding:10px;
+	font-weight: bold;
 }

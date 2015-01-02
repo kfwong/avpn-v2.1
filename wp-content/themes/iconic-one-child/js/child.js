@@ -15,6 +15,8 @@ jQuery(document).ready(function($) {
 		"order": [[ 1, "asc" ]]		
 	});
 
+	$('.dropit-menu').dropit();
+
 	if($('.flexslider').length != 0){
 		$('.flexslider').flexslider({
 		    animation: "slide",
