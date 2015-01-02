@@ -75,9 +75,29 @@ get_header(); ?>
 
 												        <li style="margin-bottom:5px;"
 												        	<?php if ( $post->ID == $wp_query->post->ID ) { echo ' class="current"'; } else {} ?>>
-												            <?php echo get_the_post_thumbnail( $post->ID, array(64,64) ); ?>
-												            <a href="<?php the_permalink() ?>"><?php the_title(); ?></a>
-												            
+												            <?php #echo get_the_post_thumbnail( $post->ID, array(64,64) ); ?>
+												            <p>
+												            	<a href="<?php the_permalink() ?>"><?php the_title(); ?></a>
+												            	<br/>
+												            	<span>
+												            	<?php
+
+												            	$post_object = get_field('organisation_name');
+
+																if( $post_object ){
+
+																	// override $post
+																	$post = $post_object;
+																	setup_postdata( $post );
+
+																	echo '<a href="' . get_permalink() . '"><small>' . get_the_title() . '</small></a>';
+
+																	wp_reset_postdata(); 
+																}
+												            	?>
+												            	</span> 
+												            </p>
+												            <br style="clear:both;"/>
 												        </li>
 
 												    <?php endforeach; ?>
