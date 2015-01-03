@@ -22,11 +22,21 @@ function single_investment_showcase_css( $classes ) {
   return $classes;
 }
 
-## single-newsletter.php adding *NO* full-width class
-add_action( 'body_class', 'single_newsletter_css');
-function single_newsletter_css( $classes ) {
+## archive page adding full-width class
+add_action( 'body_class', 'archive_css');
+function archive_css( $classes ) {
   global $post;
-  if ( is_singular('newslette') ){
+  if ( is_archive() ){
+    $classes[] = 'full-width';
+  }
+  return $classes;
+}
+
+## search page adding full-width class
+add_action( 'body_class', 'search_css');
+function search_css( $classes ) {
+  global $post;
+  if ( is_search() ){
     $classes[] = 'full-width';
   }
   return $classes;

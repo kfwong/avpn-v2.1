@@ -449,7 +449,7 @@ class avpn_core_featured_flexslider extends WP_Widget {
     'featured-flexslider', 
 
     // Widget name will appear in UI
-    'Featured Flexlider', 
+    'Featured Flexslider', 
 
     // Widget description
     array( 'description' => 'Featured content display with flexslider.', ) 

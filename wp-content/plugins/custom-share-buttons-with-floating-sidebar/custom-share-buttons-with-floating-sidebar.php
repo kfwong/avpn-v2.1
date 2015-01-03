@@ -5,7 +5,7 @@ Plugin URI: http://www.mrwebsolution.in/
 Description: "custom-share-buttons-with-floating-sidebar" is the very simple plugin for add to social share buttons with float sidebar. Even you can change the share buttons images if you wish
 Author: Raghunath
 Author URI: http://raghunathgurjar.wordpress.com
-Version: 1.6
+Version: 1.7
 */
 
 /*  Copyright YEAR  PLUGIN_AUTHOR_NAME  (email : raghunath.0087@gmail.com)
@@ -84,6 +84,8 @@ function csbwf_sidebar_init(){
 	register_setting('csbwf_sidebar_options','csbwfs_page_hide_post');
 	register_setting('csbwf_sidebar_options','csbwfs_page_hide_page');
 	register_setting('csbwf_sidebar_options','csbwfs_page_hide_archive');
+	
+	register_setting('csbwf_sidebar_options','csbwfs_hide_home');
 	
 	register_setting('csbwf_sidebar_options','csbwfs_page_fb_image');
 	register_setting('csbwf_sidebar_options','csbwfs_page_tw_image');
@@ -215,6 +217,7 @@ function csbwf_sidebar_admin_option_page(){ ?>
 				<th>&nbsp;</th>
 				<td><input type="checkbox" id="csbwfs_deactive_for_mob" name="csbwfs_deactive_for_mob" value="yes" <?php if(get_option('csbwfs_deactive_for_mob')=='yes'){echo 'checked="checked"';}?>/> <strong><?php _e('Disable Sidebar For Mobile','csbwfs');?></strong></td>
 			</tr>
+			<tr><th>&nbsp;</th><td><input type="checkbox" id="csbwfs_hide_home" value="yes" name="csbwfs_hide_home" <?php if(get_option('csbwfs_hide_home')!='yes'){echo '';}else{echo 'checked="checked"';}?>/> <strong>Hide Sidebar On Home Page </strong></td></tr>
 			<tr><td colspan="2"><strong><h4>Social Share Button Images 36X34 (Optional) :</h4></strong></td></tr>
 			<tr>
 				<th><?php echo 'Facebook:';?></th>
@@ -318,7 +321,7 @@ function csbwf_sidebar_admin_option_page(){ ?>
 				<input type="textbox" id="csbwfs_btn_text" name="csbwfs_btn_text" value="<?php echo get_option('csbwfs_btn_text'); ?>" placeholder="Share This!" size="20"/>
 				</td>
 			</tr>
-			<tr><td colspan="2"><strong>Show Share Buttons On :</strong> Home <input type="checkbox" id="csbwfs_page_hide_home" value="yes" name="csbwfs_page_hide_home" <?php if(get_option('csbwfs_page_hide_home')!='yes'){echo '';}else{echo 'checked="checked"';}?>/> Page <input type="checkbox" id="csbwfs_page_hide_page" value="yes" name="csbwfs_page_hide_page" <?php if(get_option('csbwfs_page_hide_page')!='yes'){echo '';}else { echo 'checked="checked"';}?>/> Post <input type="checkbox" id="csbwfs_page_hide_post" value="yes" name="csbwfs_page_hide_post" <?php if(get_option('csbwfs_page_hide_post')!='yes'){echo '';}else{echo 'checked="checked"';}?>/> Archive <input type="checkbox" id="csbwfs_page_hide_archive" value="yes" name="csbwfs_page_hide_archive" <?php if(get_option('csbwfs_page_hide_archive')!='yes'){echo '';}else{echo 'checked="checked"';}?>/> <br>
+			<tr><td colspan="2"><strong>Show Share Buttons On :</strong> Home <input type="checkbox" id="csbwfs_page_hide_home" value="yes" name="csbwfs_page_hide_home" <?php if(get_option('csbwfs_page_hide_home')!='yes'){echo '';}else{echo 'checked="checked"';}?>/> Page <input type="checkbox" id="csbwfs_page_hide_page" value="yes" name="csbwfs_page_hide_page" <?php if(get_option('csbwfs_page_hide_page')!='yes'){echo '';}else { echo 'checked="checked"';}?>/> Post <input type="checkbox" id="csbwfs_page_hide_post" value="yes" name="csbwfs_page_hide_post" <?php if(get_option('csbwfs_page_hide_post')!='yes'){echo '';}else{echo 'checked="checked"';}?>/> Category/Archive <input type="checkbox" id="csbwfs_page_hide_archive" value="yes" name="csbwfs_page_hide_archive" <?php if(get_option('csbwfs_page_hide_archive')!='yes'){echo '';}else{echo 'checked="checked"';}?>/> <br>
 			</td></tr>
 			
 			<tr><td colspan="2"><strong><h4>Social Share Button Images 31X30 (Optional) :</h4></strong></td></tr>

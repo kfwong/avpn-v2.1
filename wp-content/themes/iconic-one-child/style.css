@@ -140,6 +140,10 @@ p, td, th {
 	
 }
 
+#newsletter-tbl li{
+    margin-bottom: 10px;
+}
+
 
 /*ACF css*/
 .acf-form .hndle{

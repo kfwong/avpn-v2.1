@@ -1,24 +1,18 @@
 === Custom Share Buttons with Floating Sidebar ===
 Contributors:india-web-developer
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WN785E5V492L4
-Tags: social share buttons,custom share buttons,facebook, twitter, google+, share, share links,linkedin, pinterest,floating sidebar,float,floating share buttons,float share buttons
+Tags: social share buttons,custom share buttons,facebook, twitter, google+, share, share links,linkedin,Stumbleupon,Reddit,pinterest,floating sidebar,float,floating share buttons,float share buttons
 Requires at least: 2.7
-Tested up to: 4.0.1
-Stable tag: 1.6
+Tested up to: 4.1
+Stable tag: 1.7
 
-Add Social Share Buttons Using Floating Sidebar On Your Site (Facebook,Twitter,Linkedin,Google+,Pinterest,Youtube,Mail)
+Add Social Share Buttons Using Floating Sidebar On Your Site (Facebook,Twitter,Linkedin,Google+,Pinterest,Youtube,Mail,Stumbleupon,Reddit)
 
 == Description ==
 
-"custom-share-buttons-with-floating-sidebar" is the very simple plugin for add to floating social share buttons on your site.
-
-Even you can change the share buttons images if you wish!.
-
-Using this plugin you can easily share your website with your friends on Facebook,Twitter,Linkedin,Pinterest,Google+.
+"custom-share-buttons-with-floating-sidebar" is the very simple plugin for share your site with your friends through social sites (Facebook,Twitter,Linkedin,Pinterest,Google+,Stumbleupon,Reddit).You can add a floating sidebar with all social buttons and Even you can change the share buttons images from admin if you wish!.
 
 There are not added any external JS files in this plugin so it's does not effect on your site speed as well.
-
-Live [demo](http://www.gurukulalwar.com/)
 
 = Features =
 
@@ -31,7 +25,20 @@ Live [demo](http://www.gurukulalwar.com/)
  * Options for set the position of Floating Sidebar (Left/Right)
  * Options for set the position of Social Buttons (Left/Right)
  * Options for manage the style of the plugin
+ * Option for disable sidebar for mobile
+ * Option for define the pinterest share image
 
+= Go Pro =
+
+We have also released an add-on for Custom Share Buttons With Floating Sidebar which not only demonstrates the flexibility of CSBWFS, but also adds some important features:
+
+ * Responsive Floating Sidebar
+ * Hide Floating Sidebar On Home/Post/Page/Category
+ * Responsive Lightbox Contact Form (for Mail Icon)
+ * Advance Feature For Choose To Pinterest Share Image
+ * Faster support via private forum
+
+Live [demo](http://www.gurukulalwar.com/)
 
 == Installation ==
 
@@ -44,28 +51,31 @@ Step 3. Go to Settings/"Custom Share Buttons with Floating Sidebar" and configur
 == Frequently Asked Questions ==
 1.How add floating share buttons on my website?
 
-After active the plugin you have must need to enable this plugin through the plugin settings.
+ After active the plugin you have must need to enable this plugin through the plugin settings.
 
 2.Can i change the custom share buttons images from admin?
 
-Yes,admin can changes all social share custom buttons images if you wish, for that you have only need to define the buttons images path from plugins settings page.
+ Yes,admin can changes all social share custom buttons images if you wish, for that you have only need to define the buttons images path from plugins settings page.
 
-3.Is there any demo site where your plugins have been used?
+3.Can i disable the floating sidebar for mobile? 
 
-Yes, Please visit on this [site](http://www.mrwebsolution.in/) for check live demo
+ Yes,You can disable the floating sidebar by configure the plugin settings
 
-3.Can i define the top margin for share buttons block?
+4.Can i define the top margin for share buttons block?
 
-Yes, admin can define the top margin from plugin settings page
+ Yes, admin can define the top margin from plugin settings page
 
-4.Can we add the social share buttons on bottom of every post/pages?
+5.Can we add the social share buttons on bottom of every post/pages?
 
-Yes,you have only need to enable the "Social Share Button" from admin by plugin settings
+ Yes,you have only need to enable the "Social Share Button" from admin by plugin settings
 
-5.Can we add at a time only the "Floating Sidebar" OR "Social Share Buttons"? 
+6.Can we add at a time only the "Floating Sidebar" OR "Social Share Buttons"? 
 
-Yes,You have need to enable at a time only one from both "Floating Sidebar" and "Social Share Buttons"
+ Yes,You have need to enable at a time only one from both "Floating Sidebar" and "Social Share Buttons"
 
+7.Is there any demo site where your plugins have been used?
+
+ Yes, Please visit on this [site](http://www.mrwebsolution.in/) for check live demo
 
 == Screenshots ==
 
@@ -80,6 +90,12 @@ Yes,You have need to enable at a time only one from both "Floating Sidebar" and 
 5. screenshot-5.png
 
 == Changelog == 
+
+= 1.7 = 
+ * Released Pro Version
+ * Added an option disable floating sidebar on home page
+ * Fixed share url issue on home page
+
 
 = 1.6 = 
  * Added new option for disable floating sidebar for mobile site

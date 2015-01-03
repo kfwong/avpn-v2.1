@@ -6,25 +6,25 @@ get_header(); ?>
 					<div id="content" role="main">
 						<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 
-								<table>
+								<table id="newsletter-tbl">
 									<tr>
 										<td style="vertical-align:top;width:20%;border-right: 1px solid #F3F3F3;padding-right:20px;line-height:1.5em;">
 											<div style="border-bottom: 1px solid #F3F3F3;padding: 20px 0px;">
 												<span class="avpn-red" style="font-size:12pt;font-weight:bold;">Content</span>
-												<ul style="list-style: none;margin-top: 10px;clear:both;">
+												<ul style="list-style-type: square;list-style-position:inside;margin-top: 10px;clear:both;">
 													<?php wp_list_pages( array('title_li'=>'','include'=> get_post_top_ancestor_id(), 'post_type' => 'newsletter') ); ?>
    													<?php wp_list_pages( array('title_li'=>'','depth'=>1,'child_of'=>get_post_top_ancestor_id() , 'post_type' => 'newsletter') ); ?>
 												</ul>
 											</div>
 											<div style="border-bottom: 1px solid #F3F3F3;padding: 20px 0px;">
 												<span class="avpn-red" style="font-size:12pt;font-weight:bold;">AVPN Job</span>
-												<ul style="list-style: none;margin-top: 10px;">
+												<ul style="list-style-type: square;list-style-position: inside;margin-top: 10px;">
 													<?php
 												        $lastposts = get_posts('posts_per_page=5&orderby=rand&category_name=career-avpn');
 												        foreach($lastposts as $post) :
 												        setup_postdata($post); ?>
 
-												        <li style="margin-bottom:5px;"
+												        <li style="margin-bottom:10px;"
 												        	<?php if ( $post->ID == $wp_query->post->ID ) { echo ' class="current"'; } else {} ?>>
 												            <?php echo get_the_post_thumbnail( $post->ID, array(64,64) ); ?>
 												            <a href="<?php the_permalink() ?>"><?php the_title(); ?></a>
@@ -36,13 +36,13 @@ get_header(); ?>
 											</div>
 											<div style="border-bottom: 1px solid #F3F3F3;padding: 20px 0px;">
 												<span class="avpn-red" style="font-size:12pt;font-weight:bold;">Network Job</span>
-												<ul style="list-style: none;margin-top: 10px;">
+												<ul style="list-style: square;list-style-position: inside;margin-top: 10px;">
 													<?php
 												        $lastposts = get_posts('posts_per_page=5&orderby=rand&category_name=career-network');
 												        foreach($lastposts as $post) :
 												        setup_postdata($post); ?>
 
-												        <li style="margin-bottom:5px;"
+												        <li style="margin-bottom:10px;"
 												        	<?php if ( $post->ID == $wp_query->post->ID ) { echo ' class="current"'; } else {} ?>>
 												            <?php echo get_the_post_thumbnail( $post->ID, array(64,64) ); ?>
 												            <a href="<?php the_permalink() ?>"><?php the_title(); ?></a>
@@ -75,7 +75,7 @@ get_header(); ?>
 
 												        <li style="margin-bottom:5px;"
 												        	<?php if ( $post->ID == $wp_query->post->ID ) { echo ' class="current"'; } else {} ?>>
-												            <?php #echo get_the_post_thumbnail( $post->ID, array(64,64) ); ?>
+												            <?php echo get_the_post_thumbnail( $post->ID, array(64,64) ); ?>
 												            <p>
 												            	<a href="<?php the_permalink() ?>"><?php the_title(); ?></a>
 												            	<br/>
@@ -90,7 +90,7 @@ get_header(); ?>
 																	$post = $post_object;
 																	setup_postdata( $post );
 
-																	echo '<a href="' . get_permalink() . '"><small>' . get_the_title() . '</small></a>';
+																	echo '<a href="' . get_permalink() . '"><small> -- ' . get_the_title() . '</small></a>';
 
 																	wp_reset_postdata(); 
 																}

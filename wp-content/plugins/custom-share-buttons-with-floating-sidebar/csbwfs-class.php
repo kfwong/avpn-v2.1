@@ -98,9 +98,29 @@ wp_enqueue_style( 'csbwf_sidebar_style' );
 function csbwf_sidebar_load_inline_js()
 {
    $pluginOptionsVal=get_csbwf_sidebar_options();
-	$jscnt='<script>jQuery(document).ready(function()
-  { ';
- 
+	$jscnt='<script>
+	  var windWidth=jQuery( window ).width();
+	  //alert(windWidth);
+	  var animateWidth;
+	  var defaultAnimateWidth;';
+  $jscnt.='
+	jQuery(document).ready(function()
+  { if(windWidth < "500" )
+   {
+	   animateWidth="35";
+	   defaultAnimateWidth= animateWidth-10;
+	   }else if(windWidth < "751")
+	   {
+		   animateWidth="40";
+		   defaultAnimateWidth= animateWidth-5;
+		   }else
+			   {
+				   animateWidth="55";
+				   defaultAnimateWidth= animateWidth-10;
+				   }';
+  
+
+   
  
   if($pluginOptionsVal['csbwfs_delayTimeBtn']!='0'):
    $jscnt.='jQuery("#delaydiv").hide();
@@ -110,72 +130,72 @@ function csbwf_sidebar_load_inline_js()
   
   if($pluginOptionsVal['csbwfs_tpublishBtn']!=''):
   $jscnt.='jQuery("div#tw a").hover(function(){
-  jQuery("div#tw a").animate({width:"60px"});
+  jQuery("div#tw a").animate({width:animateWidth});
   },function(){
-    jQuery("div#tw a").stop( true, true ).animate({width:"45px"});
+    jQuery("div#tw a").stop( true, true ).animate({width:defaultAnimateWidth});
   });';
   endif;
   
   if($pluginOptionsVal['csbwfs_fpublishBtn']!=''):
   $jscnt.='jQuery("div#fb a").hover(function(){
-    jQuery("div#fb a").animate({width:"60px"});
+    jQuery("div#fb a").animate({width:animateWidth});
   },function(){
-    jQuery("div#fb a").stop( true, true ).animate({width:"45px"});
+    jQuery("div#fb a").stop( true, true ).animate({width:defaultAnimateWidth});
   });';
   endif;
   
   if($pluginOptionsVal['csbwfs_mpublishBtn']!=''):
   $jscnt.='jQuery("div#ml a").hover(function(){
-    jQuery("div#ml a").animate({width:"60px"});
+    jQuery("div#ml a").animate({width:animateWidth});
   },function(){
-    jQuery("div#ml a").stop( true, true ).animate({width:"45px"});
+    jQuery("div#ml a").stop( true, true ).animate({width:defaultAnimateWidth});
   });';
   endif;
   
   if($pluginOptionsVal['csbwfs_gpublishBtn']!=''):
   $jscnt.='jQuery("div#gp a").hover(function(){
-    jQuery("div#gp a").animate({width:"60px"});
+    jQuery("div#gp a").animate({width:animateWidth});
   },function(){
-    jQuery("div#gp a").stop( true, true ).animate({width:"45px"});
+    jQuery("div#gp a").stop( true, true ).animate({width:defaultAnimateWidth});
   });';
   endif;
   
   if($pluginOptionsVal['csbwfs_lpublishBtn']!=''):
   $jscnt.='jQuery("div#li a").hover(function(){
-    jQuery("div#li a").animate({width:"60px"});
+    jQuery("div#li a").animate({width:animateWidth});
   },function(){
-    jQuery("div#li a").stop( true, true ).animate({width:"45px"});
+    jQuery("div#li a").stop( true, true ).animate({width:defaultAnimateWidth});
   });';
   endif;
   
    if($pluginOptionsVal['csbwfs_ppublishBtn']!=''):
   $jscnt.='jQuery("div#pin a").hover(function(){
-    jQuery("div#pin a").animate({width:"60px"});
+    jQuery("div#pin a").animate({width:animateWidth});
   },function(){
-    jQuery("div#pin a").stop( true, true ).animate({width:"45px"});
+    jQuery("div#pin a").stop( true, true ).animate({width:defaultAnimateWidth});
   });';
   endif;
   
    if(isset($pluginOptionsVal['csbwfs_ytpublishBtn']) && $pluginOptionsVal['csbwfs_ytpublishBtn']!=''):
   $jscnt.='jQuery("div#yt a").hover(function(){
-    jQuery("div#yt a").animate({width:"60px"});
+    jQuery("div#yt a").animate({width:animateWidth});
   },function(){
-    jQuery("div#yt a").stop( true, true ).animate({width:"45px"});
+    jQuery("div#yt a").stop( true, true ).animate({width:defaultAnimateWidth});
   });';
   endif;
    if(isset($pluginOptionsVal['csbwfs_republishBtn']) && $pluginOptionsVal['csbwfs_republishBtn']!=''):
   $jscnt.='jQuery("div#re a").hover(function(){
-    jQuery("div#re a").animate({width:"60px"});
+    jQuery("div#re a").animate({width:animateWidth});
   },function(){
-    jQuery("div#re a").stop( true, true ).animate({width:"45px"});
+    jQuery("div#re a").stop( true, true ).animate({width:defaultAnimateWidth});
   });';
   endif;
   
    if(isset($pluginOptionsVal['csbwfs_stpublishBtn']) && $pluginOptionsVal['csbwfs_stpublishBtn']!=''):
   $jscnt.='jQuery("div#st a").hover(function(){
-    jQuery("div#st a").animate({width:"60px"});
+    jQuery("div#st a").animate({width:animateWidth});
   },function(){
-    jQuery("div#st a").stop( true, true ).animate({width:"45px"});
+    jQuery("div#st a").stop( true, true ).animate({width:defaultAnimateWidth});
   });';
   endif;
 
@@ -204,8 +224,11 @@ function csbwf_sidebar_load_inline_js()
      jQuery("div.show").hide();
     jQuery("div.hide").show();
     }';
+
   
-$jscnt.='});</script>';
+$jscnt.='});
+
+</script>';
 	
 	echo $jscnt;
 }	
@@ -271,6 +294,14 @@ if(is_category())
         $shareurl =home_url('/');
         $ShareTitle=get_bloginfo('name');
 		}
+
+/* Set title and url for home page */  
+if(is_home() || is_front_page()) 
+    {
+	   $shareurl =home_url('/');
+        $ShareTitle=get_bloginfo('name');	
+		}	
+			
 $ShareTitle= htmlspecialchars(urlencode($ShareTitle));
 
 
@@ -385,96 +416,89 @@ if($pluginOptionsVal['csbwfs_hide_btn']!=''){ $hidebtn=$pluginOptionsVal['csbwfs
 //get mail button message 
 if($pluginOptionsVal['csbwfs_share_msg']!=''){ $sharemsg=$pluginOptionsVal['csbwfs_share_msg'];} 
    else{$sharemsg='Share This With Your Friends';}   
+
 /** Check display Show/Hide button or not*/
 if(isset($pluginOptionsVal['csbwfs_rmSHBtn']) && $pluginOptionsVal['csbwfs_rmSHBtn']!=''):
 $isActiveHideShowBtn='yes';
 else:
 $isActiveHideShowBtn='no';
 endif;
-?>
-<div id="delaydiv">
-<div class='social-widget' <?php echo $idName;?> title="<?php echo $sharemsg; ?>" <?php echo $style;?> >
+$flitingSidebarContent='<div id="delaydiv"><div class="social-widget" '.$idName.' title="'.$sharemsg.'" '.$style.'>';
 
-<?php if($isActiveHideShowBtn!='yes') :?>
-<div class="show"><a href="javascript:" alt="<?php echo $showbtn;?>" id="show"><img src="<?php echo plugins_url('custom-share-buttons-with-floating-sidebar/images/'.$showImg);?>" title="<?php echo $showbtn;?>"></a></div>
-<?php endif;?>
+if($isActiveHideShowBtn!='yes') :
+$flitingSidebarContent .= '<div class="show"><a href="javascript:" alt="'.$showbtn.'" id="show"><img src="'.plugins_url('custom-share-buttons-with-floating-sidebar/images/'.$showImg).'" title="'.$showbtn.'"></a></div>';
+endif;
 
-<div id="social-inner">
-	<?php if($pluginOptionsVal['csbwfs_fpublishBtn']!=''):?>
-	<!-- Facebook -->
-	<div class="sbutton">
-		<div id="fb">
-			<a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $shareurl;?>" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"
-   target="_blank" alt="Share on Facebook" <?php echo $fImgbg;?>> <img src="<?php echo $fImg;?>"></a></div>
-	</div>
-    <?php endif;?>
-    <?php if($pluginOptionsVal['csbwfs_tpublishBtn']!=''):?>
-	<!-- Twitter -->
-	<div class="sbutton">
+$flitingSidebarContent .= '<div id="social-inner">';
 
-	<div id="tw"><a href="javascript:" onclick="window.open('http://twitter.com/share?url=<?php echo $shareurl;?>&text=<?php echo $ShareTitle;?>','_blank','width=800,height=300')" alt="Twitter" <?php echo $tImgbg;?>><img src="<?php echo $tImg;?>"></a></div>
-	</div>
-	 <?php endif;?>
-	<?php if($pluginOptionsVal['csbwfs_gpublishBtn']!=''):?>
-	<!-- Google plus -->
-	<div class="sbutton">
+/** FB */
+if($pluginOptionsVal['csbwfs_fpublishBtn']!=''):
+$flitingSidebarContent .='<div class="sbutton"><div id="fb"><a href="https://www.facebook.com/sharer/sharer.php?u='.$shareurl.'" onclick="javascript:window.open(this.href, \'\', \'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600\');return false;" target="_blank" alt="Share on Facebook" '.$fImgbg.'> <img src="'.$fImg.'"></a></div></div>';
+endif;
 
-	<div id="gp"><a href="https://plus.google.com/share?url=<?php echo $shareurl;?>" onclick="javascript:window.open(this.href,'','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" alt="Google Plus" <?php echo $gImgbg;?> >    
-  <img src="<?php echo $gImg;?>"></a></div>
-	</div>
-	 <?php endif;?>
-	<?php if($pluginOptionsVal['csbwfs_lpublishBtn']!=''):?>
-	<!-- Linkdin -->
-	<div class="sbutton">
+/** TW */
+if($pluginOptionsVal['csbwfs_tpublishBtn']!=''):
+$flitingSidebarContent .='<div class="sbutton"><div id="tw"><a href="javascript:" onclick="window.open(\'http://twitter.com/share?url='.$shareurl.'&text='.$ShareTitle.'\',\'_blank\',\'width=800,height=300\')" alt="Twitter" '.$tImgbg.'><img src="'.$tImg.'"></a></div></div>';
+endif;
 
-	<div id="li">
-		<a href="https://www.linkedin.com/cws/share?url=<?php echo $shareurl;?>" onclick="javascript:window.open(this.href,'','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" alt="Google Plus" <?php echo $lImgbg;?>>
-  <img src="<?php echo $lImg;?>"></a></div>
-	</div>
-	 <?php endif;?>
-	<?php if($pluginOptionsVal['csbwfs_ppublishBtn']!=''):?>
-	<!-- Pinterest -->
-	<div class="sbutton">
+/** GP */
+if($pluginOptionsVal['csbwfs_gpublishBtn']!=''):
+$flitingSidebarContent .='<div class="sbutton"><div id="gp"><a href="https://plus.google.com/share?url='.$shareurl.'"  onclick="javascript:window.open(this.href,\'\',\'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=800\');return false;" alt="Google Plus" '.$gImgbg.'><img src="'.$gImg.'"></a></div></div>';
+endif;
 
-	<div id="pin"><a onclick="window.open('http://pinterest.com/pin/create/button/?url=<?php echo $shareurl;?>&amp;media=<?php echo $pinShareImg;?>&amp;description=<?php echo $ShareTitle;?> :<?php echo $shareurl;?>','pinIt','toolbar=0,status=0,width=620,height=500');" href="javascript:void(0);" <?php echo $pImgbg;?>><img src="<?php echo $pImg;?>"></a></div>
-	</div>
-	 <?php endif;?>
-	 	 
-	 <?php if(isset($pluginOptionsVal['csbwfs_ytpublishBtn']) && $pluginOptionsVal['csbwfs_ytpublishBtn']!=''):?>
-	<!-- Youtube -->
-	<div class="sbutton">
+/**  LI */
+if($pluginOptionsVal['csbwfs_lpublishBtn']!=''):
+$flitingSidebarContent .='<div class="sbutton"><div id="li"><a href="https://www.linkedin.com/cws/share?mini=true&url='. $shareurl.'" onclick="javascript:window.open(this.href,\'\',\'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=800\');return false;" alt="Google Plus" '.$lImgbg.'><img src="'.$lImg.'"></a></div></div>';
+endif;
 
-	<div id="yt"><a onclick="window.open('<?php echo $pluginOptionsVal['csbwfs_ytPath'];?>');" href="javascript:void(0);" <?php echo $ytImgbg;?>><img src="<?php echo $ytImg;?>"></a></div>
-	</div>
-	 <?php endif;?>
-	 <?php if(isset($pluginOptionsVal['csbwfs_republishBtn']) && $pluginOptionsVal['csbwfs_republishBtn']!=''):?>
-	<!-- Reddit -->
-	<div class="sbutton">
-	<div id="re"><a onclick="window.open('http://reddit.com/submit?url=<?php echo $shareurl;?>&amp;title=<?php echo $ShareTitle;?>','Stumbleupon','toolbar=0,status=0,width=620,height=500');" href="javascript:void(0);" <?php echo $reImgbg;?>><img src="<?php echo $reImg;?>"></a></div>
-	</div>
-	 <?php endif;?>
-	 <?php if(isset($pluginOptionsVal['csbwfs_stpublishBtn']) && $pluginOptionsVal['csbwfs_stpublishBtn']!=''):?>
-	<!-- Stumbleupon -->
-	<div class="sbutton">
+/** PIN */
+if($pluginOptionsVal['csbwfs_ppublishBtn']!=''):
+$flitingSidebarContent .='<div class="sbutton"><div id="pin"><a onclick="window.open(\'http://pinterest.com/pin/create/button/?url='.$shareurl.'&amp;media='.$pinShareImg.'&amp;description='.$ShareTitle.' :'.$shareurl.'\',\'pinIt\',\'toolbar=0,status=0,width=800,height=500\');" href="javascript:void(0);" '.$pImgbg.'><img src="'.$pImg.'"></a></div></div>';
+endif;
 
-	<div id="st"><a onclick="window.open('http://www.stumbleupon.com/submit?url=<?php echo $shareurl;?>&amp;title=<?php echo $ShareTitle;?>','Stumbleupon','toolbar=0,status=0,width=620,height=500');" href="javascript:void(0);" <?php echo $stImgbg;?>><img src="<?php echo $stImg;?>"></a></div>
-	</div>
-	 <?php endif;?>
-   <?php if($pluginOptionsVal['csbwfs_mpublishBtn']!=''):?>
-	<!-- Mail-->
-	<div class="sbutton">
-    <div id="ml"><a href="mailto:<?php echo $mailMsg;?>" alt="Email" <?php echo $mImgbg;?>><img src="<?php echo $mImg;?>"></a></div>
-	</div>
-	 <?php endif;?>
-	 
-</div>
-<?php if($isActiveHideShowBtn!='yes') :?>
-<div class="hide"><a href="javascript:" alt="<?php echo $hidebtn;?>" id="hide"><img src="<?php echo plugins_url('custom-share-buttons-with-floating-sidebar/images/'.$hideImg);?>" title="<?php echo $hidebtn;?>"></a></div>
-<?php endif;?>
-</div>
-</div>
-<?php
+/** YT */	 	 
+if(isset($pluginOptionsVal['csbwfs_ytpublishBtn']) && $pluginOptionsVal['csbwfs_ytpublishBtn']!=''):
+$flitingSidebarContent .='<div class="sbutton"><div id="yt"><a onclick="window.open(\''.$pluginOptionsVal['csbwfs_ytPath'].'\');" href="javascript:void(0);" '.$ytImgbg.'><img src="'.$ytImg.'"></a></div></div>';
+endif;
+
+/** Reddit */
+if(isset($pluginOptionsVal['csbwfs_republishBtn']) && $pluginOptionsVal['csbwfs_republishBtn']!=''):
+$flitingSidebarContent .='<div class="sbutton"><div id="re"><a onclick="window.open(\'http://reddit.com/submit?url='.$shareurl.'&amp;title='.$ShareTitle.'\',\'Reddit\',\'toolbar=0,status=0,width=1000,height=800\');" href="javascript:void(0);" '.$reImgbg.'><img src="'.$reImg.'"></a></div></div>';
+endif;
+
+/** Stumbleupon */
+if(isset($pluginOptionsVal['csbwfs_stpublishBtn']) && $pluginOptionsVal['csbwfs_stpublishBtn']!=''):
+$flitingSidebarContent .='<div class="sbutton"><div id="st"><a <a onclick="window.open(\'http://www.stumbleupon.com/submit?url='.$shareurl.'&amp;title='.$ShareTitle.'\',\'Stumbleupon\',\'toolbar=0,status=0,width=1000,height=800\');"  href="javascript:void(0);" '.$stImgbg.'><img src="'. $stImg.'"></a></div></div>';
+endif; 
+
+/** Mail*/
+if($pluginOptionsVal['csbwfs_mpublishBtn']!=''):
+$flitingSidebarContent .='<div class="sbutton"><div id="ml"><a href="mailto:'.$mailMsg.'" alt="Email" '.$mImgbg.'><img src="'.$mImg.'"></a></div></div>';
+endif;
+
+$flitingSidebarContent .='</div>'; //End social-inner
+
+if($isActiveHideShowBtn!='yes') :
+$flitingSidebarContent .='<div class="hide"><a href="javascript:" alt="'.$hidebtn.'" id="hide"><img src="'.plugins_url('custom-share-buttons-with-floating-sidebar/images/'.$hideImg).'" title="'.$hidebtn.'"></a></div>';
+endif;
+
+$flitingSidebarContent .='</div></div>'; //End social-inner
+
+
+/** Check conditions */
+    // Returns the content.
+    
+if(isset($pluginOptionsVal['csbwfs_hide_home'])){$hideOnHome=$pluginOptionsVal['csbwfs_hide_home'];	}else{			$hideOnHome='';}
+  
+if((is_home() && $hideOnHome=='yes' ) || (is_front_page() && $hideOnHome=='yes' )):
+    $flitingSidebarContent='';
+    endif;
+    
+print $flitingSidebarContent;
+  
+    
 }
+
 /**
  * Add social share bottons to the end of every post/page.
  *
@@ -503,6 +527,14 @@ if(is_category())
         $shareurl =home_url('/');
         $ShareTitle=get_bloginfo('name');
 		}
+		
+/* Set title and url for home page */  
+if(is_home() || is_front_page()) 
+    {
+	   $shareurl =home_url('/');
+        $ShareTitle=get_bloginfo('name');	
+		}	
+				
 $ShareTitle= htmlspecialchars(urlencode($ShareTitle));
 
 /* Get All buttons Image */
