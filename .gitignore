@@ -2,3 +2,4 @@ wp-config.php
 .htaccess
 usersultramedia/*
 wp-content/uploads/
+cache
