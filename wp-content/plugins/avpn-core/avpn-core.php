@@ -100,18 +100,17 @@ function apply_for_memberships_submit( $post_id ) {
   // update $_POST['return']
   $_POST['return'] = add_query_arg( array('post_id' => $post_id), $_POST['return'] );
 
-  // create membership admin contact account
   $username = $_POST['fields']['field_54354ddab7bfa'];
   $user_email = $_POST['fields']['field_53dfe693365cc'];
   $organisation_name = $_POST['fields']['field_54354ddab7bfa'];
   $organisation_url = get_permalink($post_id);
  
-  if(!username_exists( $username )) {
+  //if(!username_exists( $username )) {
 
     // Generate the password and create the user
     // NOTE: this is for the sake of registering user using bp_core_signup_user function, the password will be regenerated again during activate_membership. (the password need to be forward to user upon activation)
     // TODO: is there any other way to only generate once? 
-    $password = wp_generate_password( 12, false );
+    //$password = wp_generate_password( 12, false );
 
     
     // have to put these before bp_core_signup_user because of the redirect
@@ -132,22 +131,23 @@ function apply_for_memberships_submit( $post_id ) {
     $user_message = str_replace("{last_name}", $organisation_admin_last_name, $user_message);
     $user_message = str_replace("{organisation_name}", $organisation_name, $user_message);
 
+    // Send admin notification
     wp_mail(
       $admin_to,
       $admin_subject,
       $admin_message
     );
 
-    // Send user email notification
+    // Send organisation contact user email notification
     wp_mail(
       $user_to,
       $user_subject,
       $user_message
     );
 
-    $user_id = bp_core_signup_user( $username, $password, $user_email, null);
+    //$user_id = bp_core_signup_user( $username, $password, $user_email, null);
 
-  } // end if
+  //} // end if
 
   // return the new ID
   return $post_id;
@@ -161,7 +161,9 @@ function activate_membership($user_id){
   $user_email = $user->user_email;
   $user_first_name = $user->first_name;
   $user_last_name = $user->last_name;
+  $display_name = $user->display_name;
 
+  /*
   $loop = new WP_Query( array( 'post_type' => 'organisation') );
   while ( $loop->have_posts() ){
     $loop->the_post();
@@ -206,6 +208,7 @@ function activate_membership($user_id){
       return;
     }
   }
+  */
 
   // is a regular account, since early return is not executing and the loop is exhausted
   // Regenerate random user password
@@ -215,8 +218,9 @@ function activate_membership($user_id){
   $user_to = $user_email;
   $user_subject = get_option('avpn-core-membership-user-reg-notification-options-approval-sbj');
   $user_message = get_option('avpn-core-membership-user-reg-notification-options-approval-msg');
-  $user_message = str_replace("{first_name}", $user_first_name, $user_message);
-  $user_message = str_replace("{last_name}", $user_last_name, $user_message);
+  //$user_message = str_replace("{first_name}", $user_first_name, $user_message);
+  //$user_message = str_replace("{last_name}", $user_last_name, $user_message);
+  $user_message = str_replace("{display_name}", $display_name, $user_message);
   $user_message = str_replace("{username}", $username, $user_message);
   $user_message = str_replace("{password}", $password, $user_message);
 
@@ -803,22 +807,31 @@ function avpn_core_membership_user_reg_notification_options_approval_msg_callbac
 // Send an notification email to regular account.
 add_action('bp_core_signup_user', 'avpn_core_post_registration_redirect', 100, 5);
 function avpn_core_post_registration_redirect( $user_id, $user_login, $user_password, $user_email, $usermeta) {
+  
   $account_type = $_POST['signup_account_type'];
 
   if($account_type == "regular"){
 
+    $user = get_user_by( 'id', $user_id );
+
     $admin_to = get_option('avpn-core-membership-admin-notification-options-to');
-    $admin_subject = str_replace("{organisation_name}", $organisation_name, get_option('avpn-core-membership-admin-notification-options-sbj'));
-    $admin_message = str_replace("{organisation_url}", $organisation_url, get_option('avpn-core-membership-admin-notification-options-msg'));
+    $admin_subject = str_replace("{organisation_name}", $user->display_name . ' (Personal Account)', get_option('avpn-core-membership-admin-notification-options-sbj'));
+    $admin_message = str_replace("{organisation_url}", home_url('wp-admin/users.php?page=bp-signups'), get_option('avpn-core-membership-admin-notification-options-msg'));
 
     wp_mail(
       $admin_to,
       $admin_subject,
       $admin_message
     );
-  }
 
-  //bp_core_redirect(home_url('/registration-successful'));
+    wp_mail(
+      $user_email,
+      '[AVPN] Thank you for signing up with AVPN!',
+      'Dear ' . $user->display_name . ',<br/><br/>' . 'Thank you for signing up with us! Your application is currently pending for approval. Our membership service committee will review your application shortly.<br/><br/><br/><br/>Best regards,<br/>AVPN Membership team<br/>33a Circular Road, Singapore 049389'
+    );
+
+    bp_core_redirect(home_url('/registration-successful'));
+  }
 }
 
 // Activation is not used, disabled buddypress user activation & the related pages
