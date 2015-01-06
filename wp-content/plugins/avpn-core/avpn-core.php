@@ -102,7 +102,7 @@ function apply_for_memberships_submit( $post_id ) {
 
   $username = $_POST['fields']['field_54354ddab7bfa'];
   $user_email = $_POST['fields']['field_53dfe693365cc'];
-  $organisation_name = $_POST['fields']['field_54354ddab7bfa'];
+  $organisation_name = $_POST['fields']['field_53e005437ca34'];
   $organisation_url = get_permalink($post_id);
  
   //if(!username_exists( $username )) {
