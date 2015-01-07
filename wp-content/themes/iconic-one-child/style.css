@@ -82,6 +82,10 @@ p, td, th {
 	border-bottom: none;
 }
 
+footer.entry-meta div{
+	min-width: 125px;
+}
+
 /* to disable events for individual group page*/
 #forums-groups-li{
 	display:none;
@@ -168,37 +172,43 @@ p, td, th {
 	max-width: 600px;
 }
 
-/* dropit */
-.dropit-menu ul { display: none; } /* Hide before plugin loads */
-
-.dropit-menu ul.dropit-submenu {
-    border-left: 5px solid #EE2E22;
-    background-color: #f3f3f3;;
-    margin: 10px 0px 0px 0px;
-}          
-.dropit-menu ul.dropit-submenu a {
-    display: block;
-    font-size: 14px;
-    line-height: 25px;
-    color: #6a6a6a;
-    padding: 0 18px;
-    margin:0px;
-    padding:10px;
+/* Prime Strategy Navi */
+.page_navi {
+    text-align: center;
+    margin-bottom: 30px;
 }
-.dropit-menu ul.dropit-submenu a:hover{
-	text-decoration: none;
-	background-color: #EE2E22;
-	color: #fff;
+ 
+.page_navi li {
+    display: inline;
+    list-style: none;
 }
-
-.dropit-title:hover{
-	color:#fff;
-	text-decoration: none;
+ 
+.page_navi li.current span {
+    color: #000;
+    font-weight: bold;
+    display: inline-block;
+    padding: 3px 7px;
+    background: #fee;
+    border: solid 1px #fcc;
 }
-
-.dropit-title{
-	background-color: #EE2E22;
-	color: #fff;
-	padding:10px;
-	font-weight: bold;
+ 
+.page_navi li a {
+    color: #333;
+    padding: 3px 7px;
+    background: #eee;
+    display: inline-block;
+    border: solid 1px #999;
+    text-decoration: none;
+}
+ 
+.page_navi li a:hover {
+    color: #f00;
+}
+ 
+.page_navi li.page_nums span {
+    color: #fff;
+    padding: 3px 7px;
+    background: #666;
+    display: inline-block;
+    border: solid 1px #333;
 }

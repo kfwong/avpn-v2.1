@@ -32,7 +32,8 @@ get_header(); ?>
 
 			endwhile;
 
-			themonic_content_nav( 'nav-below' );
+			#themonic_content_nav( 'nav-below' );
+			if ( function_exists( 'page_navi' ) ) page_navi( 'items=7&prev_label=Prev&next_label=Next&first_label=First&last_label=Last&show_num=1&num_position=after' ); 
 			?>
 
 		<?php else : ?>

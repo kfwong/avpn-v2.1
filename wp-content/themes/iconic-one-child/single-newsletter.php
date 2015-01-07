@@ -56,7 +56,7 @@ get_header(); ?>
 										<td style="vertical-align:top;padding:20px;">
 											<?php wp_reset_postdata(); ?>
 											<header class="entry-header">
-												<h1 class="entry-title"><?php the_title(); ?></h1>
+												<h1 class="entry-title" style="font-weight:bold;font-size:36px;"><?php the_title(); ?></h1>
 											</header><!-- .entry-header -->
 											<div class="entry-content">
 												<?php while ( have_posts() ) : the_post(); ?>
