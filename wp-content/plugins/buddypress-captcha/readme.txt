@@ -3,7 +3,7 @@ Contributors: hardeepasrani
 Author URI: http://www.hardeepasrani.com
 Tags: spam, google, captcha, buddypress, anti-spam, recaptcha, registration, user, form, security
 Requires at least: 3.2
-Tested up to: 4.0
+Tested up to: 4.1
 Stable tag: 1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -32,5 +32,9 @@ I'm a teen WordPresser, so I don't have a Paypal account, so just simply support
 
 == Changelog ==
 
-= 1.1 =
+= 1.01 =
 Fixed link.
+
+= 1.1 =
+SSL Support
+FIxed Link

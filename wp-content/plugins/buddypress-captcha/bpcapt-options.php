@@ -23,14 +23,14 @@ function tpbpcapt_options_page() {
 	<h2>BuddyPress Captcha</h2>
 	<form method="post" action="options.php"> 
 		<?php settings_fields( 'tpbpcapt' ); ?>
-			<p>Click <a href="https://www.google.com/recaptcha/admin/" target="_blank">here</a> to get reCAPTCHA credentials.</p>
+			<p>Click <a href="https://www.google.com/recaptcha/admin" target="_blank">here</a> to get reCAPTCHA credentials.</p>
 			<table class="form-table">
 				<tr valign="top">
-					<th scope="row"><label for="bpcapt_public">reCAPTCHA Public Key:</label></th>
+					<th scope="row"><label for="bpcapt_public">reCAPTCHA Site Key:</label></th>
 					<td><input type="text" id="bpcapt_public" name="bpcapt_public" value="<?php echo get_option('bpcapt_public'); ?>" /></td>
 				</tr>
 				<tr valign="top">
-    				<th scope="row"><label for="bpcapt_private">reCAPTCHA Private Key:</label></th>
+    				<th scope="row"><label for="bpcapt_private">reCAPTCHA Secret Key:</label></th>
 					<td><input type="text" id="bpcapt_private" name="bpcapt_private" value="<?php echo get_option('bpcapt_private'); ?>" /></td>
 				</tr>
                 <tr valign="top">

@@ -79,6 +79,15 @@ function category_css( $classes ){
   return $classes;
 }
 
+## single-event page full width
+add_action( 'body_class', 'event_css');
+function event_css( $classes ){
+  if ( is_singular('event')){
+    $classes[] = 'full-width';
+  }
+  return $classes;
+}
+
 ## turn multi-select fields into select2 style
 add_action( 'admin_enqueue_scripts', 'admin_acf_styles' );
 add_action( 'wp_enqueue_scripts', 'admin_acf_styles' );

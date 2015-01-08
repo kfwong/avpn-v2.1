@@ -3,7 +3,7 @@
 Plugin Name: BuddyPress Captcha
 Plugin URI: http://www.trickspanda.com
 Description: This plugin adds a reCAPTCHA form to BuddyPress registration form to keep your community spam free.
-Version: 1.01
+Version: 1.1
 Author: Hardeep Asrani
 Author URI: http://www.hardeepasrani.com
 Requires at least: WordPress 2.8, BuddyPress 1.2.9
