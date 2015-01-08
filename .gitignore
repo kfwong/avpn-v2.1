@@ -3,3 +3,5 @@ wp-config.php
 usersultramedia/*
 wp-content/uploads/
 cache
+.svn
+.tmp
