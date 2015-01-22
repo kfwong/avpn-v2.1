@@ -4,7 +4,7 @@ Donate link: http://web-profile.com.ua/donate/
 Tags: page, page-list, pagelist, sitemap, subpages, siblings
 Requires at least: 3.0
 Tested up to: 4.1
-Stable tag: 4.2
+Stable tag: 4.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 
@@ -123,6 +123,9 @@ When you changed the plugin's code you should also change the plugin's version t
 2. [pagelist_ext] shortcode
 
 == Changelog ==
+
+= 4.3 - 2015.01.15 =
+* use wp_enqueue_scripts hook instead of wp_print_styles to enqueue scripts and styles (thanks to sireneweb)
 
 = 4.2 - 2013.02.16 =
 * fix in css styles (clearfix added to .page-list-ext)

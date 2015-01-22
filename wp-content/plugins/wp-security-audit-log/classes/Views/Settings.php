@@ -51,9 +51,9 @@ class WSAL_Views_Settings extends WSAL_AbstractView {
 		$this->_plugin->settings->SetAllowedPluginViewers(isset($_REQUEST['Viewers']) ? $_REQUEST['Viewers'] : array());
 		$this->_plugin->settings->SetAllowedPluginEditors(isset($_REQUEST['Editors']) ? $_REQUEST['Editors'] : array());
 		$this->_plugin->settings->SetRestrictAdmins(isset($_REQUEST['RestrictAdmins']));
-		$this->_plugin->settings->SetRefreshAlertsEnabled($_REQUEST['EnableAuditViewRefresh']);
-		$this->_plugin->settings->SetMainIPFromProxy($_REQUEST['EnableProxyIpCapture']);
-		$this->_plugin->settings->SetInternalIPsFiltering($_REQUEST['EnableIpFiltering']);
+		$this->_plugin->settings->SetRefreshAlertsEnabled(isset($_REQUEST['EnableAuditViewRefresh']));
+		$this->_plugin->settings->SetMainIPFromProxy(isset($_REQUEST['EnableProxyIpCapture']));
+		$this->_plugin->settings->SetInternalIPsFiltering(isset($_REQUEST['EnableIpFiltering']));
 		$this->_plugin->settings->SetIncognito(isset($_REQUEST['Incognito']));
 		$this->_plugin->settings->ClearDevOptions();
 		if(isset($_REQUEST['DevOptions']))
@@ -322,7 +322,7 @@ class WSAL_Views_Settings extends WSAL_AbstractView {
 					</tr>
 					
 					<tr>
-						<th><label for="Incognito"><?php _e('Hide Plugin from Plugins Page', 'wp-security-audit-log'); ?></label></th>
+						<th><label for="Incognito"><?php _e('Hide Plugin in Plugins Page', 'wp-security-audit-log'); ?></label></th>
 						<td>
 							<fieldset>
 								<label for="Incognito">
@@ -330,6 +330,10 @@ class WSAL_Views_Settings extends WSAL_AbstractView {
 										if($this->_plugin->settings->IsIncognito())echo ' checked="checked"';
 									?>/> <?php _e('Hide', 'wp-security-audit-log'); ?>
 								</label>
+								<br/>
+								<span class="description">
+									<?php _e('To manually revert this setting set the value of option wsal-hide-plugin to 0 in the wp_options table.', 'wp-security-audit-log'); ?>
+								</span>
 							</fieldset>
 						</td>
 					</tr>

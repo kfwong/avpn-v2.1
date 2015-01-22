@@ -1,6 +1,4 @@
 <?php
-error_reporting(E_ERROR | E_PARSE);
-
 if ( class_exists( 'acf_Field' ) && ! class_exists( 'acf_field_validated_field' ) ):
 class acf_field_validated_field extends acf_field {
 	// vars
@@ -97,21 +95,21 @@ class acf_field_validated_field extends acf_field {
 
 		if ( is_admin() || $this->frontend ){ // admin actions
 			// ACF 5.0+ http://www.advancedcustomfields.com/resources/filters/acf-validate_value/
-			add_action( 'wp_ajax_validate_fields', array( &$this, 'ajax_validate_fields' ) );
-			add_action( 'wp_ajax_nopriv_validate_fields', array( &$this, 'ajax_validate_fields' ) );
+			add_action( 'wp_ajax_validate_fields', array( $this, 'ajax_validate_fields' ) );
 
-			add_action( $this->frontend? 'wp_head' : 'admin_head', array( &$this, 'input_admin_head' ) );
+			add_action( $this->frontend? 'wp_head' : 'admin_head', array( $this, 'input_admin_head' ) );
 			if ( ! is_admin() && $this->frontend ){
 				if ( ! $this->frontend_css ){
-					add_action( 'acf/input/admin_enqueue_scripts',  array( &$this, 'remove_acf_form_style' ) );
+					add_action( 'acf/input/admin_enqueue_scripts',  array( $this, 'remove_acf_form_style' ) );
 				}
 
-				add_action( 'wp_head', array( &$this, 'ajaxurl' ), 1 );
-				add_action( 'wp_head', array( &$this, 'input_admin_enqueue_scripts' ), 1 );
+				add_action( 'wp_ajax_nopriv_validate_fields', array( $this, 'ajax_validate_fields' ) );
+				add_action( 'wp_head', array( $this, 'ajaxurl' ), 1 );
+				add_action( 'wp_head', array( $this, 'input_admin_enqueue_scripts' ), 1 );
 			}
 			if ( is_admin() ){
-				add_action( 'admin_init', array( &$this, 'admin_register_settings' ) );
-				add_action( 'admin_menu', array( &$this, 'admin_add_menu' ), 11 );
+				add_action( 'admin_init', array( $this, 'admin_register_settings' ) );
+				add_action( 'admin_menu', array( $this, 'admin_add_menu' ), 11 );
 			}
 		}
 	}
@@ -284,14 +282,48 @@ class acf_field_validated_field extends acf_field {
 						$this_key = $field['name'];
 						if ( $is_repeater ) $this_key .= '_' . $index . '_' . $sub_sub_field['name'];
 
-						$message = $field['message'];
-						$prev_value = get_post_meta( $post_id, $this_key, true );
+						// get the fields based on the keys and then index by the meta value for easy of use
+						$input_fields = array();
+						foreach ( $input_fields as $key => $val ){
+							if ( $false !== ( $input_field = get_field_object( $key, $post_id ) ) ){
+								$meta_key = $input_field['name'];
+								$input_fields[$meta_key] = array(
+									'field'=>$input_field,
+									'value'=>$val,
+									'prev_val'=>get_post_meta( $post_id, $meta_key, true )
+								);
+							}
+						}
+
+						// it gets tricky but we are trying to account for an capture bad php code where possible
+						$pattern = addcslashes( trim( $pattern ), "'" );
+						if ( substr( $pattern, -1 ) != ';' ) $pattern.= ';';
+
+						$value = addslashes( $value );
+
+						$prev_value = addslashes( $prev_value );
+
 						$function_name = 'validate_' . preg_replace( '~[\\[\\]]+~', '_', $input['id'] ) . 'function';
 						
+					$php = <<<PHP
+if ( ! function_exists( '$function_name' ) ):
+function $function_name( \$args, &\$message ){
+	extract( \$args );
+	try {
+		\$code = '$pattern return true;';
+		return eval( \$code );
+	} catch ( Exception \$e ){
+		\$message = "Error: ".\$e->getMessage(); return false;
+	}
+}
+endif; // function_exists
+\$valid = $function_name( array( 'post_id'=>'$post_id', 'post_type'=>'$post_type', 'this_key'=>'$this_key', 'value'=>'$value', 'prev_value'=>'$prev_value', 'inputs'=>\$input_fields ), \$message );
+PHP;
+
 						// it gets tricky but we are trying to account for an capture bad php code where possible
 						$pattern = trim( $pattern );
 						if ( substr( $pattern, -1 ) != ';' ) $pattern.= ';';
-						$php = 'function '.$function_name.'( $post_id, $post_type, $name, $value, $prev_value, &$message ) { '."\n";
+						$php = 'function '.$function_name.'( $post_id, $post_type, $name, $value, $prev_value, $inputs, &$message ) { '."\n";
 						$php.= '	try { '."\n";
 						$php.= '		$code = \'' . str_replace("'", "\'", $pattern . ' return true;' ) . '\';'."\n";
 						$php.= '		return eval( $code ); '."\n";
@@ -299,7 +331,7 @@ class acf_field_validated_field extends acf_field {
 						$php.= '		$message = "Error: ".$e->getMessage(); return false; '."\n";
 						$php.= '	} '."\n";
 						$php.= '} '."\n";
-						$php.= '$valid = '.$function_name.'( "'.$post_id.'", "'.$post_type.'", "'.$this_key.'", "'.addslashes( $value ).'", "'.addslashes( $prev_value ).'", $message );'."\n";
+						$php.= '$valid = '.$function_name.'( "'.$post_id.'", "'.$post_type.'", "'.$this_key.'", "'.addslashes( $value ).'", "'.addslashes( $prev_value ).'", $inputs, $message );'."\n";
 						
 						if ( true !== eval( $php ) ){			// run the eval() in the eval()
 							$error = error_get_last();			// get the error from the eval() on failure
@@ -307,7 +339,6 @@ class acf_field_validated_field extends acf_field {
 							if ( strpos( $error['file'], "validated_field_v4.php" ) && strpos( $error['file'], "eval()'d code" ) ){
 								preg_match( '/eval\\(\\)\'d code\\((\d+)\\)/', $error['file'], $matches );
 								$message = __( 'PHP Error', 'acf_vf' ) . ': ' . $error['message'] . ', line ' . $matches[1] . '.';
-								//$message = '$valid = '.$function_name.'( '.$post_id.', "'.$post_type.'", "'.$this_key.'", "'.addslashes( $value ).'", "'.addslashes( $prev_value ).'", $message );'."\n";
 								$valid = false;
 							} 
 						}
@@ -551,7 +582,7 @@ class acf_field_validated_field extends acf_field {
 			<td class="label"><label><?php _e( 'Input Mask', 'acf_vf' ); ?> </label>
 			</td>
 			<td><?php _e( 'Use &#39;a&#39; to match A-Za-z, &#39;9&#39; to match 0-9, and &#39;*&#39; to match any alphanumeric.', 'acf_vf' ); ?> 
-				<a href="http://digitalbush.com/projects/masked-input-plugin/" target="_new"><?php _e( 'More info.', 'acf_vf' ); ?></a><br />
+				<a href="http://digitalbush.com/projects/masked-input-plugin/" target="_new"><?php _e( 'More info', 'acf_vf' ); ?></a>.<br />
 				<?php 
 				do_action( 'acf/create_field', 
 					array(
@@ -683,6 +714,12 @@ class acf_field_validated_field extends acf_field {
 			<script type="text/javascript">
 			jQuery(document).ready(function(){
 				jQuery("#acf-field-<?php echo $html_key; ?>_pattern").hide();
+
+		    	ace.require("ace/ext/language_tools");
+				ace.config.loadModule('ace/snippets/snippets');
+				ace.config.loadModule('ace/snippets/php');
+				ace.config.loadModule("ace/ext/searchbox");
+
 				var editor = ace.edit("acf-field-<?php echo $html_key; ?>_editor");
 				editor.setTheme("ace/theme/monokai");
 				editor.getSession().setMode("ace/mode/text");
@@ -720,14 +757,25 @@ class acf_field_validated_field extends acf_field {
 							}
 							editor.getSession().setMode("ace/mode/php");
 							jQuery("#acf-field-<?php echo $html_key; ?>_editor").css('height','200px');
+
+							editor.setOptions({
+								enableBasicAutocompletion: true,
+								enableSnippets: true,
+								enableLiveAutocompletion: true
+							});
 						} else {
 							if (val.indexOf(sPhp)==0){
 								editor.setValue(val.substr(val.indexOf('\n')+1));
 							}
 							editor.getSession().setMode("ace/mode/text");
 							jQuery("#acf-field-<?php echo $html_key; ?>_editor").css('height','18px');
+							editor.setOptions({
+								enableBasicAutocompletion: false,
+								enableSnippets: false,
+								enableLiveAutocompletion: false
+							});
 						}
-						editor.resize()
+						editor.resize();
 						editor.gotoLine(1, 1, false);
 						jQuery('#field_option_<?php echo $html_key; ?>_validation, #field_option_<?php echo $html_key; ?>_message').show(300);
 					}
@@ -810,7 +858,7 @@ class acf_field_validated_field extends acf_field {
 	function input_admin_enqueue_scripts(){
 		// register acf scripts
 		$min = ( ! $this->debug )? '.min' : '';
-		wp_register_script( 'acf-validated-field', $this->settings['dir'] . "js/input{$min}.js", array(), $this->settings['version'] );
+		wp_register_script( 'acf-validated-field', $this->settings['dir'] . "js/input{$min}.js", array( 'jquery' ), $this->settings['version'] );
 		wp_register_script( 'jquery-masking', $this->settings['dir'] . "js/jquery.maskedinput{$min}.js", array( 'jquery' ), $this->settings['version']);
 		wp_register_script( 'sh-core', $this->settings['dir'] . 'js/shCore.js', array( 'acf-input' ), $this->settings['version'] );
 		wp_register_script( 'sh-autoloader', $this->settings['dir'] . 'js/shAutoloader.js', array( 'sh-core' ), $this->settings['version']);
@@ -861,8 +909,8 @@ class acf_field_validated_field extends acf_field {
 	*  @date	23/01/13
 	*/
 	function input_admin_head(){
-		wp_enqueue_style( 'font-awesome', '//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css', array(), $this->settings['version'] );
-		wp_enqueue_style( 'acf-validated_field', $this->settings['dir'] . 'css/input.css', array( 'acf-input' ), $this->settings['version'] ); 
+		wp_enqueue_style( 'font-awesome', plugins_url( 'css/font-awesome/css/font-awesome.min.css', __FILE__ ), array(), '4.2.0' ); 
+		wp_enqueue_style( 'acf-validated_field', plugins_url( 'css/input.css', __FILE__ ), array( 'acf-input' ), ACF_VF_VERSION ); 
 
 	}
 	/*
@@ -877,7 +925,8 @@ class acf_field_validated_field extends acf_field {
 	*  @date	23/01/13
 	*/
 	function field_group_admin_enqueue_scripts(){
-		wp_enqueue_script( 'ace-editor', '//cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js', array(), $this->settings['version'] );
+		wp_enqueue_script( 'ace-editor', plugins_url( 'js/ace/ace.js', __FILE__ ), array(), '1.1.7' );
+		wp_enqueue_script( 'ace-ext-language_tools', plugins_url( 'js/ace/ext-language_tools.js', __FILE__ ), array(), '1.1.7' );
 	}
 
 	/*
@@ -990,6 +1039,20 @@ class acf_field_validated_field extends acf_field {
 		global $currentpage;
 		$sub_field = $this->setup_sub_field( $this->setup_field( $field ) );
 		$sub_field = apply_filters( 'acf/load_field/type='.$sub_field['type'], $sub_field );
+
+		// The relationship field gets settings from the sub_field so we need to return it since it effectively displays through this method.
+		if ( isset( $_POST['action'] ) && $_POST['action'] == 'acf/fields/relationship/query_posts' ){
+			// Bug fix, if the taxonomy is "all" just omit it from the filter.
+			if ( $sub_field['taxonomy'][0] == 'all' ){
+				unset( $sub_field['taxonomy']);
+			}
+			return $sub_field;
+		}
+
+		if ( $field['read_only'] && $currentpage == 'edit.php' ){
+			$field['label'] = $field['label'].' <i class="fa fa-link" title="'. __('Read only', 'acf_vf' ) . '"></i>';
+		}
+
 		$field['sub_field'] = $sub_field;
 		if ( $field['read_only'] && $currentpage == 'edit.php' ){
 			$field['label'] = $field['label'].' <i class="fa fa-link" title="'. __('Read only', 'acf_vf' ) . '"></i>';

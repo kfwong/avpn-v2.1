@@ -2,8 +2,8 @@
 Contributors: doublesharp
 Tags: acf, advanced custom fields, validation, validate, regex, php, mask, input, readonly, add-on, unique, input, edit
 Requires at least: 3.0
-Tested up to: 3.9.1
-Stable tag: 1.3.1
+Tested up to: 4.1
+Stable tag: 1.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,7 +21,7 @@ or PHP code, the option of ensuring a field's uniqueness by `post_type` and `met
 2. **Server Side Validation** - validate the inputs using server side PHP code or regular expressions.
 3. **Uniqueness** - ensure that the value being updated is not already in use.
 4. **Repeater Fields** - validated fields within a [Repeater Field](http://www.advancedcustomfields.com/add-ons/repeater-field/).
-5. **Read Only** - specify a field a read-only allowing it to be displayed but not updated. *BETA*
+5. **Read Only** - specify a field as read-only allowing it to be displayed but not updated. *BETA*
 
 = Compatibility =
 Requires [Advanced Custom Fields](http://wordpress.org/extend/plugins/advanced-custom-fields/) version 4.0 or greater.
@@ -46,6 +46,23 @@ Global configurations for the Validated Field plugin can be found in the WordPre
 4. Example of PHP validation failure with the error message raised to the UI.
 
 == Changelog ==
+= 1.4 = 
+* Support for Advanced Custom Fields 5.0.
+* The `$inputs` variable is now available using and index of `meta_key` and returning an array with the values "field", "value", and "prev_value".
+* Fix for custom "post_id" string value instead of and integer value.
+* Host `ace.js` libraries locally and upgrade to version 1.1.7.
+ * Increase size of PHP editor.
+ * Support for PHP snippets and autocomplete.
+ * New editor functions: Search (`Ctrl+F`/`Cmd+F`), Replace (`Ctrl+Alt+F`/`Cmd+Opt+F`), and Replace All (`Ctrl+Alt+Shft+F`/`Cmd+Opt+Shft+F`).
+* Host `fontawesome.css` CSS and fonts locally and upgrade to version 4.2.
+* Upgraded jQuery Masked Input plugin to version 1.4.
+* Better support for Relationship field settings - only load sub field when the action is `acf/fields/relationship/query_posts` (ACF4) or `acf/fields/relationship/query` (ACF5).
+* For ACF 5+ only:
+ * The new ['acf/validate_value`](http://www.advancedcustomfields.com/resources/acf-validate_value/) filter is used for better compatibility and performance.
+ * Get rid of inline JavaScript in the WordPress Admin and leverage ACF JavaScript events.
+* For ACF 4 only:
+ * Compatibility with tabbed layouts (natively supported in ACF 5)
+
 = 1.3.1 =
 * Bug Fix: Apply input masking to fields for new posts, not just editing existing ones.
 

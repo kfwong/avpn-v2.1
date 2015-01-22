@@ -1,8 +1,15 @@
 Changelog for Iconic One WordPress Responsive Theme | Visit http://themonic.com/iconic-one/ for latest version
 
 
--------------- August 2014 ----------------
+-------------- January 2015 ----------------
 
+01/07/15  - Iconic One Version 1.4.4
+
+* Made Excerpt Read More pluggable for child themes, you can now change read more text in a child theme.
+* Removed sidebar active menu bg color
+* Added sanitization to the customizer functions
+
+-------------- August 2014 ----------------
 
 08/10/14  - Iconic One Version 1.4.3
 

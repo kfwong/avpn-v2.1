@@ -219,6 +219,14 @@ class WSAL_Settings {
 		return $this->_plugin->GetGlobalOption('restrict-admins', false);
 	}
 
+	/**
+	 * @deprecated Sandbox functionality is now in an external plugin.
+	 */
+	public function IsSandboxPageEnabled(){
+		$plugins = $this->_plugin->licensing->plugins();
+		return isset($plugins['wsal-sandbox-extensionphp']);
+	}
+
 	public function SetRestrictAdmins($enable){
 		$this->_plugin->SetGlobalOption('restrict-admins', (bool)$enable);
 	}
@@ -228,7 +236,7 @@ class WSAL_Settings {
 	protected $_disabled = null;
 
 	public function GetDefaultDisabledAlerts(){
-		return array(); //array(0000, 0003, 0005);
+		return array(0000, 0001, 0002, 0003, 0004, 0005);
 	}
 
 	/**
@@ -238,7 +246,7 @@ class WSAL_Settings {
 		if(!$this->_disabled){
 			$this->_disabled = implode(',', $this->GetDefaultDisabledAlerts());
 			$this->_disabled = $this->_plugin->GetGlobalOption('disabled-alerts', $this->_disabled);
-			$this->_disabled = explode(',', $this->_disabled);
+			$this->_disabled = ($this->_disabled == '') ? array() : explode(',', $this->_disabled);
 			$this->_disabled = array_map('intval', $this->_disabled);
 		}
 		return $this->_disabled;
@@ -495,7 +503,7 @@ class WSAL_Settings {
 			$result = $this->GetClientIPs();
 			$result = reset($result);
 			$result = isset($result[0]) ? $result[0] : null;
-		}elseif(isset($_SERVER['REMOTE_ADDR'])){
+		} elseif(isset($_SERVER['REMOTE_ADDR'])) {
 			$result = $this->NormalizeIP($_SERVER['REMOTE_ADDR']);
 			if (!$this->ValidateIP($result)) $result = null;
 		}
@@ -517,7 +525,7 @@ class WSAL_Settings {
 	
 	protected function NormalizeIP($ip){
 		$ip = trim($ip);
-		if(strpos($ip, ':') !== false && strpos($ip, '[') === false){
+		if(strpos($ip, ':') !== false && substr_count($ip, '.') == 3 && strpos($ip, '[') === false){
 			// IPv4 with a port (eg: 11.22.33.44:80)
 			$ip = explode(':', $ip);
 			$ip = $ip[0];

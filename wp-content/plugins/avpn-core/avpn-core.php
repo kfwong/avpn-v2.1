@@ -100,17 +100,17 @@ function apply_for_memberships_submit( $post_id ) {
   // update $_POST['return']
   $_POST['return'] = add_query_arg( array('post_id' => $post_id), $_POST['return'] );
 
-  $username = $_POST['fields']['field_54354ddab7bfa'];
+  $username = $_POST['fields']['field_54b2ad2fd1d7e'];
   $user_email = $_POST['fields']['field_53dfe693365cc'];
   $organisation_name = $_POST['fields']['field_53e005437ca34'];
   $organisation_url = get_permalink($post_id);
  
-  //if(!username_exists( $username )) {
+  if(!username_exists( $username )) {
 
     // Generate the password and create the user
     // NOTE: this is for the sake of registering user using bp_core_signup_user function, the password will be regenerated again during activate_membership. (the password need to be forward to user upon activation)
     // TODO: is there any other way to only generate once? 
-    //$password = wp_generate_password( 12, false );
+    $password = wp_generate_password( 12, false );
 
     
     // have to put these before bp_core_signup_user because of the redirect
@@ -145,9 +145,9 @@ function apply_for_memberships_submit( $post_id ) {
       $user_message
     );
 
-    //$user_id = bp_core_signup_user( $username, $password, $user_email, null);
+    $user_id = bp_core_signup_user( $username, $password, $user_email, null);
 
-  //} // end if
+  } // end if
 
   // return the new ID
   return $post_id;
@@ -163,14 +163,13 @@ function activate_membership($user_id){
   $user_last_name = $user->last_name;
   $display_name = $user->display_name;
 
-  /*
   $loop = new WP_Query( array( 'post_type' => 'organisation') );
   while ( $loop->have_posts() ){
     $loop->the_post();
 
     $organisation_name = get_the_title();
 
-    if($user_email == get_field('membership_admin_contact_email') ){
+    if($user_email == get_field('membership_admin_contact_email') && $username == get_field('membership_admin_contact_username')){
       // is one of the organisation moderator account
 
       // Set the nickname & default role
@@ -181,6 +180,9 @@ function activate_membership($user_id){
           'role'        =>    'membership_profile_moderator'
         )
       );
+
+      global $coauthors_plus;
+      $coauthors_plus->add_coauthors( get_the_ID(), array($username), true );
 
       // Regenerate random user password
       $password = wp_generate_password( 12, false );
@@ -208,7 +210,6 @@ function activate_membership($user_id){
       return;
     }
   }
-  */
 
   // is a regular account, since early return is not executing and the loop is exhausted
   // Regenerate random user password

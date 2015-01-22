@@ -21,7 +21,19 @@ function themonic_customize_preview_js() {
 	wp_enqueue_script( 'themonic-customizer', get_template_directory_uri() . '/js/theme-customizer.js', array( 'customize-preview' ), '20130527', true );
 }
 add_action( 'customize_preview_init', 'themonic_customize_preview_js' );
-
+/*
+ * Sanitize functions.
+ */
+function iconic_one_sanitize_text( $input ) {
+    return wp_kses_post( force_balance_tags( $input ) );
+}
+function iconic_one_sanitize_checkbox( $input ) {
+    if ( $input == 1 ) {
+        return 1;
+    } else {
+        return '';
+    }
+}
 //Themonic customizer begins
 function themonic_theme_customizer( $wp_customize ) {
      $wp_customize->add_section( 'themonic_logo_section' , array(
@@ -29,7 +41,7 @@ function themonic_theme_customizer( $wp_customize ) {
     'priority'    => 30,
     'description' => 'Upload a logo to replace the default site name and description in the header',
 ) );
-$wp_customize->add_setting( 'themonic_logo' );
+$wp_customize->add_setting( 'themonic_logo' , array('default' => '', 'sanitize_callback' => 'esc_url_raw',));
 $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'themonicl_logo', array(
     'label'    => __( 'Logo', 'themonic' ),
     'section'  => 'themonic_logo_section',
@@ -51,7 +63,7 @@ class Themonic_Textarea_Control extends WP_Customize_Control {
 $wp_customize->add_section('content' , array(
 	'priority'    => 200,
 ));
-$wp_customize->add_setting('textarea_copy', array('default' => 'Copyright 2013',));
+$wp_customize->add_setting('textarea_copy', array('default' => 'Copyright 2013', 'sanitize_callback' => 'iconic_one_sanitize_text',));
 $wp_customize->add_control(new Themonic_Textarea_Control($wp_customize, 'textarea_copy', array(
 	'label' => 'Footer Copyright',
 	'section' => 'content',
@@ -61,7 +73,7 @@ $wp_customize->add_section('content' , array(
 	'title' => __('Footer','themonic'),
 	'priority'    => 300,
 ));
-$wp_customize->add_setting('custom_text_right', array('default' => 'Custom Text Right',));
+$wp_customize->add_setting('custom_text_right', array('default' => 'Custom Text Right', 'sanitize_callback' => 'iconic_one_sanitize_text',));
 $wp_customize->add_control(new Themonic_Textarea_Control($wp_customize, 'custom_text_right', array(
 	'label' => 'Custom Footer Text Right',
 	'section' => 'content',
@@ -82,8 +94,8 @@ class Social_Textarea_Control extends WP_Customize_Control {
 }
 
 $wp_customize->add_setting(
-    'iconic_one_social_activate'
-	);
+    'iconic_one_social_activate', array('default' => '', 'sanitize_callback' => 'iconic_one_sanitize_checkbox',
+	));
 	$wp_customize->add_control(
     'iconic_one_social_activate',
     array(
@@ -96,7 +108,7 @@ $wp_customize->add_setting(
 $wp_customize->add_section('sl_content' , array(
 	'priority'    => 500,
 ));
-$wp_customize->add_setting('twitter_url', array('default' => 'http://twitter.com/',));
+$wp_customize->add_setting('twitter_url', array('default' => 'http://twitter.com/', 'sanitize_callback' => 'iconic_one_sanitize_text',));
 $wp_customize->add_control(new Social_Textarea_Control($wp_customize, 'twitter_url', array(
 	'label' => 'Twitter url',
 	'section' => 'sl_content',
@@ -106,7 +118,7 @@ $wp_customize->add_control(new Social_Textarea_Control($wp_customize, 'twitter_u
 $wp_customize->add_section('sl_content' , array(
 	'priority'    => 600,
 ));
-$wp_customize->add_setting('facebook_url', array('default' => 'http://facebook.com/',));
+$wp_customize->add_setting('facebook_url', array('default' => 'http://facebook.com/', 'sanitize_callback' => 'iconic_one_sanitize_text',));
 $wp_customize->add_control(new Social_Textarea_Control($wp_customize, 'facebook_url', array(
 	'label' => 'Facebook url',
 	'section' => 'sl_content',
@@ -115,7 +127,7 @@ $wp_customize->add_control(new Social_Textarea_Control($wp_customize, 'facebook_
 $wp_customize->add_section('sl_content' , array(
 	'priority'    => 700,
 ));
-$wp_customize->add_setting('plus_url', array('default' => 'http://plus.google.com/',));
+$wp_customize->add_setting('plus_url', array('default' => 'http://plus.google.com/', 'sanitize_callback' => 'iconic_one_sanitize_text',));
 $wp_customize->add_control(new Social_Textarea_Control($wp_customize, 'plus_url', array(
 	'label' => 'Google Plus url',
 	'section' => 'sl_content',
@@ -125,7 +137,7 @@ $wp_customize->add_section('sl_content' , array(
 'title' => __('Social','themonic'),
 	'priority'    => 40,
 ));
-$wp_customize->add_setting('rss_url', array('default' => 'http://wordpress.org/',));
+$wp_customize->add_setting('rss_url', array('default' => 'http://wordpress.org/', 'sanitize_callback' => 'iconic_one_sanitize_text',));
 $wp_customize->add_control(new Social_Textarea_Control($wp_customize, 'rss_url', array(
 	'label' => 'rss url',
 	'section' => 'sl_content',

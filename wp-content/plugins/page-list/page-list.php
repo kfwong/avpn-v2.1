@@ -3,7 +3,7 @@
 Plugin Name: Page-list
 Plugin URI: http://wordpress.org/plugins/page-list/
 Description: [pagelist], [subpages], [siblings] and [pagelist_ext] shortcodes
-Version: 4.2
+Version: 4.3
 Author: webvitaly
 Author URI: http://web-profile.com.ua/wordpress/plugins/
 License: GPLv3
@@ -11,13 +11,13 @@ License: GPLv3
 
 if ( !function_exists('pagelist_unqprfx_add_stylesheet') ) {
 	function pagelist_unqprfx_add_stylesheet() {
-		wp_enqueue_style( 'page-list-style', plugins_url( '/css/page-list.css', __FILE__ ), false, '4.2', 'all' );
+		wp_enqueue_style( 'page-list-style', plugins_url( '/css/page-list.css', __FILE__ ), false, '4.3', 'all' );
 	}
-	add_action('wp_print_styles', 'pagelist_unqprfx_add_stylesheet');
+	add_action('wp_enqueue_scripts', 'pagelist_unqprfx_add_stylesheet');
 }
 
 
-$pagelist_unqprfx_powered_line = "\n".'<!-- Page-list plugin v.4.2 wordpress.org/plugins/page-list/ -->'."\n";
+$pagelist_unqprfx_powered_line = "\n".'<!-- Page-list plugin v.4.3 wordpress.org/plugins/page-list/ -->'."\n";
 
 
 if ( !function_exists('pagelist_unqprfx_shortcode') ) {
