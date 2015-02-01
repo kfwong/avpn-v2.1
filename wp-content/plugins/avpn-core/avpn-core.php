@@ -933,4 +933,9 @@ function avpn_core_rscism_filter($meta, $post, $is_update) {
   return $meta;
 }
 
+add_action('init', 'avpn_core_add_image_size');
+function avpn_core_add_image_size(){
+	add_image_size('organisation_logo_fw_vh', 150); 
+}
+
 ?>

@@ -58,7 +58,7 @@ Template Name: Investment Showcase
 											$post = $post_object;
 											setup_postdata( $post ); 
 									?>
-									<a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( array(32,32) ); ?>&nbsp;<?php the_field('organisation_name'); ?></a>
+									<span style="display:none;"><?php the_title(); ?></span><a href="<?php echo get_permalink();?>"><?php has_post_thumbnail()? the_post_thumbnail( 'organisation_logo_fw_vh') : the_title(); ?></a>
 									<?php
 											wp_reset_postdata(); // IMPORTANT 
 										endif;
