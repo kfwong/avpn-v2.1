@@ -2,7 +2,7 @@ jQuery(document).ready(function($) {
 	$(".field_type-select select").select2({"width": "100%"});
 	$(".field_type-user select").select2({"width": "100%"});
 	$(".field_type-post_object select").select2({"width": "100%"});
-	$("#avpn-manage-org-profile").select2({"width": "element", "placeholder": "Click here to manage your organisation profiles"});
+	$("#avpn-manage-org-profile").select2({"width": "400px", "placeholder": "Click here to manage your organisation profiles"});
 	$("#avpn-manage-org-profile").on("select2-selecting", function(e) { window.open(e.val, '_blank');})
 
 	$("#field_3").prepend("<option value=''></option>").val('');
