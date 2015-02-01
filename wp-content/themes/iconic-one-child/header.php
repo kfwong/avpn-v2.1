@@ -52,16 +52,43 @@
 			<?php if ( is_user_logged_in() ) : ?>
 
 				<?php do_action( 'bp_before_login_widget_loggedin' ); ?>
+				<div style="margin-bottom: 5px;">
+					<?php
 
+					$args = array(
+						'post_type' => 'organisation',
+						'posts_per_page' => 10,
+						'post_status' => 'publish',
+						'author_name' => wp_get_current_user()->user_login,
+					);
+					$author_query = new WP_Query( $args );
+
+					if ( $author_query->have_posts() ) :
+						echo '<select id="avpn-manage-org-profile">';
+						echo '<option></option>';
+						while ( $author_query->have_posts() ) : $author_query->the_post();
+							?>
+							<option value='<?php the_permalink(); ?>'><?php the_title();?></option>
+						<?php
+						endwhile;
+						echo '</select>';
+					endif;
+
+					?>
+				</div>
 				<div class="bp-login-widget-user-avatar alignright">
 					<a href="<?php echo bp_loggedin_user_domain(); ?>">
 						<?php bp_loggedin_user_avatar( 'type=thumb&width=50&height=50' ); ?>
 					</a>
 				</div>
-
 				<div class="bp-login-widget-user-links alignright" style="margin-right:10px;">
 					<div class="bp-login-widget-user-link" style="text-align:right;"><strong><?php echo bp_core_get_userlink( bp_loggedin_user_id() ); ?></strong></div>
-					<div class="bp-login-widget-user-logout" style="text-align:right;"><a class="logout" href="<?php echo wp_logout_url( bp_get_requested_url() ); ?>"><small><?php _e( 'Log Out', 'buddypress' ); ?></small></a></div>
+					<div class="bp-login-widget-user-logout" style="text-align:right;">
+						<a class="logout" href="<?php echo wp_logout_url( bp_get_requested_url() ); ?>"><small><?php _e( 'Log Out', 'buddypress' ); ?></small></a>
+					</div>
+				</div>
+				<div>
+
 				</div>
 
 				<?php do_action( 'bp_after_login_widget_loggedin' ); ?>

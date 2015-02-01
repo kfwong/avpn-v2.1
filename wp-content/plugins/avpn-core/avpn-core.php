@@ -79,6 +79,10 @@ function list_of_members_template($template) {
 
 // ACF Apply for Memberships
 add_filter('acf/pre_save_post' , 'apply_for_memberships_submit', 10, 1 );
+/**
+ * @param $post_id
+ * @return int|WP_Error
+ */
 function apply_for_memberships_submit( $post_id ) {
  
   // check if this is to be a new post
@@ -104,6 +108,7 @@ function apply_for_memberships_submit( $post_id ) {
   $user_email = $_POST['fields']['field_53dfe693365cc'];
   $organisation_name = $_POST['fields']['field_53e005437ca34'];
   $organisation_url = get_permalink($post_id);
+  $all_fields = html_show_array($_POST['fields']);
  
   if(!username_exists( $username )) {
 
@@ -117,6 +122,9 @@ function apply_for_memberships_submit( $post_id ) {
     $admin_to = get_option('avpn-core-membership-admin-notification-options-to');
     $admin_subject = str_replace("{organisation_name}", $organisation_name, get_option('avpn-core-membership-admin-notification-options-sbj'));
     $admin_message = str_replace("{organisation_url}", $organisation_url, get_option('avpn-core-membership-admin-notification-options-msg'));
+    $admin_message = str_replace("{all_fields}", $all_fields, $admin_message);
+    $admin_headers = "MIME-Version: 1.0\r\n";
+    $admin_headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
     // variable placeholders
     $organisation_admin_first_name = $_POST['fields']['field_53dfe627365ca'];
@@ -135,7 +143,8 @@ function apply_for_memberships_submit( $post_id ) {
     wp_mail(
       $admin_to,
       $admin_subject,
-      $admin_message
+      $admin_message,
+      $admin_headers
     );
 
     // Send organisation contact user email notification
@@ -933,9 +942,58 @@ function avpn_core_rscism_filter($meta, $post, $is_update) {
   return $meta;
 }
 
+// Register logo sizes for member list and investment showcase
 add_action('init', 'avpn_core_add_image_size');
 function avpn_core_add_image_size(){
 	add_image_size('organisation_logo_fw_vh', 150); 
+}
+
+//multidimensional array to html table functions
+function do_offset($level){
+  $offset = "";             // offset for subarry
+  for ($i=1; $i<$level;$i++){
+    $offset = $offset . "<td></td>";
+  }
+  return $offset;
+}
+
+function show_array($array, $level, $sub){
+
+  if (is_array($array) == 1){          // check if input is an array
+    $html = '';
+    foreach($array as $key_val => $value) {
+      $offset = "";
+      if (is_array($value) == 1){   // array is multidimensional
+        $html .= "<tr>";
+        $offset = do_offset($level);
+        $html .= $offset . '<td width="200" style="font-size:10pt;font-weight: bold;">' . get_field_object($key_val)['label'] . "</td>";
+        $html .= show_array($value, $level+1, 1);
+      }
+      else{                        // (sub)array is not multidim
+        if ($sub != 1){          // first entry for subarray
+          $html .= "<tr nosub>";
+          $offset = do_offset($level);
+        }
+        $sub = 0;
+        $html .= $offset . "<td main ".$sub.' width="200" style="font-size:10pt; background-color: #EEEEEE;font-weight:bold;">' . get_field_object($key_val)['label'] .
+            '</td><td width="200" style="font-size:10pt;">' . $value . "</td>";
+        $html .= "</tr>\n";
+      }
+    } //foreach $array
+    return $html;
+  }
+  else{ // argument $array is not an array
+    return;
+  }
+}
+
+function html_show_array($array){
+  $html = '';
+  $html .= "<table cellspacing=\"0\" border=\"2\">\n";
+  $html .= show_array($array, 1, 0);
+  $html .= "</table>\n";
+
+  return $html;
 }
 
 ?>
