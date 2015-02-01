@@ -5,3 +5,4 @@ wp-content/uploads/
 cache
 .svn
 .tmp
+.idea/
