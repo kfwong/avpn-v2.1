@@ -14,18 +14,27 @@ Template Name: Submit New Investment Showcase
     <div id="content" role="main">
 		<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 			<header class="entry-header">
+				<?php wp_reset_postdata(); ?>
 				<h1 class="entry-title"><?php the_title(); ?></h1>
 			</header>
 
 			<div class="entry-content">
- 
-				<?php acf_form(array(
-					'field_groups'	=> array('13439'),
-					'post_id'		=> 'new-investment-showcase',
-					'post_title'	=> false,
-					'submit_value'		=> 'Submit',
-					'updated_message'	=>	'Investment showcase submitted successfully.'
-				)); ?>
+
+				<?php 
+				if(is_user_logged_in()){
+					acf_form(array(
+						'field_groups'	=> array('13439'),
+						'post_id'		=> 'new-investment-showcase',
+						'post_title'	=> false,
+						'submit_value'		=> 'Submit',
+						'updated_message'	=>	'Investment showcase submitted successfully.'
+					)); 
+				}else{
+				?>
+					<p>Sorry, only registered/logged in user can submit new investment showcase.</p>
+				<?php
+				}
+				?>
 
 			</div><!-- .entry-content -->
 		</article><!-- #post -->

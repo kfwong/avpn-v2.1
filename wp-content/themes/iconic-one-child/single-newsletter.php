@@ -12,6 +12,7 @@ get_header(); ?>
 											<div style="border-bottom: 1px solid #F3F3F3;padding: 20px 0px;">
 												<span class="avpn-red" style="font-size:12pt;font-weight:bold;">Content</span>
 												<ul style="list-style-type: square;list-style-position:inside;margin-top: 10px;clear:both;">
+													<?php wp_reset_postdata(); ?>
 													<?php wp_list_pages( array('title_li'=>'','include'=> get_post_top_ancestor_id(), 'post_type' => 'newsletter') ); ?>
    													<?php wp_list_pages( array('title_li'=>'','depth'=>1,'child_of'=>get_post_top_ancestor_id() , 'post_type' => 'newsletter') ); ?>
 												</ul>

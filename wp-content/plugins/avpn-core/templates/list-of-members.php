@@ -13,6 +13,7 @@ Template Name: Apply for Memberships
     <div id="content" role="main">
 		<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 			<header class="entry-header">
+				<?php wp_reset_query(); ?>
 				<h1 class="entry-title"><?php the_title(); ?></h1>
 			</header>
 
@@ -40,9 +41,9 @@ Template Name: Apply for Memberships
 							</tr>
 					
 						<?php endwhile; ?>
+						<?php wp_reset_query(); ?>
 					</tbody>
 				</table>
-				
 				<?php the_content(); ?>
 
 			</div>

@@ -6,3 +6,4 @@ cache
 .svn
 .tmp
 .idea/
+*.save

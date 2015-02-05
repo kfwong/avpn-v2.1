@@ -14,7 +14,8 @@ jQuery(document).ready(function($) {
 	});
 
 	$('.pretty-datatable').dataTable({
-		"order": [[ 1, "asc" ]]		
+		"order": [[ 0, "asc" ]],
+		"dom": '<"top"lif>rt<"bottom"p><"clear">'
 	});
 
 	if($('.flexslider').length != 0){
