@@ -16,9 +16,7 @@ get_header(); ?>
 				<h1 class="archive-title"><?php printf( __( 'Category Archives: %s', 'themonic' ), '<span>' . single_cat_title( '', false ) . '</span>' ); ?></h1>
 
 			<?php if ( category_description() ) : // Show an optional category description ?>
-				<div class="archive-meta"><?php echo category_description(); ?>
-					<p><?php echo do_shortcode('[searchandfilter fields="resources"]'); ?></p>
-				</div>
+				<div class="archive-meta"><?php echo do_shortcode(category_description()); ?></div>
 			<?php endif; ?>
 			</header><!-- .archive-header -->
 
