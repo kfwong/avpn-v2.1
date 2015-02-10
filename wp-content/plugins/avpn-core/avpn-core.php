@@ -996,4 +996,26 @@ function html_show_array($array){
   return $html;
 }
 
+// custom shortcode for generating organisation glossary
+add_shortcode( 'avpn_core_organisation_glossary', 'avpn_core_organisation_glossary_shortcode' );
+function avpn_core_organisation_glossary_shortcode(){
+  $output = "";
+
+  $args = array( 'posts_per_page' => -1, 'orderby'=> 'title', 'order' => 'ASC', 'post_type' => 'organisation' );
+  $glossaryposts = new WP_Query( $args );
+
+  if ( $glossaryposts->have_posts() ) {
+    while ($glossaryposts->have_posts()) {
+      $glossaryposts->the_post();
+
+      $output .= '<a href="' . get_the_permalink() . '">' . get_the_title() . '</a><br/>';
+
+    }
+  }
+
+  wp_reset_query();
+
+  return $output;
+}
+
 ?>
