@@ -7,6 +7,7 @@ jQuery(document).ready(function($) {
 
 	$("#field_3").prepend("<option value=''></option>").val('');
 	$(".field_type_select_custom_post_type select").select2({"width": "90%", "placeholder":"Select an organisation", "allowClear": true});
+	$("#ofcategory, #ofpost_tag").select2({"width": "200px"});
 
 	$('#signup_username').bind('keyup keypress blur', function(){
     	$('#signup_password').val("generated_password");
