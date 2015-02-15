@@ -93,7 +93,7 @@ function apply_for_memberships_submit( $post_id ) {
 
   // check for recaptcha
   $recaptcha_response = $_POST['g-recaptcha-response'];
-  $json = get_curl_data('https://www.google.com/recaptcha/api/siteverify?secret=' . get_field_object('field_54e0b9039dcef')['acf-recaptcha-secret-key'] . '&response='.$recaptcha_response);
+  $json = get_curl_data('https://www.google.com/recaptcha/api/siteverify?secret=' . get_field_object('field_54e0d144c76af')['acf-recaptcha-secret-key'] . '&response='.$recaptcha_response);
   $recaptcha_auth = json_decode($json, true);
   
   // if recaptcha failed, early return
