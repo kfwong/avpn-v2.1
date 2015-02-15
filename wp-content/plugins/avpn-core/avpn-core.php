@@ -91,6 +91,24 @@ function apply_for_memberships_submit( $post_id ) {
       return $post_id;
   }
 
+  // check for recaptcha
+  $recaptcha_response = $_POST['g-recaptcha-response'];
+  $json = get_curl_data('https://www.google.com/recaptcha/api/siteverify?secret=' . get_field_object('field_54e0b9039dcef')['acf-recaptcha-secret-key'] . '&response='.$recaptcha_response);
+  $recaptcha_auth = json_decode($json, true);
+  
+  // if recaptcha failed, early return
+  if(!$recaptcha_auth['success']){
+    // log the case and email admin
+    error_log("[Apply for Membership] Recaptcha: " . var_dump($recaptcha_auth));
+    wp_mail(
+      'kangfei@avpn.asia',
+      'Whoops recaptcha failed',
+      var_dump($recaptcha_auth)
+    );
+    return $post_id;
+  }
+  //else if it's successful, continue creating post
+
   // Create a new post
   $post = array(
       'post_status'  => 'pending',
@@ -1018,4 +1036,15 @@ function avpn_core_organisation_glossary_shortcode(){
   return $output;
 }
 
+
+function get_curl_data($url){
+  $curl = curl_init();
+  curl_setopt($curl, CURLOPT_URL, $url);
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+  curl_setopt($curl, CURLOPT_TIMEOUT, 10);
+  curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.16) Gecko/20110319 Firefox/3.6.16");
+  $curlData = curl_exec($curl);
+  curl_close($curl);
+  return $curlData;
+}
 ?>

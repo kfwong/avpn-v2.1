@@ -26,7 +26,7 @@ Template Name: Apply for Memberships
 				<?php endwhile; // end of the loop. ?>
  
 				<?php acf_form(array(
-					'field_groups'	=> array('13468'),
+					'field_groups'	=> array('13468','23118'),
 					'post_id'		=> 'new-organisation',
 					'post_title'	=> false,
 					'submit_value'		=> 'Submit',
