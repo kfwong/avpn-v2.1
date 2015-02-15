@@ -29,7 +29,7 @@ Template Name: Apply for Memberships
 			            </tr>
 			        </thead>
 			        <tbody>			        
-						<?php $loop = new WP_Query( array( 'post_type' => 'organisation', 'posts_per_page' => -1 ) ); ?>
+						<?php $loop = new WP_Query( array( 'post_type' => 'organisation', 'posts_per_page' => -1 , 'post_status' => 'publish') ); ?>
 
 						<?php while ( $loop->have_posts() ) : $loop->the_post(); ?>
 

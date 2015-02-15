@@ -1001,16 +1001,18 @@ add_shortcode( 'avpn_core_organisation_glossary', 'avpn_core_organisation_glossa
 function avpn_core_organisation_glossary_shortcode(){
   $output = "";
 
-  $args = array( 'posts_per_page' => -1, 'orderby'=> 'title', 'order' => 'ASC', 'post_type' => 'organisation' );
+  $args = array( 'posts_per_page' => -1, 'orderby'=> 'title', 'order' => 'ASC', 'post_type' => 'organisation', 'post_status' => 'publish' );
   $glossaryposts = new WP_Query( $args );
 
   if ( $glossaryposts->have_posts() ) {
+    $output .="<ol>";
     while ($glossaryposts->have_posts()) {
       $glossaryposts->the_post();
 
-      $output .= '<a href="' . get_the_permalink() . '">' . get_the_title() . '</a><br/>';
+      $output .= '<li><a href="' . get_the_permalink() . '">' . get_the_title() . '</a></li>';
 
     }
+    $outpit .="</ol>";
   }
 
   wp_reset_query();
