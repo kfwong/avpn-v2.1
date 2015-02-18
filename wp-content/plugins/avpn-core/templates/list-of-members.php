@@ -19,7 +19,7 @@ Template Name: Apply for Memberships
 
 			<div class="entry-content">
 				<div id="chartdiv"></div>
-				<table class="pretty-datatable">
+				<table class="pretty-datatable stripe">
 					<thead>
 			            <tr>
 					<th>Organisation</th>
@@ -34,10 +34,10 @@ Template Name: Apply for Memberships
 						<?php while ( $loop->have_posts() ) : $loop->the_post(); ?>
 
 							<tr>
-								<td class="valignmiddle"><span style="display:none;"><?php the_title(); ?></span><a href="<?php echo get_permalink();?>"><?php has_post_thumbnail()? the_post_thumbnail( 'organisation_logo_fw_vh') : the_title(); ?></a></td>
-								<td><?php the_field('which_are_the_main_countries_that_your_company_operate_in'); ?></td>
-								<td><?php the_field('which_social_sectors_do_you_support'); ?></td>
-								<td><?php the_field('what_types_of_services_do_you_provide'); ?></td>
+								<td style="vertical-align:top;"><span style="display:none;"><?php the_title(); ?></span><a href="<?php echo get_permalink();?>"><?php has_post_thumbnail()? the_post_thumbnail( 'organisation_logo_fw_vh', array('style' => 'margin:10px auto;display:block;')) : ""; ?><p style="text-align: center;"><?php the_title(); ?></p></a></td>
+								<td style="vertical-align:top;"><?php the_field('which_are_the_main_countries_that_your_company_operate_in'); ?></td>
+								<td style="vertical-align:top;"><?php the_field('which_social_sectors_do_you_support'); ?></td>
+								<td style="vertical-align:top;"><?php the_field('what_types_of_services_do_you_provide'); ?></td>
 							</tr>
 					
 						<?php endwhile; ?>
