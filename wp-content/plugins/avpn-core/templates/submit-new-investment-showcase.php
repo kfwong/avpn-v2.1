@@ -24,9 +24,10 @@ Template Name: Submit New Investment Showcase
 				if(is_user_logged_in()){
 					acf_form(array(
 						'field_groups'	=> array('13439'),
-						'post_id'		=> 'new-investment-showcase',
+						'post_id'		=> 'new',
 						'post_title'	=> false,
 						'submit_value'		=> 'Submit',
+						'html_before_fields'	=> '<input type="hidden" name="acf_post_type" value="investment-showcase" />',
 						'updated_message'	=>	'Investment showcase submitted successfully.'
 					)); 
 				}else{

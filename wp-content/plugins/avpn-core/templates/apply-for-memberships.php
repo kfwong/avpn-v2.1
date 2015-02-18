@@ -28,8 +28,9 @@ Template Name: Apply for Memberships
 					'post_id'		=> 'new',
 					'post_title'	=> false,
 					'submit_value'		=> 'Submit',
+					'html_before_fields'	=> '<input type="hidden" name="acf_post_type" value="organisation" />',
 					'updated_message'	=>	'Membership application submitted successfully.',
-					'return'	=>	home_url('/registration-successful')
+					'return'	=>	home_url('/membership/apply-for-membership/registration-confirmation/')
 				)); ?>
 				
 				<?php endwhile; // end of the loop. ?>

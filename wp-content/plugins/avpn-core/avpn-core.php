@@ -85,10 +85,10 @@ add_filter('acf/pre_save_post' , 'apply_for_memberships_submit', 10, 1 );
  */
 function apply_for_memberships_submit( $post_id ) {
  
-  // check if this is to be a new post
-  if( $post_id != 'new' )
+  // check if this is to be a new post & post type = organisation
+  if( $post_id != 'new' && $_POST['acf_post_type'] != 'organisation')
   {
-      return $post_id;
+      return $post_id; //early return if this is not
   }
 
   // check for recaptcha
@@ -290,11 +290,11 @@ function apply_for_memberships_update ( $value, $post_id, $field  )
 // ACF Investment Showcase Submission
 add_filter('acf/pre_save_post' , 'investment_showcase_submit', 10, 1 );
 function investment_showcase_submit( $post_id ) {
- 
+
   // check if this is to be a new post
-  if( $post_id != 'new-investment-showcase' )
+  if( $post_id != 'new' && $_POST['acf_post_type'] != 'investment-showcase' )
   {
-      return $post_id;
+    return $post_id;
   }
 
   // Create a new post
