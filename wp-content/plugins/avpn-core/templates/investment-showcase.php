@@ -12,6 +12,7 @@ Template Name: Investment Showcase
     <div id="content" role="main">
 		<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 			<header class="entry-header">
+				<?php wp_reset_postdata(); ?>
 				<h1 class="entry-title"><?php the_title(); ?></h1>
 			</header>
 

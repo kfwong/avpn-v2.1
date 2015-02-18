@@ -86,7 +86,7 @@ add_filter('acf/pre_save_post' , 'apply_for_memberships_submit', 10, 1 );
 function apply_for_memberships_submit( $post_id ) {
  
   // check if this is to be a new post
-  if( $post_id != 'new-organisation' )
+  if( $post_id != 'new' )
   {
       return $post_id;
   }

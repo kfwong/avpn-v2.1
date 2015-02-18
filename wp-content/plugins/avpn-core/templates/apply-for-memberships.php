@@ -23,16 +23,16 @@ Template Name: Apply for Memberships
 
 				<?php the_content(); ?>
 
-				<?php endwhile; // end of the loop. ?>
- 
 				<?php acf_form(array(
 					'field_groups'	=> array('13468','23502'),
-					'post_id'		=> 'new-organisation',
+					'post_id'		=> 'new',
 					'post_title'	=> false,
 					'submit_value'		=> 'Submit',
 					'updated_message'	=>	'Membership application submitted successfully.',
 					'return'	=>	home_url('/registration-successful')
 				)); ?>
+				
+				<?php endwhile; // end of the loop. ?>
 
 			</div><!-- .entry-content -->
 		</article><!-- #post -->
